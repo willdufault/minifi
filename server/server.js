@@ -3,8 +3,9 @@ server.js: This file acts as the entry point for your backend application. It se
 */
 
 const express = require('express')
-const carController = require('./controllers/carController.js')
-const realmController = require('./controllers/realmController.js')
+const carController = require('./controllers/CarController.js')
+const articleController = require('./controllers/ArticleController.js')
+const realmController = require('./controllers/RealmController.js')
 
 async function initServer() {
   const app = express()
@@ -18,20 +19,28 @@ async function initServer() {
 
   const realm = await realmController.getRealm()
 
-  app.post('/test', async (req, res) => {
-    res.status(200).send({
-      body: {
-        message: 'hello from node server :)'
-      }
-    })
-  })
-
-  app.get('/cars', async (req, res) => {
+  app.get('/getCars', async (req, res) => {
     await carController.getCars(req, res)
   })
 
-  app.post('/car', async (req, res) => {
-    await carController.postCar(req, res)
+  app.post('/createCar', async (req, res) => {
+    await carController.createCar(req, res)
+  })
+
+  app.post('/deleteCars', async (req, res) => {
+    await carController.deleteCars(req, res)
+  })
+
+  app.get('/getArticles', async (req, res) => {
+    await articleController.getArticles(req, res)
+  })
+
+  app.post('/createArticle', async (req, res) => {
+    await articleController.createArticle(req, res)
+  })
+
+  app.post('/deleteArticles', async (req, res) => {
+    await articleController.deleteArticles(req, res)
   })
 
   app.listen(port, () => {

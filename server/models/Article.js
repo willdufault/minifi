@@ -1,16 +1,15 @@
 const Realm = require('realm')
 
-class Car extends Realm.Object {
+class Article extends Realm.Object {
   static schema = {
-    name: "Car",
+    name: "Article",
     properties: {
       _id: { type: "objectId", default: () => new Realm.BSON.ObjectId() },
-      make: "string",
-      model: "string",
-      miles: "int?",
+      title: "string",
+      body: "string"
     },
     primaryKey: "_id",
   }
 }
 
-module.exports = Car
+module.exports = Article

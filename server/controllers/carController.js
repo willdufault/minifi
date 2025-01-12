@@ -1,6 +1,5 @@
-const Car = require('../models/Car.js')
+const carModel = require('../models/Car.js')
 
-// todo
 const getCars = async (req, res) => {
   try {
     const realm = req.realm
@@ -16,25 +15,38 @@ const getCars = async (req, res) => {
   }
 }
 
-const postCar = async (req, res) => {
+const createCar = async (req, res) => {
   try {
-
-    //! ISSUE: TO CREATE, REALM NEEDS TO HAVE SCHEMA: [CAR]... REFACTOR?
     const realm = req.realm
 
-    let car1
+    let car
     realm.write(() => {
-      car1 = realm.create(Car, {
+      car = realm.create(carModel, {
         make: "Nissan",
         model: "Sentra",
-        miles: 9191,
+        miles: 9192,
       })
     })
 
     res.status(200).send({
-      body: {
-        car: car1
-      }
+      body: { car }
+    })
+  }
+  catch (err) {
+    res.status(400).send(err)
+  }
+}
+
+const deleteCars = async (req, res) => {
+  try {
+    const realm = req.realm
+
+    realm.write(() => {
+      realm.delete(realm.objects('Car'))
+    })
+
+    res.status(200).send({
+      body: { message: 'Deleted all cars.'}
     })
   }
   catch (err) {
@@ -44,5 +56,6 @@ const postCar = async (req, res) => {
 
 module.exports = {
   getCars,
-  postCar
+  createCar,
+  deleteCars
 }
