@@ -1,24 +1,18 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 // import reactLogo from './assets/react.svg'
 // import viteLogo from '/vite.svg'
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
-
-  async function testPost() {
-    const res = await fetch('/test', {
-      method: 'POST',
-      headers: {
-        'content-type': 'application/json'
-      }
-    })
-    const json = await res.json()
-    alert(json['body']['message'])
+  interface Article {
+    title: string,
+    body: string
   }
 
+  const [articles, setArticles] = useState<Article[]>([])
+
   async function getCars() {
-    const res = await fetch('/cars', {
+    const res = await fetch('/getCars', {
       method: 'GET',
       headers: {
         'content-type': 'application/json'
@@ -30,7 +24,7 @@ function App() {
   }
 
   async function postCar() {
-    const res = await fetch('/car', {
+    const res = await fetch('/createCar', {
       method: 'POST',
       headers: {
         'content-type': 'application/json'
@@ -41,31 +35,83 @@ function App() {
     alert('printed new car to console')
   }
 
+  async function deleteCars() {
+    const res = await fetch('/deleteCars', {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json'
+      }
+    })
+    const json = await res.json()
+    console.log(json['body']['message'])
+    alert('printed deleteCars output to console')
+  }
+
+  async function getArticles() {
+    const res = await fetch('/getArticles', {
+      method: 'GET',
+      headers: {
+        'content-type': 'application/json'
+      }
+    })
+    const json = await res.json()
+    console.log(json['body']['articles'])
+    alert('printed articles to console')
+    setArticles(json['body']['articles'])
+  }
+
+  async function createArticle() {
+    const res = await fetch('/createArticle', {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json'
+      }
+    })
+    const json = await res.json()
+    console.log(json['body']['article'])
+    alert('printed new article to console')
+  }
+
+  async function deleteArticles() {
+    const res = await fetch('/deleteArticles', {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json'
+      }
+    })
+    const json = await res.json()
+    console.log(json['body']['message'])
+    alert('printed deleteArticles output to console')
+  }
+
+  // fetch articles on page load
+  useEffect(() => {
+    getArticles()
+  }, [])
+
   return (
     <>
-      <button onClick={testPost}>test post</button>
-      <button onClick={getCars}>get cars</button>
-      <button onClick={postCar}>post car</button>
       <div>
-        {/* <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a> */}
+        <button onClick={getCars}>get cars</button>
+        <button onClick={postCar}>post car</button>
+        <button onClick={deleteCars}>delete cars</button>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
+      <br/>
+      <div>
+        <button onClick={getArticles}>get articles</button>
+        <button onClick={createArticle}>create article</button>
+        <button onClick={deleteArticles}>delete articles</button>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <br/>
+      <h1>Articles:</h1>
+      {articles.map((article, index) =>
+      <div key={index}>
+        <div style={{border: 'solid white 1px', padding: '1rem'}}>
+          <h1>{article.title}</h1>
+          <p>{article.body}</p>
+        </div>
+      </div> 
+      )}
     </>
   )
 }
