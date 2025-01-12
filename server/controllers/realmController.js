@@ -1,2 +1,9 @@
+const Realm = require('realm')
 
-// todo: singleton to open/close realm?
+const getRealm = async () => {
+  return await Realm.open({
+    path: "Zrealm"
+  })
+}
+
+module.exports = { getRealm }
