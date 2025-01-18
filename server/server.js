@@ -3,7 +3,6 @@ server.js: This file acts as the entry point for your backend application. It se
 */
 
 const express = require('express')
-const carController = require('./controllers/CarController.js')
 const articleController = require('./controllers/ArticleController.js')
 const realmController = require('./controllers/RealmController.js')
 
@@ -18,18 +17,6 @@ async function initServer() {
   })
 
   const realm = await realmController.getRealm()
-
-  app.get('/getCars', async (req, res) => {
-    await carController.getCars(req, res)
-  })
-
-  app.post('/createCar', async (req, res) => {
-    await carController.createCar(req, res)
-  })
-
-  app.post('/deleteCars', async (req, res) => {
-    await carController.deleteCars(req, res)
-  })
 
   app.get('/getArticles', async (req, res) => {
     await articleController.getArticles(req, res)
