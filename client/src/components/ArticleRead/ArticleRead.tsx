@@ -4,7 +4,7 @@ import { Location, useLocation } from "react-router"
 import { Article } from "../../types/Article.ts"
 import { Reaction } from '../../types/Reaction.ts'
 
-function ArticlePage() {
+function ArticleRead() {
   const location = useLocation()
 
   const [article, setArticle] = useState<Article | null>(null)
@@ -66,4 +66,4 @@ function ArticlePage() {
   )
 }
 
-export default ArticlePage
+export default ArticleRead

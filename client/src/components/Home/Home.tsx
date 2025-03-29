@@ -20,13 +20,7 @@ function Home() {
     console.log(data)
     setArticles(data.body.articles)
   }
-
-  async function createArticle(): Promise<void> {
-    const res = await axios.post('/api/createArticle')
-    const data = res.data
-    console.log(data)
-  }
-
+  
   async function deleteArticles(): Promise<void> {
     const res = await axios.post('/api/deleteArticles')
     const data = res.data
@@ -46,7 +40,7 @@ function Home() {
   }
 
   function getArticleUrl(id: string): string {
-    return `${window.location.origin}/article?id=${id}`
+    return `${window.location.origin}/read?id=${id}`
   }
 
   // async function logIn(): Promise<void> {
@@ -77,7 +71,9 @@ function Home() {
       <br />
       <div>
         <button onClick={getArticles}>get articles</button>
-        <button onClick={createArticle}>create article</button>
+        <a href={`${window.location.origin}/write`}>
+          <button>write article</button>
+        </a>
         <button onClick={deleteArticles}>delete articles</button>
       </div>
       <br />

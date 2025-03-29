@@ -31,15 +31,17 @@ const getArticles = async (req, res) => {
   }
 }
 
+// TODO: init with 0 for all reactions? depends on implementation... come back to this
 const createArticle = async (req, res) => {
   try {
     const realm = req.realm
+    const body = req.body
 
     let article
     realm.write(() => {
       article = realm.create(articleModel, {
-        title: 'article title',
-        body: 'article body'
+        title: body.title,
+        body: body.body
       })
     })
 
