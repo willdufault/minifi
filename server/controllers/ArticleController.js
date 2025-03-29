@@ -26,9 +26,7 @@ const createArticle = async (req, res) => {
       })
     })
 
-    res.status(200).send({
-      body: { article }
-    })
+    res.status(200).send({ body: { article } })
   }
   catch (err) {
     res.status(400).send(err)
@@ -43,7 +41,7 @@ const deleteArticles = async (req, res) => {
       realm.delete(realm.objects('Article'))
     })
 
-    res.status(200).send()
+    res.status(200).send({ body: { message: 'deleted articles.' } })
   }
   catch (err) {
     res.status(400).send(err)
@@ -64,9 +62,7 @@ const addReaction = async (req, res) => {
       }
     })
 
-    res.status(200).send({
-      body: { article }
-    })
+    res.status(200).send({ body: { article } })
   } catch (err) {
     console.log(err)
     res.status(400).send(err)

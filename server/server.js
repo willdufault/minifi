@@ -2,7 +2,7 @@ const express = require('express')
 const articleController = require('./controllers/ArticleController.js')
 const realmController = require('./controllers/RealmController.js')
 
-async function initServer() {
+async function init() {
   const app = express()
   const port = 3000
   app.use(express.static('client/dist'))
@@ -25,6 +25,7 @@ async function initServer() {
   app.post('/deleteArticles', async (req, res) => {
     await articleController.deleteArticles(req, res)
   })
+
   app.post('/addReaction', async (req, res) => {
     await articleController.addReaction(req, res)
   })
@@ -34,4 +35,4 @@ async function initServer() {
   })
 }
 
-initServer()
+init()
