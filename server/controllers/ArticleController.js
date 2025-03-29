@@ -1,6 +1,23 @@
 const Realm = require('realm')
 const articleModel = require('../models/Article.js')
 
+const getArticle = async (req, res) => {
+  try {
+    const realm = req.realm
+
+    res.status(200).send({
+      body: {
+        article: realm.objectForPrimaryKey('Article',
+          new Realm.BSON.ObjectId(req.query.articleId)
+        )
+      }
+    })
+  }
+  catch (err) {
+    res.status(400).send(err)
+  }
+}
+
 const getArticles = async (req, res) => {
   try {
     const realm = req.realm
@@ -70,6 +87,7 @@ const addReaction = async (req, res) => {
 }
 
 module.exports = {
+  getArticle,
   getArticles,
   createArticle,
   deleteArticles,

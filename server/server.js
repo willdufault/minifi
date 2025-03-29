@@ -1,4 +1,5 @@
 const express = require('express')
+const path = require('path')
 const articleController = require('./controllers/ArticleController.js')
 const realmController = require('./controllers/RealmController.js')
 
@@ -14,20 +15,32 @@ async function init() {
 
   const realm = await realmController.getRealm()
 
-  app.get('/getArticles', async (req, res) => {
+  // TODO: you can see api paths from the browser, need to fix this
+  app.get('/api/getArticle', async (req, res) => {
+    await articleController.getArticle(req, res)
+  })
+
+  app.get('/api/getArticles', async (req, res) => {
     await articleController.getArticles(req, res)
   })
 
-  app.post('/createArticle', async (req, res) => {
+  app.post('/api/createArticle', async (req, res) => {
     await articleController.createArticle(req, res)
   })
 
-  app.post('/deleteArticles', async (req, res) => {
+  app.post('/api/deleteArticles', async (req, res) => {
     await articleController.deleteArticles(req, res)
   })
 
-  app.post('/addReaction', async (req, res) => {
+  app.post('/api/addReaction', async (req, res) => {
     await articleController.addReaction(req, res)
+  })
+
+  app.get('*', (req, res, next) => {
+    if (req.path.startsWith('/api')) {
+      return next()
+    }
+    res.sendFile(path.resolve('client', 'dist', 'index.html'))
   })
 
   app.listen(port, () => {
