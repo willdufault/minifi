@@ -7,7 +7,7 @@ import { Reaction } from '../../types/Reaction.ts'
 // ! CLEAN UP EVERYTHING BEFORE MOVING TO EDIT
 
 function ArticleEdit() {
-  const location = useLocation()
+  const location: Location<any> = useLocation()
 
   const [article, setArticle] = useState<Article | null>(null)
   const [loading, setLoading] = useState<boolean>(true)

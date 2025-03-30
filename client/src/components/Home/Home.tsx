@@ -45,7 +45,6 @@ function Home() {
     <>
       <div>
         <button onClick={reloadArticles}>reload articles</button>
-        {/* //TODO: make use navigate fcn? */}
         <a href={`${origin}/write`}>
           <button>write article</button>
         </a>
