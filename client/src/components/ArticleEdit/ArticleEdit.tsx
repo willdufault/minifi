@@ -4,22 +4,15 @@ import { Location, useLocation } from "react-router"
 import { Article } from "../../types/Article.ts"
 import { Reaction } from '../../types/Reaction.ts'
 
-function ArticleRead() {
+// ! CLEAN UP EVERYTHING BEFORE MOVING TO EDIT
+
+function ArticleEdit() {
   const location = useLocation()
 
   const [article, setArticle] = useState<Article | null>(null)
   const [loading, setLoading] = useState<boolean>(true)
   const [error, setError] = useState<boolean>(false)
 
-
-  // TODO: tie reactions to user, persistent + block >1 reactions
-  async function addReaction(articleId: string, reaction: Reaction): Promise<void> {
-    const res = await axios.post('/api/addReaction', { articleId, reaction })
-    const data = res.data
-    console.log(data)
-  }
-
-  // TODO fix this jank
   useEffect(() => {
     function getArticleId(location: Location<any>): string | null {
       const queryParameters = new URLSearchParams(location.search)
@@ -65,14 +58,14 @@ function ArticleRead() {
     <>
       <h1>article view</h1>
       <br />
-      <div style={{ border: 'solid black 1px', padding: '1rem' }}>
+      <div style={{ border: 'solid white 1px', padding: '1rem' }}>
         <h1>title: {article?.title}</h1>
         <p>body: {article?.body}</p>
-        <button onClick={() => addReaction(article!._id, Reaction.ThumbsUp)}>👍 {article?.reactions[Reaction.ThumbsUp] ?? 0}</button>
-        <button onClick={() => addReaction(article!._id, Reaction.ThumbsDown)}>👎 {article?.reactions[Reaction.ThumbsDown] ?? 0}</button>
+        <p>👍 {article?.reactions[Reaction.ThumbsUp]}</p>
+        <p>👎 {article?.reactions[Reaction.ThumbsDown]}</p>
       </div>
     </>
   )
 }
 
-export default ArticleRead
+export default ArticleEdit

@@ -1,6 +1,8 @@
 const Realm = require('realm')
 const articleModel = require('../models/Article.js')
 
+
+// TODO NEED TO CLEAN INPUT FROM USER, check that values are legal
 const getArticle = async (req, res) => {
   try {
     const realm = req.realm

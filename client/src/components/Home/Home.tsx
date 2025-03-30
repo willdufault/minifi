@@ -1,91 +1,66 @@
-import './Home.css'
-import axios from 'axios'
+import axios, { AxiosResponse } from 'axios'
 import { useEffect, useState } from 'react'
+import { DeleteArticlesResponse, GetArticlesResponse } from '../../types/ApiResponses.ts';
 import { Article } from '../../types/Article.ts';
 import { Reaction } from '../../types/Reaction.ts';
 
 function Home() {
-  // const usernameInputElement = useRef<HTMLInputElement>(null);
-  // const passwordInputElement = useRef<HTMLInputElement>(null);
-  // const [username, setUsername] = useState<String>("")
+  const origin: string = window.location.origin
+
   const [articles, setArticles] = useState<Article[]>([])
 
-  // TODO: rename to handler fcns and move to another file?
-  // TODO: remove all console.logs
-  // TODO: type all vars except stuff that includes generics (like useref/usestate)
-
-  async function getArticles(): Promise<void> {
-    const res = await axios.get('/api/getArticles')
-    const data = res.data
-    console.log(data)
-    setArticles(data.body.articles)
+  /**
+   * Fetches list of articles from database.
+   * @returns The list of articles.
+   */
+  async function getArticles(): Promise<Article[]> {
+    const res: AxiosResponse<GetArticlesResponse> = await axios.get('/api/getArticles')
+    const data: GetArticlesResponse = res.data
+    return data.body.articles
   }
-  
+
+  /**
+   * Reload the articles on screen.
+   */
+  async function reloadArticles(): Promise<void> {
+    const articles: Article[] = await getArticles()
+    setArticles(articles)
+  }
+
+  // TODO: remove this fcn after delete single article is done
+  /**
+   * TEMP - Delete all articles from the database.
+   */
   async function deleteArticles(): Promise<void> {
-    const res = await axios.post('/api/deleteArticles')
-    const data = res.data
+    const res: AxiosResponse<DeleteArticlesResponse> = await axios.post('/api/deleteArticles')
+    const data: DeleteArticlesResponse = res.data
     console.log(data)
   }
-
-  async function addReaction(articleId: string, reaction: Reaction): Promise<void> {
-    console.log(`*** article id: ${articleId}`)
-
-    const res = await axios.post('/api/addReaction', { articleId, reaction })
-    const data = res.data
-    console.log(data)
-    // TODO - search through listed articles and update the one with matching id
-    // * but this depends on how i do it, could say only react when page is open (better this way imo, that way i don't have to render everything every time, lose filters, etc.)
-    // ! do users last, complete anonymous functionality first
-    // * also need to figure out how to handle users adding + removing + persistent reactions, later issue
-  }
-
-  function getArticleUrl(id: string): string {
-    return `${window.location.origin}/read?id=${id}`
-  }
-
-  // async function logIn(): Promise<void> {
-  //   const value: string = usernameInputElement.current!.value
-  //   if (value.length > 0) {
-  //     setUsername(value)
-  //   }
-  // }
-
-  // function logOut(): void {
-  //   setUsername("")
-  // }
 
   useEffect(() => {
-    getArticles()
+    reloadArticles()
   }, [])
 
   return (
     <>
       <div>
-        {/* <p>username: [{username}]</p>
-        <input ref={usernameInputElement}></input>
-        <input ref={passwordInputElement}></input>
-        <button onClick={logIn}>create user</button>
-        <button onClick={logIn}>log in</button>
-        <button onClick={logOut}>log out</button> */}
-      </div>
-      <br />
-      <div>
-        <button onClick={getArticles}>get articles</button>
-        <a href={`${window.location.origin}/write`}>
+        <button onClick={reloadArticles}>reload articles</button>
+        {/* //TODO: make use navigate fcn? */}
+        <a href={`${origin}/write`}>
           <button>write article</button>
         </a>
-        <button onClick={deleteArticles}>delete articles</button>
+        <button onClick={deleteArticles}>delete all articles</button>
       </div>
       <br />
       <h1>Articles:</h1>
       {articles.map((article, index) =>
         <div key={index}>
-          <div style={{ border: 'solid white 1px', padding: '1rem' }}>
-            <a href={getArticleUrl(article._id)}>link</a>
+          <div style={{ border: 'solid black 1px', padding: '1rem' }}>
+            <a href={`${origin}/read?id=${article._id}`}>link</a>
             <h1>{article.title}</h1>
             <p>{article.body}</p>
-            <button onClick={() => addReaction(article._id, Reaction.ThumbsUp)}>👍 {article.reactions[Reaction.ThumbsUp] ?? 0}</button>
-            <button onClick={() => addReaction(article._id, Reaction.ThumbsDown)}>👎 {article.reactions[Reaction.ThumbsDown] ?? 0}</button>
+            <p>👍 {article?.reactions[Reaction.ThumbsUp]}</p>
+            <p>👎 {article?.reactions[Reaction.ThumbsDown]}</p>
           </div>
         </div>
       )}

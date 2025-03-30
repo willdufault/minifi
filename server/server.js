@@ -16,6 +16,7 @@ async function init() {
   const realm = await realmController.getRealm()
 
   // TODO: you can see api paths from the browser, need to fix this
+  // ? cors? auth token?
   app.get('/api/getArticle', async (req, res) => {
     await articleController.getArticle(req, res)
   })
