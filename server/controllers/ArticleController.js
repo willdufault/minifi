@@ -16,6 +16,7 @@ const getArticle = async (req, res) => {
     })
   }
   catch (err) {
+    console.log(err)
     res.status(400).send(err)
   }
 }
@@ -29,6 +30,7 @@ const getArticles = async (req, res) => {
     })
   }
   catch (err) {
+    console.log(err)
     res.status(400).send(err)
   }
 }
@@ -50,6 +52,7 @@ const createArticle = async (req, res) => {
     res.status(200).send({ body: { article } })
   }
   catch (err) {
+    console.log(err)
     res.status(400).send(err)
   }
 }
@@ -65,6 +68,7 @@ const deleteArticles = async (req, res) => {
     res.status(200).send({ body: { message: 'deleted articles.' } })
   }
   catch (err) {
+    console.log(err)
     res.status(400).send(err)
   }
 }

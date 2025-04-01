@@ -18,6 +18,7 @@ const checkUserExists = async (req, res) => {
     res.status(200).send({ body: { article } })
   }
   catch (err) {
+    console.log(err)
     res.status(400).send(err)
   }
 }
@@ -37,6 +38,7 @@ const createUser = async (req, res) => {
     res.status(200).send({ body: { article } })
   }
   catch (err) {
+    console.log(err)
     res.status(400).send(err)
   }
 }

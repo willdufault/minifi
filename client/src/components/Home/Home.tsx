@@ -13,7 +13,7 @@ function Home() {
    * Fetches list of articles from database.
    * @returns The list of articles.
    */
-  async function getArticles(): Promise<Article[]> {
+  const getArticles = async (): Promise<Article[]> => {
     const res: AxiosResponse<GetArticlesResponse> = await axios.get('/api/getArticles')
     const data: GetArticlesResponse = res.data
     return data.body.articles
@@ -22,7 +22,7 @@ function Home() {
   /**
    * Reload the articles on screen.
    */
-  async function reloadArticles(): Promise<void> {
+  const reloadArticles = async (): Promise<void> => {
     const articles: Article[] = await getArticles()
     setArticles(articles)
   }
@@ -31,7 +31,7 @@ function Home() {
   /**
    * TEMP - Delete all articles from the database.
    */
-  async function deleteArticles(): Promise<void> {
+  const deleteArticles = async (): Promise<void> => {
     const res: AxiosResponse<DeleteArticlesResponse> = await axios.post('/api/deleteArticles')
     const data: DeleteArticlesResponse = res.data
     console.log(data)

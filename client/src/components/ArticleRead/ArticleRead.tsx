@@ -10,46 +10,50 @@ function ArticleRead() {
 
   const [article, setArticle] = useState<Article | null>(null)
   const [loading, setLoading] = useState<boolean>(true)
-  const [error, setError] = useState<boolean>(false)
   const [notFound, setNotFound] = useState<boolean>(false)
 
   // TODO: tie reactions to user, persistent + block >1 reactions
-  async function addReaction(articleId: string, reaction: Reaction): Promise<void> {
-    const res = await axios.post('/api/addReaction', { articleId, reaction })
-    const data = res.data
-    console.log(data)
+  const addReaction = async (articleId: string, reaction: Reaction): Promise<void> => {
+    try {
+      const res = await axios.post('/api/addReaction', { articleId, reaction })
+      const data = res.data
+      // TODO
+      data
+    }
+    catch (err) {
+      console.log(err)
+      // TODO
+      err
+    }
   }
 
   useEffect(() => {
-    function getArticleId(location: Location<any>): string | null {
+    const getArticleId = (location: Location<any>): string | null => {
       const queryParameters = new URLSearchParams(location.search)
       return queryParameters.get('id')
     }
 
-    async function getArticle(articleId: string): Promise<Article> {
+    const getArticle = async (articleId: string): Promise<Article | null> => {
       try {
         const res = await axios.get('/api/getArticle', { params: { articleId } })
-        console.log('res')
-        console.log(res)
         const data = res.data
-        console.log(data)
         return data.body.article
       }
-      // TODO: PICK UP HERE... add catch + else logic for if 400 status
+      catch (err) {
+        console.log(err)
+        return null
+      }
     }
 
-    async function loadArticle() {
+    const loadArticle = async () => {
       const articleId: string | null = getArticleId(location)
       if (articleId === null) {
         setNotFound(true)
       }
       else {
-        console.log('bef')
         const responseArticle = await getArticle(articleId)
-        console.log('resp art:')
-        console.log(responseArticle)
         if (responseArticle === null) {
-          setError(true)
+          setNotFound(true)
         }
         else {
           setArticle(responseArticle)
@@ -68,12 +72,6 @@ function ArticleRead() {
   if (notFound) {
     return <NotFound />
   }
-
-  if (error) {
-    return <p>error!</p>
-  }
-
-  console.log(loading, error, notFound)
 
   return (
     <>
