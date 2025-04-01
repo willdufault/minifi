@@ -37,14 +37,19 @@ export async function getArticle(articleId: string): Promise<Article | null> {
 }
 
 /**
- * TODO: remove this fcn after delete single article is done
- * TEMP - Delete all articles from the database.
-*/
-export async function deleteArticles(): Promise<void> {
-  const res: AxiosResponse<ApiResponses.DeleteArticlesResponse> = await axios.post('/api/deleteArticles')
-  const data: ApiResponses.DeleteArticlesResponse = res.data
-  console.log('TEMP!')
-  console.log(data)
+ * Deletes the article with the given ID from the database.
+ * @param articleId The article ID.
+ * @returns True if the delete was successful.
+ */
+export async function deleteArticle(articleId: string): Promise<boolean> {
+  try {
+    await axios.post('/api/deleteArticle', { articleId })
+    return true
+  }
+  catch (err) {
+    console.log(err)
+    return false
+  }
 }
 
 // TODO use prettier to auto-format?
@@ -56,10 +61,10 @@ export async function deleteArticles(): Promise<void> {
  */
 export async function createArticle(title: string, body: string): Promise<Article | null> {
   try {
-    const res: AxiosResponse<ApiResponses.CreateArticleResponse> = await axios.post('/api/createArticle', {
-      'title': title,
-      'body': body,
-    })
+    const res: AxiosResponse<ApiResponses.CreateArticleResponse> = await axios.post(
+      '/api/createArticle',
+      { title, body }
+    )
     const data: ApiResponses.CreateArticleResponse = res.data
     return data.body.article
   }
@@ -89,3 +94,4 @@ export async function addReaction(articleId: string, reaction: Reaction): Promis
     err
   }
 }
+

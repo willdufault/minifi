@@ -29,8 +29,8 @@ async function init() {
     await articleController.createArticle(req, res)
   })
 
-  app.post('/api/deleteArticles', async (req, res) => {
-    await articleController.deleteArticles(req, res)
+  app.post('/api/deleteArticle', async (req, res) => {
+    await articleController.deleteArticle(req, res)
   })
 
   app.post('/api/addReaction', async (req, res) => {

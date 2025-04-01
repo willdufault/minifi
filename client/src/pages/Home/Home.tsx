@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { getArticles, deleteArticles } from '../../services/articleService.ts';
+import { getArticles } from '../../services/articleService.ts';
 import { Article } from '../../types/Article.ts';
 import { Reaction } from '../../types/Reaction.ts';
 
@@ -29,7 +29,6 @@ function Home() {
         <a href={`${origin}/write`}>
           <button>write article</button>
         </a>
-        <button onClick={deleteArticles}>delete all articles</button>
       </div>
       <br />
       <h1>Articles:</h1>
