@@ -1,10 +1,9 @@
-import axios from 'axios'
+import NotFound from '../NotFound/NotFound.tsx'
 import { useEffect, useState } from "react"
 import { Location, useLocation } from "react-router"
-import { addReaction } from '../../services/articleService.ts'
+import { getArticle, addReaction } from "../../services/articleService.ts"
 import { Article } from "../../types/Article.ts"
 import { Reaction } from '../../types/Reaction.ts'
-import NotFound from '../NotFound/NotFound.tsx'
 
 function ArticleRead() {
   const origin: string = window.location.origin
@@ -22,18 +21,6 @@ function ArticleRead() {
   const articleId: string | null = getArticleId(location)
 
   useEffect(() => {
-    const getArticle = async (articleId: string): Promise<Article | null> => {
-      try {
-        const res = await axios.get('/api/getArticle', { params: { articleId } })
-        const data = res.data
-        return data.body.article
-      }
-      catch (err) {
-        console.log(err)
-        return null
-      }
-    }
-
     const loadArticle = async () => {
       if (articleId === null) {
         setNotFound(true)

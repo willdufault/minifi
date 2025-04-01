@@ -1,7 +1,6 @@
-import axios, { AxiosResponse } from 'axios'
-import { useRef, RefObject } from "react"
+import { useRef } from "react"
 import { NavigateFunction, useNavigate } from 'react-router';
-import { CreateArticleResponse } from '../../types/ApiResponses';
+import { createArticle } from "../../services/articleService";
 import { Article } from '../../types/Article';
 
 function ArticleWrite() {
@@ -9,22 +8,6 @@ function ArticleWrite() {
 
   const titleInputElement = useRef<HTMLInputElement>(null);
   const bodyInputElement = useRef<HTMLTextAreaElement>(null);
-
-  // TODO use prettier to auto-format?
-  /**
-   * Creates the user's article in the database.
-   * @param titleInputElement Title input element.
-   * @param bodyInputElement Body textarea element.
-   * @returns The user's article.
-   */
-  async function createArticle(titleInputElement: RefObject<HTMLInputElement>, bodyInputElement: RefObject<HTMLTextAreaElement>): Promise<Article> {
-    const res: AxiosResponse<CreateArticleResponse> = await axios.post('/api/createArticle', {
-      'title': titleInputElement.current?.value,
-      'body': bodyInputElement.current?.value,
-    })
-    const data: CreateArticleResponse = res.data
-    return data.body.article
-  }
 
   /**
    * Redirects the user to the read view of their article.
@@ -36,8 +19,12 @@ function ArticleWrite() {
   }
 
   async function submitArticle(): Promise<void> {
-    const article: Article = await createArticle(titleInputElement, bodyInputElement)
-    openArticleRead(article, navigate)
+    const article: Article | null = await createArticle(
+      titleInputElement.current!.value, bodyInputElement.current!.value
+    )
+    if (article !== null) {
+      openArticleRead(article, navigate)
+    }
   }
 
   return (

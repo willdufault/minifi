@@ -12,8 +12,10 @@ function Home() {
    * Reload the articles on screen.
    */
   const reloadArticles = async (): Promise<void> => {
-    const articles: Article[] = await getArticles()
-    setArticles(articles)
+    const articles: Article[] | null = await getArticles()
+    if (articles !== null) {
+      setArticles(articles)
+    }
   }
 
   useEffect(() => {

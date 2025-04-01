@@ -7,10 +7,33 @@ import { Reaction } from '../types/Reaction.ts';
  * Fetches list of articles from database.
  * @returns The list of articles.
  */
-export async function getArticles(): Promise<Article[]> {
-  const res: AxiosResponse<ApiResponses.GetArticlesResponse> = await axios.get('/api/getArticles')
-  const data: ApiResponses.GetArticlesResponse = res.data
-  return data.body.articles
+export async function getArticles(): Promise<Article[] | null> {
+  try {
+    const res: AxiosResponse<ApiResponses.GetArticlesResponse> = await axios.get('/api/getArticles')
+    const data: ApiResponses.GetArticlesResponse = res.data
+    return data.body.articles
+  }
+  catch (err) {
+    console.log(err)
+    return null
+  }
+}
+
+/**
+ * Fetch the article from the database with the given ID.
+ * @param articleId The article ID.
+ * @returns The article.
+ */
+export async function getArticle(articleId: string): Promise<Article | null> {
+  try {
+    const res = await axios.get('/api/getArticle', { params: { articleId } })
+    const data = res.data
+    return data.body.article
+  }
+  catch (err) {
+    console.log(err)
+    return null
+  }
 }
 
 /**
@@ -24,6 +47,27 @@ export async function deleteArticles(): Promise<void> {
   console.log(data)
 }
 
+// TODO use prettier to auto-format?
+/**
+ * Create an article in the database.
+ * @param title The title of the article.
+ * @param body The body of the article.
+ * @returns The article.
+ */
+export async function createArticle(title: string, body: string): Promise<Article | null> {
+  try {
+    const res: AxiosResponse<ApiResponses.CreateArticleResponse> = await axios.post('/api/createArticle', {
+      'title': title,
+      'body': body,
+    })
+    const data: ApiResponses.CreateArticleResponse = res.data
+    return data.body.article
+  }
+  catch (err) {
+    console.log(err)
+    return null
+  }
+}
 
 /**
  * TODO: after users added
