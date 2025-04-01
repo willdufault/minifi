@@ -3,7 +3,10 @@ import { NavigateFunction, useNavigate } from 'react-router';
 import { createArticle } from "../../services/articleService";
 import { Article } from '../../types/Article';
 
-function ArticleWrite() {
+
+
+// TODO: THIS IS NEXT, ADD EDITING
+function ArticleEdit() {
   const navigate: NavigateFunction = useNavigate()
 
   const titleInputElement = useRef<HTMLInputElement>(null);
@@ -46,4 +49,4 @@ function ArticleWrite() {
   )
 }
 
-export default ArticleWrite
+export default ArticleEdit
