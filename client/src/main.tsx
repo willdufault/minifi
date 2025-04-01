@@ -1,10 +1,10 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter, Routes, Route } from 'react-router'
-import NotFound from './components/NotFound/NotFound.tsx'
-import Home from './components/Home/Home.tsx'
-import ArticleRead from './components/ArticleRead/ArticleRead.tsx'
-import ArticleWrite from './components/ArticleWrite/ArticleWrite.tsx'
+import NotFound from './pages/NotFound/NotFound.tsx'
+import Home from './pages/Home/Home.tsx'
+import ArticleRead from './pages/ArticleRead/ArticleRead.tsx'
+import ArticleWrite from './pages/ArticleWrite/ArticleWrite.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

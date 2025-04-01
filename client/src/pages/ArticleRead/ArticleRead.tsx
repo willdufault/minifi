@@ -1,38 +1,27 @@
 import axios from 'axios'
 import { useEffect, useState } from "react"
 import { Location, useLocation } from "react-router"
+import { addReaction } from '../../services/articleService.ts'
 import { Article } from "../../types/Article.ts"
 import { Reaction } from '../../types/Reaction.ts'
 import NotFound from '../NotFound/NotFound.tsx'
 
 function ArticleRead() {
+  const origin: string = window.location.origin
   const location: Location<any> = useLocation()
 
   const [article, setArticle] = useState<Article | null>(null)
   const [loading, setLoading] = useState<boolean>(true)
   const [notFound, setNotFound] = useState<boolean>(false)
 
-  // TODO: tie reactions to user, persistent + block >1 reactions
-  const addReaction = async (articleId: string, reaction: Reaction): Promise<void> => {
-    try {
-      const res = await axios.post('/api/addReaction', { articleId, reaction })
-      const data = res.data
-      // TODO
-      data
-    }
-    catch (err) {
-      console.log(err)
-      // TODO
-      err
-    }
+  const getArticleId = (location: Location<any>): string | null => {
+    const queryParameters = new URLSearchParams(location.search)
+    return queryParameters.get('id')
   }
 
-  useEffect(() => {
-    const getArticleId = (location: Location<any>): string | null => {
-      const queryParameters = new URLSearchParams(location.search)
-      return queryParameters.get('id')
-    }
+  const articleId: string | null = getArticleId(location)
 
+  useEffect(() => {
     const getArticle = async (articleId: string): Promise<Article | null> => {
       try {
         const res = await axios.get('/api/getArticle', { params: { articleId } })
@@ -46,7 +35,6 @@ function ArticleRead() {
     }
 
     const loadArticle = async () => {
-      const articleId: string | null = getArticleId(location)
       if (articleId === null) {
         setNotFound(true)
       }
@@ -58,8 +46,8 @@ function ArticleRead() {
         else {
           setArticle(responseArticle)
         }
-        setLoading(false)
       }
+      setLoading(false)
     }
 
     loadArticle()
@@ -77,6 +65,9 @@ function ArticleRead() {
     <>
       <h1>article view</h1>
       <br />
+      <a href={`${origin}/edit?id=${articleId}`}>
+        <button>edit</button>
+      </a>
       <div style={{ border: 'solid black 1px', padding: '1rem' }}>
         <h1>title: {article!.title}</h1>
         <p>body: {article!.body}</p>

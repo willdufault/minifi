@@ -1,6 +1,5 @@
-import axios, { AxiosResponse } from 'axios'
 import { useEffect, useState } from 'react'
-import { DeleteArticlesResponse, GetArticlesResponse } from '../../types/ApiResponses.ts';
+import { getArticles, deleteArticles } from '../../services/articleService.ts';
 import { Article } from '../../types/Article.ts';
 import { Reaction } from '../../types/Reaction.ts';
 
@@ -10,31 +9,11 @@ function Home() {
   const [articles, setArticles] = useState<Article[]>([])
 
   /**
-   * Fetches list of articles from database.
-   * @returns The list of articles.
-   */
-  const getArticles = async (): Promise<Article[]> => {
-    const res: AxiosResponse<GetArticlesResponse> = await axios.get('/api/getArticles')
-    const data: GetArticlesResponse = res.data
-    return data.body.articles
-  }
-
-  /**
    * Reload the articles on screen.
    */
   const reloadArticles = async (): Promise<void> => {
     const articles: Article[] = await getArticles()
     setArticles(articles)
-  }
-
-  // TODO: remove this fcn after delete single article is done
-  /**
-   * TEMP - Delete all articles from the database.
-   */
-  const deleteArticles = async (): Promise<void> => {
-    const res: AxiosResponse<DeleteArticlesResponse> = await axios.post('/api/deleteArticles')
-    const data: DeleteArticlesResponse = res.data
-    console.log(data)
   }
 
   useEffect(() => {
