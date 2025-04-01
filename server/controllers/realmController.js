@@ -4,7 +4,7 @@ const userModel = require('../models/User.js')
 
 const getRealm = async () => {
   return await Realm.open({
-    path: "Zrealm",
+    path: "server/database/realm",
     schema: [articleModel, userModel]
   })
 }

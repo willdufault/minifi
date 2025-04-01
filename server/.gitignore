@@ -1,3 +1,6 @@
+# Realm DB
+database/*
+
 # Logs
 logs
 *.log
