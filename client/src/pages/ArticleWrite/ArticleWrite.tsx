@@ -12,18 +12,20 @@ function ArticleWrite() {
   /**
    * Redirects the user to the read view of their article.
    * @param article The user's article.
-   * @param navigate React navigate function.
    */
-  function openArticleRead(article: Article, navigate: NavigateFunction): void {
-    navigate(`/read?id=${article._id}`)
+  function openArticleRead(articleId: string): void {
+    navigate(`/read?id=${articleId}`)
   }
 
+  /**
+   * Submit the article to the database.
+   */
   async function submitArticle(): Promise<void> {
     const article: Article | null = await createArticle(
       titleInputElement.current!.value, bodyInputElement.current!.value
     )
     if (article !== null) {
-      openArticleRead(article, navigate)
+      openArticleRead(article._id)
     }
   }
 

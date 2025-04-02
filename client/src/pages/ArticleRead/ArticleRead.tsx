@@ -5,14 +5,6 @@ import { getArticle, deleteArticle, addReaction } from "../../services/articleSe
 import { Article } from "../../types/Article.ts"
 import { Reaction } from '../../types/Reaction.ts'
 
-
-// TODO: new mindset for function params: params should be dials you can change, 
-// TODO: not just referenced vars... update this throughout project
-
-// TODO: add handler functions for all api calls, this is future-proof if i want
-// TODO: to add more behavior
-
-
 function ArticleRead() {
   const origin: string = window.location.origin
   const location: Location<any> = useLocation()
@@ -22,6 +14,10 @@ function ArticleRead() {
   const [loading, setLoading] = useState<boolean>(true)
   const [notFound, setNotFound] = useState<boolean>(false)
 
+  /**
+   * Get the article ID from the query parameters.
+   * @returns The article ID.
+   */
   const getArticleId = (): string | null => {
     const queryParameters = new URLSearchParams(location.search)
     return queryParameters.get('id')
@@ -29,6 +25,9 @@ function ArticleRead() {
 
   const articleId: string | null = getArticleId()
 
+  /**
+   * Delete the article and return to the homepage.
+   */
   const deleteArticleHandler = async (): Promise<void> => {
     const deleted: boolean = await deleteArticle(articleId!)
     if (deleted) {
@@ -36,24 +35,27 @@ function ArticleRead() {
     }
   }
 
-  useEffect(() => {
-    const loadArticle = async () => {
-      if (articleId === null) {
+  /**
+   * Load the article on the screen.
+   */
+  const loadArticle = async (articleId: string | null) => {
+    if (articleId === null) {
+      setNotFound(true)
+    }
+    else {
+      const responseArticle = await getArticle(articleId)
+      if (responseArticle === null) {
         setNotFound(true)
       }
       else {
-        const responseArticle = await getArticle(articleId)
-        if (responseArticle === null) {
-          setNotFound(true)
-        }
-        else {
-          setArticle(responseArticle)
-        }
+        setArticle(responseArticle)
       }
-      setLoading(false)
     }
+    setLoading(false)
+  }
 
-    loadArticle()
+  useEffect(() => {
+    loadArticle(articleId)
   }, [])
 
   if (loading) {

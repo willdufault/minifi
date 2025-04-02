@@ -52,7 +52,6 @@ export async function deleteArticle(articleId: string): Promise<boolean> {
   }
 }
 
-// TODO use prettier to auto-format?
 /**
  * Create an article in the database.
  * @param title The title of the article.
@@ -64,6 +63,28 @@ export async function createArticle(title: string, body: string): Promise<Articl
     const res: AxiosResponse<ApiResponses.CreateArticleResponse> = await axios.post(
       '/api/createArticle',
       { title, body }
+    )
+    const data: ApiResponses.CreateArticleResponse = res.data
+    return data.body.article
+  }
+  catch (err) {
+    console.log(err)
+    return null
+  }
+}
+
+/**
+ * Create an article in the database.
+ * @param articleId The article ID.
+ * @param title The title of the article.
+ * @param body The body of the article.
+ * @returns The article.
+ */
+export async function updateArticle(articleId: string, title: string, body: string): Promise<Article | null> {
+  try {
+    const res: AxiosResponse<ApiResponses.CreateArticleResponse> = await axios.post(
+      '/api/updateArticle',
+      { articleId, title, body }
     )
     const data: ApiResponses.CreateArticleResponse = res.data
     return data.body.article

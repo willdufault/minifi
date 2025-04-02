@@ -42,12 +42,32 @@ const createArticle = async (req, res) => {
     const realm = req.realm
     const body = req.body
 
-    let article = null
+    let article
     realm.write(() => {
       article = realm.create(articleModel, {
         title: body.title,
         body: body.body
       })
+    })
+
+    res.status(200).send({ body: { article } })
+  }
+  catch (err) {
+    console.log(err)
+    res.status(400).send(err)
+  }
+}
+
+const updateArticle = async (req, res) => {
+  try {
+    const realm = req.realm
+    const body = req.body
+
+    let article
+    realm.write(() => {
+      article = realm.objectForPrimaryKey('Article', new Realm.BSON.ObjectId(body.articleId))
+      article.title = body.title
+      article.body = body.body
     })
 
     res.status(200).send({ body: { article } })
@@ -81,7 +101,7 @@ const addReaction = async (req, res) => {
     const realm = req.realm
     const { articleId, reaction } = req.body
 
-    let article = null
+    let article
     realm.write(() => {
       article = realm.objectForPrimaryKey('Article', Realm.BSON.ObjectId(articleId))
       if (article != null) {
@@ -101,6 +121,7 @@ module.exports = {
   getArticle,
   getArticles,
   createArticle,
+  updateArticle,
   deleteArticle,
   addReaction
 }

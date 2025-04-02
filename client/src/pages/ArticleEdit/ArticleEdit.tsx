@@ -1,52 +1,99 @@
-import { useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 import { NavigateFunction, useNavigate } from 'react-router';
-import { createArticle } from "../../services/articleService";
+import { updateArticle, getArticle } from "../../services/articleService";
 import { Article } from '../../types/Article';
+import NotFound from "../NotFound/NotFound";
 
-
-
-// TODO: THIS IS NEXT, ADD EDITING
-function ArticleEdit() {
+function ArticleWrite() {
   const navigate: NavigateFunction = useNavigate()
 
+  const [article, setArticle] = useState<Article | null>(null)
+  const [loading, setLoading] = useState<boolean>(true)
+  const [notFound, setNotFound] = useState<boolean>(false)
   const titleInputElement = useRef<HTMLInputElement>(null);
   const bodyInputElement = useRef<HTMLTextAreaElement>(null);
 
   /**
-   * Redirects the user to the read view of their article.
-   * @param article The user's article.
-   * @param navigate React navigate function.
+   * Get the article ID from the query parameters.
+   * @returns The article ID.
    */
-  function openArticleRead(article: Article, navigate: NavigateFunction): void {
-    navigate(`/read?id=${article._id}`)
+  const getArticleId = (): string | null => {
+    const queryParameters = new URLSearchParams(location.search)
+    return queryParameters.get('id')
   }
 
-  async function submitArticle(): Promise<void> {
-    const article: Article | null = await createArticle(
-      titleInputElement.current!.value, bodyInputElement.current!.value
+  const articleId: string | null = getArticleId()
+
+  /**
+   * Redirects the user to the read view of their article.
+   * @param article The user's article.
+   */
+  function openArticleRead(articleId: string): void {
+    navigate(`/read?id=${articleId}`)
+  }
+
+  /**
+   * Update the article in the database.
+   */
+  async function updateArticleHandler(articleId: string): Promise<void> {
+    const article: Article | null = await updateArticle(
+      articleId,
+      titleInputElement.current!.value,
+      bodyInputElement.current!.value
     )
     if (article !== null) {
-      openArticleRead(article, navigate)
+      openArticleRead(article._id)
     }
+  }
+
+  /**
+   * Load the article into the input fields.
+   */
+  const loadArticle = async (articleId: string | null) => {
+    if (articleId === null) {
+      setNotFound(true)
+    }
+    else {
+      const responseArticle = await getArticle(articleId)
+      if (responseArticle === null) {
+        setNotFound(true)
+      }
+      else {
+        setArticle(responseArticle)
+      }
+    }
+    setLoading(false)
+  }
+
+  useEffect(() => {
+    loadArticle(articleId)
+  }, [])
+
+  if (loading) {
+    return <p>loading...</p>
+  }
+
+  if (notFound) {
+    return <NotFound />
   }
 
   return (
     <>
-      <h1>article write</h1>
+      <h1>article edit</h1>
       <br />
       <div>
         <label>title</label>
-        <input ref={titleInputElement} />
+        <input ref={titleInputElement} defaultValue={article!.title} />
       </div>
       <br />
       <div>
         <label>body</label>
-        <textarea ref={bodyInputElement}></textarea>
+        <textarea ref={bodyInputElement} defaultValue={article!.body}></textarea>
       </div>
       <br />
-      <button onClick={submitArticle}>submit</button>
+      <button onClick={() => updateArticleHandler(articleId!)}>update</button>
     </>
   )
 }
 
-export default ArticleEdit
+export default ArticleWrite
