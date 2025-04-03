@@ -1,9 +1,9 @@
 const Realm = require('realm')
 const articleModel = require('../models/Article.js')
+require('dotenv').config()
 
 
 // TODO NEED TO CLEAN INPUT FROM USER, check that values are legal
-// TODO: jsdoc
 const getArticle = async (req, res) => {
   try {
     const realm = req.realm
@@ -42,11 +42,17 @@ const createArticle = async (req, res) => {
     const realm = req.realm
     const body = req.body
 
+    const title = body.title
+    const articleBody = body.body
+    if (title.length > process.env.TITLE_LENGTH) {
+      // TODO: implement this
+    }
+
     let article
     realm.write(() => {
       article = realm.create(articleModel, {
-        title: body.title,
-        body: body.body
+        title: title,
+        body: articleBody
       })
     })
 
