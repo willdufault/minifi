@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
-import { getArticles } from '../../services/articleService.ts';
-import { Article } from '../../types/Article.ts';
-import { Reaction } from '../../types/Reaction.ts';
+import { getArticles } from '../../services/articleService.ts'
+import { Article } from '../../types/Article.ts'
+import { Reaction } from '../../types/Reaction.ts'
 
 function Home() {
   const origin: string = window.location.origin
@@ -32,7 +32,7 @@ function Home() {
       </div>
       <br />
       <h1>Articles:</h1>
-      {articles.map((article, index) =>
+      {articles.map((article, index) => (
         <div key={index}>
           <div style={{ border: 'solid black 1px', padding: '1rem' }}>
             <a href={`${origin}/read?id=${article._id}`}>link</a>
@@ -42,7 +42,7 @@ function Home() {
             <p>👎 {article?.reactions[Reaction.ThumbsDown]}</p>
           </div>
         </div>
-      )}
+      ))}
     </>
   )
 }

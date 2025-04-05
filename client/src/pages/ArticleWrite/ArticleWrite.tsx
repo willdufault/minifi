@@ -1,13 +1,16 @@
-import { useRef } from "react"
-import { NavigateFunction, useNavigate } from 'react-router';
-import { createArticle } from "../../services/articleService";
-import { Article } from '../../types/Article';
+import { useRef, useState } from 'react'
+import { NavigateFunction, useNavigate } from 'react-router'
+import CONSTANTS from '../../constants'
+import { createArticle } from '../../services/articleService'
+import { Article } from '../../types/Article'
 
 function ArticleWrite() {
   const navigate: NavigateFunction = useNavigate()
 
-  const titleInputElement = useRef<HTMLInputElement>(null);
-  const bodyInputElement = useRef<HTMLTextAreaElement>(null);
+  const titleInputElement = useRef<HTMLInputElement>(null)
+  const bodyInputElement = useRef<HTMLTextAreaElement>(null)
+  const [titleLength, setTitleLength] = useState<number>(0)
+  const [bodyLength, setBodyLength] = useState<number>(0)
 
   /**
    * Redirects the user to the read view of their article.
@@ -21,8 +24,22 @@ function ArticleWrite() {
    * Submit the article to the database.
    */
   async function submitArticle(): Promise<void> {
+    if (titleLength == 0 || titleLength > CONSTANTS.TITLE_MAX_LENGTH) {
+      alert(
+        `Title must be between 1 and ${CONSTANTS.TITLE_MAX_LENGTH} characters.`
+      )
+      return
+    }
+    if (bodyLength == 0 || bodyLength > CONSTANTS.BODY_MAX_LENGTH) {
+      alert(
+        `Body must be between 1 and ${CONSTANTS.BODY_MAX_LENGTH} characters.`
+      )
+      return
+    }
+
     const article: Article | null = await createArticle(
-      titleInputElement.current!.value, bodyInputElement.current!.value
+      titleInputElement.current!.value,
+      bodyInputElement.current!.value
     )
     if (article !== null) {
       openArticleRead(article._id)
@@ -35,12 +52,24 @@ function ArticleWrite() {
       <br />
       <div>
         <label>title</label>
-        <input ref={titleInputElement} />
+        <input
+          ref={titleInputElement}
+          onChange={(event) => setTitleLength(event.target.value.length)}
+        />
+        <p>
+          {titleLength}/{CONSTANTS.TITLE_MAX_LENGTH}
+        </p>
       </div>
       <br />
       <div>
         <label>body</label>
-        <textarea ref={bodyInputElement}></textarea>
+        <textarea
+          ref={bodyInputElement}
+          onChange={(event) => setBodyLength(event.target.value.length)}
+        ></textarea>
+        <p>
+          {bodyLength}/{CONSTANTS.BODY_MAX_LENGTH}
+        </p>
       </div>
       <br />
       <button onClick={submitArticle}>submit</button>

@@ -1,8 +1,17 @@
 import NotFound from '../NotFound/NotFound.tsx'
-import { useEffect, useState } from "react"
-import { Location, NavigateFunction, useLocation, useNavigate } from "react-router"
-import { getArticle, deleteArticle, addReaction } from "../../services/articleService.ts"
-import { Article } from "../../types/Article.ts"
+import { useEffect, useState } from 'react'
+import {
+  Location,
+  NavigateFunction,
+  useLocation,
+  useNavigate,
+} from 'react-router'
+import {
+  getArticle,
+  deleteArticle,
+  addReaction,
+} from '../../services/articleService.ts'
+import { Article } from '../../types/Article.ts'
 import { Reaction } from '../../types/Reaction.ts'
 
 function ArticleRead() {
@@ -41,13 +50,11 @@ function ArticleRead() {
   const loadArticle = async (articleId: string | null) => {
     if (articleId === null) {
       setNotFound(true)
-    }
-    else {
+    } else {
       const responseArticle = await getArticle(articleId)
       if (responseArticle === null) {
         setNotFound(true)
-      }
-      else {
+      } else {
         setArticle(responseArticle)
       }
     }
@@ -73,12 +80,16 @@ function ArticleRead() {
       <a href={`${origin}/edit?id=${articleId}`}>
         <button>edit</button>
       </a>
-      <button onClick={deleteArticleHandler}>delete</button >
+      <button onClick={deleteArticleHandler}>delete</button>
       <div style={{ border: 'solid black 1px', padding: '1rem' }}>
         <h1>title: {article!.title}</h1>
         <p>body: {article!.body}</p>
-        <button onClick={() => addReaction(articleId!, Reaction.ThumbsUp)}>👍 {article?.reactions[Reaction.ThumbsUp] ?? 0}</button>
-        <button onClick={() => addReaction(articleId!, Reaction.ThumbsDown)}>👎 {article?.reactions[Reaction.ThumbsDown] ?? 0}</button>
+        <button onClick={() => addReaction(articleId!, Reaction.ThumbsUp)}>
+          👍 {article?.reactions[Reaction.ThumbsUp] ?? 0}
+        </button>
+        <button onClick={() => addReaction(articleId!, Reaction.ThumbsDown)}>
+          👎 {article?.reactions[Reaction.ThumbsDown] ?? 0}
+        </button>
       </div>
     </>
   )
