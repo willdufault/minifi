@@ -1,7 +1,6 @@
 import axios, { AxiosResponse } from 'axios'
 import * as ApiResponses from '../types/ApiResponses.ts'
 import { Article } from '../types/Article.ts'
-import { Reaction } from '../types/Reaction.ts'
 
 /**
  * Fetches list of articles from database.
@@ -9,11 +8,11 @@ import { Reaction } from '../types/Reaction.ts'
  */
 export async function getArticles(): Promise<Article[] | null> {
   try {
-    const response: AxiosResponse<ApiResponses.GetArticlesResponse> = await axios.get('/api/getArticles')
+    const response: AxiosResponse<ApiResponses.GetArticlesResponse> =
+      await axios.get('/api/getArticles')
     const data: ApiResponses.GetArticlesResponse = response.data
     return data.body.articles
-  }
-  catch (error) {
+  } catch (error) {
     console.log(error)
     return null
   }
@@ -26,11 +25,12 @@ export async function getArticles(): Promise<Article[] | null> {
  */
 export async function getArticle(articleId: string): Promise<Article | null> {
   try {
-    const response = await axios.get('/api/getArticle', { params: { articleId } })
+    const response = await axios.get('/api/getArticle', {
+      params: { articleId },
+    })
     const data = response.data
     return data.body.article
-  }
-  catch (error) {
+  } catch (error) {
     console.log(error)
     return null
   }
@@ -45,8 +45,7 @@ export async function deleteArticle(articleId: string): Promise<boolean> {
   try {
     await axios.post('/api/deleteArticle', { articleId })
     return true
-  }
-  catch (error) {
+  } catch (error) {
     console.log(error)
     return false
   }
@@ -58,16 +57,16 @@ export async function deleteArticle(articleId: string): Promise<boolean> {
  * @param body The body of the article.
  * @returns The article.
  */
-export async function createArticle(title: string, body: string): Promise<Article | null> {
+export async function createArticle(
+  title: string,
+  body: string
+): Promise<Article | null> {
   try {
-    const response: AxiosResponse<ApiResponses.CreateArticleResponse> = await axios.post(
-      '/api/createArticle',
-      { title, body }
-    )
+    const response: AxiosResponse<ApiResponses.CreateArticleResponse> =
+      await axios.post('/api/createArticle', { title, body })
     const data: ApiResponses.CreateArticleResponse = response.data
     return data.body.article
-  }
-  catch (error) {
+  } catch (error) {
     console.log(error)
     return null
   }
@@ -80,39 +79,38 @@ export async function createArticle(title: string, body: string): Promise<Articl
  * @param body The body of the article.
  * @returns The article.
  */
-export async function updateArticle(articleId: string, title: string, body: string): Promise<Article | null> {
+export async function updateArticle(
+  articleId: string,
+  title: string,
+  body: string
+): Promise<Article | null> {
   try {
-    const response: AxiosResponse<ApiResponses.CreateArticleResponse> = await axios.post(
-      '/api/updateArticle',
-      { articleId, title, body }
-    )
+    const response: AxiosResponse<ApiResponses.CreateArticleResponse> =
+      await axios.post('/api/updateArticle', { articleId, title, body })
     const data: ApiResponses.CreateArticleResponse = response.data
     return data.body.article
-  }
-  catch (error) {
+  } catch (error) {
     console.log(error)
     return null
   }
 }
 
+// TODO: tie reactions to user, persistent + block >1 reactions
 /**
- * TODO: after users added
- * @param articleId 
- * @param reaction 
+ * Increment the count for the given reaction and article.
+ * @param articleId
+ * @param reaction
  */
-export async function addReaction(articleId: string, reaction: Reaction): Promise<void> {
-  // TODO: rework to send actual emojis? make sure client can't mess with it tho... maybe better to keep as nums idk
-  // TODO: tie reactions to user, persistent + block >1 reactions
+export async function addReaction(
+  articleId: string,
+  reaction: string
+): Promise<void> {
   try {
-    const response = await axios.post('/api/addReaction', { articleId, reaction })
-    const data = response.data
-    // TODO
-    data
-  }
-  catch (error) {
+    await axios.post('/api/addReaction', {
+      articleId,
+      reaction,
+    })
+  } catch (error) {
     console.log(error)
-    // TODO
-    error
   }
 }
-

@@ -1,12 +1,12 @@
 import { Article } from "./Article"
 
-export interface GetArticlesResponse {
+export type GetArticlesResponse = {
   body: {
     articles: Article[]
   }
 }
 
-export interface CreateArticleResponse {
+export type CreateArticleResponse = {
   body: {
     article: Article
   }

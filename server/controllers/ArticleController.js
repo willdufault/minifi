@@ -53,6 +53,7 @@ const createArticle = async (request, response) => {
   try {
     const realm = request.realm
     const body = request.body
+    console.log(body)
     const articleTitle = body.title
     const articleBody = body.body
 
@@ -82,8 +83,15 @@ const createArticle = async (request, response) => {
     let article
     realm.write(() => {
       article = realm.create(articleModel, {
-        articleTitle: articleTitle,
+        title: articleTitle,
         body: articleBody,
+        reactions: {
+          '👍': 0,
+          '❤️': 0,
+          '🔥': 0,
+          '😂': 0,
+          '🐐': 0,
+        },
       })
     })
     response.status(200).send({ body: { article } })
@@ -169,7 +177,7 @@ const deleteArticle = async (request, response) => {
 }
 
 /**
- * TODO - reimplement?
+ * Increment the count for a reaction on an article in the database.
  * @param {Express.Request} request
  * @param {Express.Response} response
  */
@@ -177,6 +185,15 @@ const addReaction = async (request, response) => {
   try {
     const realm = request.realm
     const { articleId, reaction } = request.body
+
+    if (!CONSTANTS.REACTIONS.includes(reaction)) {
+      response.status(400).send({
+        body: {
+          message: `Reaction must be one of [${CONSTANTS.REACTIONS}].`,
+        },
+      })
+      return
+    }
 
     let article
     realm.write(() => {

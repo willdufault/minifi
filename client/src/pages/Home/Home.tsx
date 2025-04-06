@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { getArticles } from '../../services/articleService.ts'
 import { Article } from '../../types/Article.ts'
-import { Reaction } from '../../types/Reaction.ts'
+// import { Reactions } from '../../types/Reactions.ts'
 
 function Home() {
   const origin: string = window.location.origin
@@ -38,8 +38,11 @@ function Home() {
             <a href={`${origin}/read?id=${article._id}`}>link</a>
             <h1>{article.title}</h1>
             <p>{article.body}</p>
-            <p>👍 {article?.reactions[Reaction.ThumbsUp]}</p>
-            <p>👎 {article?.reactions[Reaction.ThumbsDown]}</p>
+            {Object.entries(article.reactions).map(([reaction, count]) => (
+              <p key={reaction}>
+                {reaction} {count}
+              </p>
+            ))}
           </div>
         </div>
       ))}

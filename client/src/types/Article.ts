@@ -1,8 +1,8 @@
-import { Reaction } from "./Reaction"
+  import { Reactions } from './Reactions'
 
-export interface Article {
-  _id: string,
-  title: string,
-  body: string
-  reactions: Record<Reaction, number>
-}
+  export type Article = {
+    _id: string
+    title: string
+    body: string
+    reactions: Reactions
+  }

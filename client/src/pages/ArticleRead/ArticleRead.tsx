@@ -1,4 +1,3 @@
-import NotFound from '../NotFound/NotFound.tsx'
 import { useEffect, useState } from 'react'
 import {
   Location,
@@ -6,13 +5,15 @@ import {
   useLocation,
   useNavigate,
 } from 'react-router'
+import CONSTANTS from '../../constants.ts'
 import {
-  getArticle,
-  deleteArticle,
   addReaction,
+  deleteArticle,
+  getArticle,
 } from '../../services/articleService.ts'
 import { Article } from '../../types/Article.ts'
-import { Reaction } from '../../types/Reaction.ts'
+import { Reactions } from '../../types/Reactions.ts'
+import NotFound from '../NotFound/NotFound.tsx'
 
 function ArticleRead() {
   const origin: string = window.location.origin
@@ -47,7 +48,7 @@ function ArticleRead() {
   /**
    * Load the article on the screen.
    */
-  const loadArticle = async (articleId: string | null) => {
+  const loadArticle = async (articleId: string | null): Promise<void> => {
     if (articleId === null) {
       setNotFound(true)
     } else {
@@ -59,6 +60,26 @@ function ArticleRead() {
       }
     }
     setLoading(false)
+  }
+
+  /**
+   * Add a reaction to the current article in the database.
+   * @param reaction Reaction emoji.
+   */
+  const addReactionHandler = (reaction: string): void => {
+    if (!CONSTANTS.REACTIONS.includes(reaction)) {
+      alert(`Reaction must be one of [${CONSTANTS.REACTIONS}].`)
+      return
+    }
+
+    setArticle({
+      ...article!,
+      reactions: {
+        ...article!.reactions,
+        [reaction]: article!.reactions[reaction as keyof Reactions] + 1,
+      },
+    })
+    addReaction(articleId!, reaction)
   }
 
   useEffect(() => {
@@ -84,12 +105,11 @@ function ArticleRead() {
       <div style={{ border: 'solid black 1px', padding: '1rem' }}>
         <h1>title: {article!.title}</h1>
         <p>body: {article!.body}</p>
-        <button onClick={() => addReaction(articleId!, Reaction.ThumbsUp)}>
-          👍 {article?.reactions[Reaction.ThumbsUp] ?? 0}
-        </button>
-        <button onClick={() => addReaction(articleId!, Reaction.ThumbsDown)}>
-          👎 {article?.reactions[Reaction.ThumbsDown] ?? 0}
-        </button>
+        {Object.entries(article!.reactions).map(([reaction, count]) => (
+          <button key={reaction} onClick={() => addReactionHandler(reaction)}>
+            {reaction} {count}
+          </button>
+        ))}
       </div>
     </>
   )
