@@ -1,21 +1,24 @@
-const articleModel = require('../models/Article.js')
+const Article = require('../models/Article.js')
 const CONSTANTS = require('../constants.js')
 const Realm = require('realm')
 
+// TODO: Article (or any param) null checks
+
 /**
  * Gets an article from the database.
- * @param {Express.Request} request
- * @param {Express.Response} response
+ * @param {Express.Request} request Express request.
+ * @param {Express.Response} response Express response.
  */
 const getArticle = async (request, response) => {
   try {
     const realm = request.realm
+    const { articleId } = request.query
 
     response.status(200).send({
       body: {
         article: realm.objectForPrimaryKey(
           'Article',
-          new Realm.BSON.ObjectId(request.query.articleId)
+          new Realm.BSON.ObjectId(articleId)
         ),
       },
     })
@@ -27,8 +30,8 @@ const getArticle = async (request, response) => {
 
 /**
  * Gets all articles from the database.
- * @param {Express.Request} request
- * @param {Express.Response} response
+ * @param {Express.Request} request Express request.
+ * @param {Express.Response} response Express response.
  */
 const getArticles = async (request, response) => {
   try {
@@ -43,24 +46,17 @@ const getArticles = async (request, response) => {
   }
 }
 
-// TODO: init with 0 for all reactions? depends on implementation... come back to this
 /**
- * Creates an article in the database.
- * @param {Express.Request} request
- * @param {Express.Response} response
+ * Create an article.
+ * @param {Express.Request} request Express request.
+ * @param {Express.Response} response Express response.
  */
 const createArticle = async (request, response) => {
   try {
     const realm = request.realm
-    const body = request.body
-    console.log(body)
-    const articleTitle = body.title
-    const articleBody = body.body
+    const { title, body } = request.body
 
-    if (
-      articleTitle.length == 0 ||
-      articleTitle.length > CONSTANTS.TITLE_MAX_LENGTH
-    ) {
+    if (title.length == 0 || title.length > CONSTANTS.TITLE_MAX_LENGTH) {
       response.status(400).send({
         body: {
           message: `Title must be between 1 and ${CONSTANTS.TITLE_MAX_LENGTH} characters.`,
@@ -68,10 +64,7 @@ const createArticle = async (request, response) => {
       })
       return
     }
-    if (
-      articleBody.length == 0 ||
-      articleBody.length > CONSTANTS.BODY_MAX_LENGTH
-    ) {
+    if (body.length == 0 || body.length > CONSTANTS.BODY_MAX_LENGTH) {
       response.status(400).send({
         body: {
           message: `Body must be between 1 and ${CONSTANTS.BODY_MAX_LENGTH} characters.`,
@@ -82,16 +75,12 @@ const createArticle = async (request, response) => {
 
     let article
     realm.write(() => {
-      article = realm.create(articleModel, {
-        title: articleTitle,
-        body: articleBody,
-        reactions: {
-          '👍': 0,
-          '❤️': 0,
-          '🔥': 0,
-          '😂': 0,
-          '🐐': 0,
-        },
+      article = realm.create(Article, {
+        title,
+        body,
+        reactions: Object.fromEntries(
+          CONSTANTS.REACTIONS.map((reaction) => [reaction, 0])
+        ),
       })
     })
     response.status(200).send({ body: { article } })
@@ -102,21 +91,16 @@ const createArticle = async (request, response) => {
 }
 
 /**
- * Updates an article in the database.
- * @param {Express.Request} request
- * @param {Express.Response} response
+ * Update an article.
+ * @param {Express.Request} request Express request.
+ * @param {Express.Response} response Express response.
  */
 const updateArticle = async (request, response) => {
   try {
     const realm = request.realm
-    const body = request.body
-    const articleTitle = body.title
-    const articleBody = body.body
+    const { title, body, articleId } = request.body
 
-    if (
-      articleTitle.length == 0 ||
-      articleTitle.length > CONSTANTS.TITLE_MAX_LENGTH
-    ) {
+    if (title.length == 0 || title.length > CONSTANTS.TITLE_MAX_LENGTH) {
       response.status(400).send({
         body: {
           message: `Title must be between 1 and ${CONSTANTS.TITLE_MAX_LENGTH} characters.`,
@@ -124,10 +108,7 @@ const updateArticle = async (request, response) => {
       })
       return
     }
-    if (
-      articleBody.length == 0 ||
-      articleBody.length > CONSTANTS.BODY_MAX_LENGTH
-    ) {
+    if (body.length == 0 || body.length > CONSTANTS.BODY_MAX_LENGTH) {
       response.status(400).send({
         body: {
           message: `Body must be between 1 and ${CONSTANTS.BODY_MAX_LENGTH} characters.`,
@@ -136,14 +117,12 @@ const updateArticle = async (request, response) => {
       return
     }
 
-    let article
+    let article = realm.objectForPrimaryKey(
+      'Article',
+      new Realm.BSON.ObjectId(articleId)
+    )
     realm.write(() => {
-      article = realm.objectForPrimaryKey(
-        'Article',
-        new Realm.BSON.ObjectId(body.articleId)
-      )
-      article.title = articleTitle
-      article.body = articleBody
+      title, body
     })
     response.status(200).send({ body: { article } })
   } catch (error) {
@@ -153,21 +132,21 @@ const updateArticle = async (request, response) => {
 }
 
 /**
- * Deletes an article from the database.
- * @param {Express.Request} request
- * @param {Express.Response} response
+ * Delete an article from the database.
+ * @param {Express.Request} request Express request.
+ * @param {Express.Response} response Express response.
  */
 const deleteArticle = async (request, response) => {
   try {
     const realm = request.realm
+    const { articleId } = request.body
 
+    let article = realm.objectForPrimaryKey(
+      'Article',
+      new Realm.BSON.ObjectId(articleId)
+    )
     realm.write(() => {
-      realm.delete(
-        realm.objectForPrimaryKey(
-          'Article',
-          new Realm.BSON.ObjectId(request.body.articleId)
-        )
-      )
+      realm.delete(article)
     })
     response.status(200).send()
   } catch (error) {
@@ -177,14 +156,16 @@ const deleteArticle = async (request, response) => {
 }
 
 /**
- * Increment the count for a reaction on an article in the database.
- * @param {Express.Request} request
- * @param {Express.Response} response
+ * Increment the count for a reaction on an article.
+ * @param {Express.Request} request Express request.
+ * @param {Express.Response} response Express response.
  */
 const addReaction = async (request, response) => {
   try {
     const realm = request.realm
     const { articleId, reaction } = request.body
+
+    // TODO: article null checks
 
     if (!CONSTANTS.REACTIONS.includes(reaction)) {
       response.status(400).send({
@@ -195,16 +176,12 @@ const addReaction = async (request, response) => {
       return
     }
 
-    let article
+    let article = realm.objectForPrimaryKey(
+      'Article',
+      Realm.BSON.ObjectId(articleId)
+    )
     realm.write(() => {
-      article = realm.objectForPrimaryKey(
-        'Article',
-        Realm.BSON.ObjectId(articleId)
-      )
-      if (article != null) {
-        console.log(article.reactions[reaction])
-        article.reactions[reaction] = (article.reactions[reaction] || 0) + 1
-      }
+      article.reactions[reaction] = article.reactions[reaction] + 1
     })
 
     response.status(200).send({ body: { article } })

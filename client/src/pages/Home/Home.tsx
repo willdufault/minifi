@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { getArticles } from '../../services/articleService.ts'
+import { getArticles } from '../../services/ArticleService.ts'
 import { Article } from '../../types/Article.ts'
 // import { Reactions } from '../../types/Reactions.ts'
 

@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from 'axios'
-import * as ApiResponses from '../types/ApiResponses.ts'
 import { Article } from '../types/Article.ts'
+import * as ApiResponses from '../types/ArticleApiResponses.ts'
 
 /**
  * Fetches list of articles from database.

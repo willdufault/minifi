@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react'
 import { NavigateFunction, useNavigate } from 'react-router'
 import CONSTANTS from '../../constants'
-import { createArticle } from '../../services/articleService'
+import { createArticle } from '../../services/ArticleService'
 import { Article } from '../../types/Article'
 
 function ArticleWrite() {

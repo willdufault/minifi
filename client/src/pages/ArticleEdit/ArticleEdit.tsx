@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { NavigateFunction, useNavigate } from 'react-router'
 import CONSTANTS from '../../constants'
-import { getArticle, updateArticle } from '../../services/articleService'
+import { getArticle, updateArticle } from '../../services/ArticleService'
 import { Article } from '../../types/Article'
 import NotFound from '../NotFound/NotFound'
 

@@ -1,7 +1,8 @@
 const express = require('express')
 const path = require('path')
-const articleController = require('./controllers/ArticleController.js')
-const realmController = require('./controllers/RealmController.js')
+const ArticleController = require('./controllers/ArticleController.js')
+const CommentController = require('./controllers/CommentController.js')
+const RealmController = require('./controllers/RealmController.js')
 
 async function init() {
   const app = express()
@@ -13,32 +14,36 @@ async function init() {
     next()
   })
 
-  const realm = await realmController.getRealm()
+  const realm = await RealmController.getRealm()
 
   // TODO: you can see api paths from the browser, need to fix this
   // ? cors? auth token?
   app.get('/api/getArticle', async (request, response) => {
-    await articleController.getArticle(request, response)
+    await ArticleController.getArticle(request, response)
   })
 
   app.get('/api/getArticles', async (request, response) => {
-    await articleController.getArticles(request, response)
+    await ArticleController.getArticles(request, response)
   })
 
   app.post('/api/createArticle', async (request, response) => {
-    await articleController.createArticle(request, response)
+    await ArticleController.createArticle(request, response)
   })
 
   app.post('/api/updateArticle', async (request, response) => {
-    await articleController.updateArticle(request, response)
+    await ArticleController.updateArticle(request, response)
   })
 
   app.post('/api/deleteArticle', async (request, response) => {
-    await articleController.deleteArticle(request, response)
+    await ArticleController.deleteArticle(request, response)
   })
 
   app.post('/api/addReaction', async (request, response) => {
-    await articleController.addReaction(request, response)
+    await ArticleController.addReaction(request, response)
+  })
+
+  app.post('/api/addComment', async (request, response) => {
+    await CommentController.addComment(request, response)
   })
 
   app.get('*', (request, response, next) => {

@@ -10,8 +10,10 @@ import {
   addReaction,
   deleteArticle,
   getArticle,
-} from '../../services/articleService.ts'
+} from '../../services/ArticleService.ts'
+import { addComment } from '../../services/CommentService.ts'
 import { Article } from '../../types/Article.ts'
+import { Comment } from '../../types/Comment.ts'
 import { Reactions } from '../../types/Reactions.ts'
 import NotFound from '../NotFound/NotFound.tsx'
 
@@ -111,6 +113,16 @@ function ArticleRead() {
           </button>
         ))}
       </div>
+      <button onClick={() => addComment(articleId!, 'comment body test')}>
+        add comment
+      </button>
+      <br />
+      {article!.comments.map((comment: Comment, index: number) => (
+        <div key={index} style={{ border: 'solid red 1px', padding: '1rem' }}>
+          <p>{comment.body}</p>
+          <button>{comment.likes}</button>
+        </div>
+      ))}
     </>
   )
 }
