@@ -14,7 +14,14 @@ const addComment = async (request, response) => {
     const realm = request.realm
     const { articleId, text } = request.body
 
-    // TODO: 2nd length check
+    if (text.length == 0 || text.length > CONSTANTS.COMMENT_MAX_LENGTH) {
+      response.status(400).send({
+        body: {
+          message: `Comment must be between 1 and ${CONSTANTS.COMMENT_MAX_LENGTH} characters.`,
+        },
+      })
+      return
+    }
 
     let article = realm.objectForPrimaryKey(
       'Article',
@@ -40,7 +47,7 @@ const addComment = async (request, response) => {
  * @param {Express.Request} request Express request.
  * @param {Express.Response} response Express response.
  */
-const addLike = async (request, response) => {
+const addCommentLike = async (request, response) => {
   try {
     const realm = request.realm
     const { commentId } = request.body
@@ -52,10 +59,10 @@ const addLike = async (request, response) => {
       Realm.BSON.ObjectId(commentId)
     )
     realm.write(() => {
-      comment.likes +=  1
+      comment.likes += 1
     })
 
-    response.status(200).send({ body: { article } })
+    response.status(200).send({ body: { comment } })
   } catch (error) {
     console.log(error)
     response.status(400).send(error)
@@ -64,5 +71,5 @@ const addLike = async (request, response) => {
 
 module.exports = {
   addComment,
-  addLike,
+  addCommentLike,
 }

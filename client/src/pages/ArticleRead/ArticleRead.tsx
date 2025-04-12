@@ -5,16 +5,16 @@ import {
   useLocation,
   useNavigate,
 } from 'react-router'
+import Comment from '../../components/Comment/Comment.tsx'
 import CONSTANTS from '../../constants.ts'
 import {
   addReaction,
   deleteArticle,
   getArticle,
 } from '../../services/ArticleService.ts'
-// import { addComment } from '../../services/CommentService.ts'
-import { addComment, addLike } from '../../services/CommentService.ts'
+import { addComment } from '../../services/CommentService.ts'
 import { Article } from '../../types/Article.ts'
-import { Comment } from '../../types/Comment.ts'
+import { Comment as CommentType } from '../../types/Comment.ts'
 import { Reactions } from '../../types/Reactions.ts'
 import NotFound from '../NotFound/NotFound.tsx'
 
@@ -76,23 +76,29 @@ function ArticleRead() {
       return
     }
 
-    const comment: Comment | null = await addComment(
+    const comment: CommentType | null = await addComment(
       articleId!,
       commentInputElement.current!.value
     )
-    comment
+    if (comment !== null) {
+      setArticle({
+        ...article!,
+        comments: [comment, ...article!.comments],
+      })
+    }
   }
 
   /**
    * Add a reaction to the current article.
    * @param reaction Reaction emoji.
    */
-  const submitReaction = (reaction: string): void => {
+  const submitReaction = async (reaction: string): Promise<void> => {
     if (!CONSTANTS.REACTIONS.includes(reaction)) {
       alert(`Reaction must be one of [${CONSTANTS.REACTIONS}].`)
       return
     }
 
+    await addReaction(articleId!, reaction)
     setArticle({
       ...article!,
       reactions: {
@@ -100,23 +106,6 @@ function ArticleRead() {
         [reaction]: article!.reactions[reaction as keyof Reactions] + 1,
       },
     })
-    addReaction(articleId!, reaction)
-  }
-
-  /**
-   * Add a like to a comment.
-   * @param reaction Reaction emoji.
-   */
-  const submitLike = (commentId: string): void => {
-    // TODO: make reactive
-    // setArticle({
-    //   ...article!,
-    //   reactions: {
-    //     ...article!.reactions,
-    //     [reaction]: article!.reactions[reaction as keyof Reactions] + 1,
-    //   },
-    // })
-    addLike(commentId)
   }
 
   useEffect(() => {
@@ -162,13 +151,8 @@ function ArticleRead() {
         <button onClick={submitComment}>submit</button>
       </div>
       <br />
-      {article!.comments.map((comment: Comment, index: number) => (
-        <div key={index} style={{ border: 'solid red 1px', padding: '1rem' }}>
-          <p>{comment.body}</p>
-          <button onClick={() => submitLike(comment._id)}>
-            👍 {comment.likes}
-          </button>
-        </div>
+      {article!.comments.map((comment: CommentType, index: number) => (
+        <Comment key={index} data={comment} />
       ))}
     </>
   )

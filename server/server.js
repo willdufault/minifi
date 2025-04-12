@@ -2,6 +2,7 @@ const express = require('express')
 const path = require('path')
 const ArticleController = require('./controllers/ArticleController.js')
 const CommentController = require('./controllers/CommentController.js')
+const ReplyController = require('./controllers/ReplyController.js')
 const RealmController = require('./controllers/RealmController.js')
 
 async function init() {
@@ -46,8 +47,16 @@ async function init() {
     await CommentController.addComment(request, response)
   })
 
-  app.post('/api/addLike', async (request, response) => {
-    await CommentController.addLike(request, response)
+  app.post('/api/addCommentLike', async (request, response) => {
+    await CommentController.addCommentLike(request, response)
+  })
+
+  app.post('/api/addReply', async (request, response) => {
+    await ReplyController.addReply(request, response)
+  })
+
+  app.post('/api/addReplyLike', async (request, response) => {
+    await ReplyController.addReplyLike(request, response)
   })
 
   app.get('*', (request, response, next) => {

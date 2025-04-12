@@ -5,7 +5,7 @@ class Comment extends Realm.Object {
     name: 'Comment',
     properties: {
       _id: { type: 'objectId', default: () => new Realm.BSON.ObjectId() },
-      body: 'string',
+      text: 'string',
       likes: 'int',
       replies: 'Reply[]'
     },

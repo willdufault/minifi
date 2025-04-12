@@ -5,7 +5,7 @@ class Reply extends Realm.Object {
     name: 'Reply',
     properties: {
       _id: { type: 'objectId', default: () => new Realm.BSON.ObjectId() },
-      body: 'string',
+      text: 'string',
       likes: 'int',
     },
     primaryKey: '_id',

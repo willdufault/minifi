@@ -29,9 +29,9 @@ export async function addComment(
  * @param articleId
  * @param reaction
  */
-export async function addLike(commentId: string): Promise<void> {
+export async function addCommentLike(commentId: string): Promise<void> {
   try {
-    await axios.post('/api/addLike', {
+    await axios.post('/api/addCommentLike', {
       commentId,
     })
   } catch (error) {

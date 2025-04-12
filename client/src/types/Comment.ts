@@ -1,5 +1,8 @@
+import { Reply } from './Reply'
+
 export type Comment = {
   _id: string
-  body: string
+  text: string
   likes: number
+  replies: Reply[]
 }
