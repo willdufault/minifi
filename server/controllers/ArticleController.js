@@ -181,7 +181,7 @@ const addReaction = async (request, response) => {
       Realm.BSON.ObjectId(articleId)
     )
     realm.write(() => {
-      article.reactions[reaction] = article.reactions[reaction] + 1
+      article.reactions[reaction] += 1
     })
 
     response.status(200).send({ body: { article } })

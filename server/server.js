@@ -46,6 +46,10 @@ async function init() {
     await CommentController.addComment(request, response)
   })
 
+  app.post('/api/addLike', async (request, response) => {
+    await CommentController.addLike(request, response)
+  })
+
   app.get('*', (request, response, next) => {
     if (request.path.startsWith('/api')) {
       return next()

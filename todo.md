@@ -1,6 +1,5 @@
 ### Current
 
-- add comments
 
 ---
 
@@ -8,7 +7,7 @@
 
 - like comments
 - add replies
-- like replies
+- ~~like replies~~ (only likes on comments)
 - add comment length limit
 - add reply length limit
 
@@ -35,6 +34,7 @@
 - ui
 - add jsdoc comments, clean up everything (client + server)
 - remove "in the database?" comments
+- remove "the given ..." comments
 - add types to inline tsx (map function vars, etc.)
 - set up glitch.me
 - buy domain? (TBD, maybe willdufault.dev/...)

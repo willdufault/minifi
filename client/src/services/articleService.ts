@@ -52,7 +52,7 @@ export async function deleteArticle(articleId: string): Promise<boolean> {
 }
 
 /**
- * Create an article in the database.
+ * Create an article.
  * @param title The title of the article.
  * @param body The body of the article.
  * @returns The article.
@@ -73,7 +73,7 @@ export async function createArticle(
 }
 
 /**
- * Create an article in the database.
+ * Update the article.
  * @param articleId The article ID.
  * @param title The title of the article.
  * @param body The body of the article.

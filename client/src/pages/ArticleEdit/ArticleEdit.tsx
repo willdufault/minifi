@@ -36,7 +36,7 @@ function ArticleWrite() {
   }
 
   /**
-   * Update the article in the database.
+   * Update the article.
    */
   async function updateArticleHandler(articleId: string): Promise<void> {
     if (titleLength == 0 || titleLength > CONSTANTS.TITLE_MAX_LENGTH) {

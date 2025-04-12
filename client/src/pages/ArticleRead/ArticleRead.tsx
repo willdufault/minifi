@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import {
   Location,
   NavigateFunction,
@@ -11,7 +11,8 @@ import {
   deleteArticle,
   getArticle,
 } from '../../services/ArticleService.ts'
-import { addComment } from '../../services/CommentService.ts'
+// import { addComment } from '../../services/CommentService.ts'
+import { addComment, addLike } from '../../services/CommentService.ts'
 import { Article } from '../../types/Article.ts'
 import { Comment } from '../../types/Comment.ts'
 import { Reactions } from '../../types/Reactions.ts'
@@ -25,6 +26,8 @@ function ArticleRead() {
   const [article, setArticle] = useState<Article | null>(null)
   const [loading, setLoading] = useState<boolean>(true)
   const [notFound, setNotFound] = useState<boolean>(false)
+  const commentInputElement = useRef<HTMLTextAreaElement>(null)
+  const [commentLength, setCommentLength] = useState<number>(0)
 
   /**
    * Get the article ID from the query parameters.
@@ -65,10 +68,26 @@ function ArticleRead() {
   }
 
   /**
-   * Add a reaction to the current article in the database.
+   * Submit the comment to the current article.
+   */
+  async function submitComment(): Promise<void> {
+    if (commentLength == 0 || commentLength > CONSTANTS.COMMENT_MAX_LENGTH) {
+      alert(`Comment between 1 and ${CONSTANTS.COMMENT_MAX_LENGTH} characters.`)
+      return
+    }
+
+    const comment: Comment | null = await addComment(
+      articleId!,
+      commentInputElement.current!.value
+    )
+    comment
+  }
+
+  /**
+   * Add a reaction to the current article.
    * @param reaction Reaction emoji.
    */
-  const addReactionHandler = (reaction: string): void => {
+  const submitReaction = (reaction: string): void => {
     if (!CONSTANTS.REACTIONS.includes(reaction)) {
       alert(`Reaction must be one of [${CONSTANTS.REACTIONS}].`)
       return
@@ -82,6 +101,22 @@ function ArticleRead() {
       },
     })
     addReaction(articleId!, reaction)
+  }
+
+  /**
+   * Add a like to a comment.
+   * @param reaction Reaction emoji.
+   */
+  const submitLike = (commentId: string): void => {
+    // TODO: make reactive
+    // setArticle({
+    //   ...article!,
+    //   reactions: {
+    //     ...article!.reactions,
+    //     [reaction]: article!.reactions[reaction as keyof Reactions] + 1,
+    //   },
+    // })
+    addLike(commentId)
   }
 
   useEffect(() => {
@@ -108,19 +143,31 @@ function ArticleRead() {
         <h1>title: {article!.title}</h1>
         <p>body: {article!.body}</p>
         {Object.entries(article!.reactions).map(([reaction, count]) => (
-          <button key={reaction} onClick={() => addReactionHandler(reaction)}>
+          <button key={reaction} onClick={() => submitReaction(reaction)}>
             {reaction} {count}
           </button>
         ))}
       </div>
-      <button onClick={() => addComment(articleId!, 'comment body test')}>
-        add comment
-      </button>
+      <br />
+      <div style={{ border: 'solid green 1px', padding: '1rem' }}>
+        <label>comment</label>
+        <textarea
+          ref={commentInputElement}
+          onChange={(event) => setCommentLength(event.target.value.length)}
+        ></textarea>
+        <p>
+          {commentLength}/{CONSTANTS.COMMENT_MAX_LENGTH}
+        </p>
+        <br />
+        <button onClick={submitComment}>submit</button>
+      </div>
       <br />
       {article!.comments.map((comment: Comment, index: number) => (
         <div key={index} style={{ border: 'solid red 1px', padding: '1rem' }}>
           <p>{comment.body}</p>
-          <button>{comment.likes}</button>
+          <button onClick={() => submitLike(comment._id)}>
+            👍 {comment.likes}
+          </button>
         </div>
       ))}
     </>
