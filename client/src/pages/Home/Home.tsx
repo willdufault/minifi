@@ -32,8 +32,8 @@ function Home() {
       </div>
       <br />
       <h1>Articles:</h1>
-      {articles.map((article, index) => (
-        <Article key={index} article={article} />
+      {articles.map((article) => (
+        <Article key={article._id} article={article} />
       ))}
     </>
   )

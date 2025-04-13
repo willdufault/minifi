@@ -6,7 +6,7 @@ type Props = {
   data: ReplyType
 }
 
-function Comment({ data }: Props) {
+function Reply({ data }: Props) {
   const [likes, setLikes] = useState(data.likes)
 
   /**
@@ -20,7 +20,7 @@ function Comment({ data }: Props) {
 
   return (
     <>
-      <div style={{ border: 'solid green 1px', padding: '1rem' }}>
+      <div style={{ border: 'solid blue 1px', padding: '1rem' }}>
         <p>{data.text}</p>
         <button onClick={submitReplyLike}>👍 {likes}</button>
       </div>
@@ -28,4 +28,4 @@ function Comment({ data }: Props) {
   )
 }
 
-export default Comment
+export default Reply

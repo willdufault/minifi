@@ -68,7 +68,7 @@ function ArticleRead() {
   }
 
   /**
-   * Submit the comment to the current article.
+   * Submit a comment to the article.
    */
   async function submitComment(): Promise<void> {
     if (commentLength == 0 || commentLength > CONSTANTS.COMMENT_MAX_LENGTH) {
@@ -85,6 +85,8 @@ function ArticleRead() {
         ...article!,
         comments: [comment, ...article!.comments],
       })
+      commentInputElement.current!.value = ''
+      setCommentLength(0)
     }
   }
 
@@ -151,8 +153,8 @@ function ArticleRead() {
         <button onClick={submitComment}>submit</button>
       </div>
       <br />
-      {article!.comments.map((comment: CommentType, index: number) => (
-        <Comment key={index} data={comment} />
+      {article!.comments.map((comment: CommentType) => (
+        <Comment key={comment._id} data={comment} />
       ))}
     </>
   )

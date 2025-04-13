@@ -26,7 +26,7 @@ function Comment({ data }: Props) {
   }
 
   /**
-   * Submit the reply to the comment.
+   * Submit a reply to the comment.
    */
   async function submitReply(): Promise<void> {
     if (replyLength == 0 || replyLength > CONSTANTS.REPLY_MAX_LENGTH) {
@@ -38,11 +38,14 @@ function Comment({ data }: Props) {
       comment!._id,
       replyInputElement.current!.value
     )
+    console.log(reply)
     if (reply !== null) {
       setComment({
         ...comment,
         replies: [reply, ...comment.replies],
       })
+      replyInputElement.current!.value = ''
+      setReplyLength(0)
     }
   }
 
@@ -65,8 +68,8 @@ function Comment({ data }: Props) {
           <button onClick={submitReply}>submit</button>
         </div>
         <br />
-        {comment!.replies.map((reply: ReplyType, index: number) => (
-          <Reply key={index} data={reply} />
+        {comment!.replies.map((reply: ReplyType) => (
+          <Reply key={reply._id} data={reply} />
         ))}
       </div>
     </>
