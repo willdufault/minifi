@@ -1,12 +1,11 @@
 ### Current
 
-- cleanup, TODOs
+- add comment, reply edit
 
 ---
 
 ### Next
 
-- add comment, reply edit
 - delete comments, replies
 - delete comment = delete nested replies
 - delete article = delete nested comments
@@ -30,6 +29,7 @@
 - tie reactions to user
 - limit actions only if you're logged in
 - password hash + salt
+- fix api path access from browser
 - add jsdoc comments, clean up everything (client + server)
 - remove "in the database?" comments
 - remove "the given ..." comments
