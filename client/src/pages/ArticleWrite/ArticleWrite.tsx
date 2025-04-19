@@ -2,7 +2,7 @@ import { useRef, useState } from 'react'
 import { NavigateFunction, useNavigate } from 'react-router'
 import CONSTANTS from '../../constants'
 import { createArticle } from '../../services/ArticleService'
-import { Article } from '../../types/Article'
+import { Article as ArticleType } from '../../types/Article'
 
 function ArticleWrite() {
   const navigate: NavigateFunction = useNavigate()
@@ -21,7 +21,7 @@ function ArticleWrite() {
   }
 
   /**
-   * Submit the article to the database.
+   * Submit the article.
    */
   async function submitArticle(): Promise<void> {
     if (titleLength == 0 || titleLength > CONSTANTS.TITLE_MAX_LENGTH) {
@@ -37,7 +37,7 @@ function ArticleWrite() {
       return
     }
 
-    const article: Article | null = await createArticle(
+    const article: ArticleType | null = await createArticle(
       titleInputElement.current!.value,
       bodyInputElement.current!.value
     )

@@ -1,6 +1,7 @@
 const Realm = require('realm')
 const CONSTANTS = require('../constants.js')
 const Reply = require('../models/Reply.js')
+const Comment = require('../models/Comment.js')
 
 // TODO: Article (or any param) null checks
 /**
@@ -23,7 +24,7 @@ const addReply = async (request, response) => {
     }
 
     let comment = realm.objectForPrimaryKey(
-      'Comment',
+      Comment,
       new Realm.BSON.ObjectId(commentId)
     )
     let reply
@@ -53,12 +54,12 @@ const addReplyLike = async (request, response) => {
 
     // TODO: comment null checks
 
-    let reply = realm.objectForPrimaryKey('Reply', Realm.BSON.ObjectId(replyId))
+    let reply = realm.objectForPrimaryKey(Reply, Realm.BSON.ObjectId(replyId))
     realm.write(() => {
       reply.likes += 1
     })
 
-    response.status(200).send({ body: { reply } })
+    response.status(200).send()
   } catch (error) {
     console.log(error)
     response.status(400).send(error)

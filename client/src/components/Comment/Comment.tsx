@@ -11,18 +11,22 @@ type Props = {
 }
 
 function Comment({ data }: Props) {
-  const [comment, setComment] = useState(data)
+  const comment: CommentType = data
+
   const [likes, setLikes] = useState(comment.likes)
-  const replyInputElement = useRef<HTMLTextAreaElement>(null)
+  const [replies, setReplies] = useState(comment.replies)
   const [replyLength, setReplyLength] = useState<number>(0)
+  const replyInputElement = useRef<HTMLTextAreaElement>(null)
 
   /**
    * Add a like to a comment.
    */
   const submitCommentLike = async (): Promise<void> => {
     // TODO: account check
-    await addCommentLike(comment._id)
-    setLikes(likes + 1)
+    const added: boolean = await addCommentLike(comment._id)
+    if (added) {
+      setLikes(likes + 1)
+    }
   }
 
   /**
@@ -38,12 +42,8 @@ function Comment({ data }: Props) {
       comment!._id,
       replyInputElement.current!.value
     )
-    console.log(reply)
     if (reply !== null) {
-      setComment({
-        ...comment,
-        replies: [reply, ...comment.replies],
-      })
+      setReplies([reply, ...comment.replies])
       replyInputElement.current!.value = ''
       setReplyLength(0)
     }
@@ -68,7 +68,7 @@ function Comment({ data }: Props) {
           <button onClick={submitReply}>submit</button>
         </div>
         <br />
-        {comment!.replies.map((reply: ReplyType) => (
+        {replies.map((reply: ReplyType) => (
           <Reply key={reply._id} data={reply} />
         ))}
       </div>

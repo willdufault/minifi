@@ -1,12 +1,12 @@
 import axios, { AxiosResponse } from 'axios'
-import { Article } from '../types/Article.ts'
+import { Article as ArticleType } from '../types/Article.ts'
 import * as ApiResponses from '../types/ArticleApiResponses.ts'
 
 /**
- * Fetches list of articles from database.
+ * Get a list of all articles.
  * @returns The list of articles.
  */
-export async function getArticles(): Promise<Article[] | null> {
+export async function getArticles(): Promise<ArticleType[] | null> {
   try {
     const response: AxiosResponse<ApiResponses.GetArticlesResponse> =
       await axios.get('/api/getArticles')
@@ -19,16 +19,15 @@ export async function getArticles(): Promise<Article[] | null> {
 }
 
 /**
- * Fetch the article from the database with the given ID.
+ * Get an article.
  * @param articleId The article ID.
  * @returns The article.
  */
-export async function getArticle(articleId: string): Promise<Article | null> {
+export async function getArticle(articleId: string): Promise<ArticleType | null> {
   try {
-    const response = await axios.get('/api/getArticle', {
-      params: { articleId },
-    })
-    const data = response.data
+    const response: AxiosResponse<ApiResponses.GetArticleResponse> =
+      await axios.get('/api/getArticle', { params: { articleId } })
+    const data: ApiResponses.GetArticleResponse = response.data
     return data.body.article
   } catch (error) {
     console.log(error)
@@ -37,9 +36,9 @@ export async function getArticle(articleId: string): Promise<Article | null> {
 }
 
 /**
- * Deletes the article with the given ID from the database.
+ * Delete an article.
  * @param articleId The article ID.
- * @returns True if the delete was successful.
+ * @returns Whether the article was deleted.
  */
 export async function deleteArticle(articleId: string): Promise<boolean> {
   try {
@@ -53,14 +52,14 @@ export async function deleteArticle(articleId: string): Promise<boolean> {
 
 /**
  * Create an article.
- * @param title The title of the article.
- * @param body The body of the article.
+ * @param title The article title.
+ * @param body The article body.
  * @returns The article.
  */
 export async function createArticle(
   title: string,
   body: string
-): Promise<Article | null> {
+): Promise<ArticleType | null> {
   try {
     const response: AxiosResponse<ApiResponses.CreateArticleResponse> =
       await axios.post('/api/createArticle', { title, body })
@@ -73,17 +72,17 @@ export async function createArticle(
 }
 
 /**
- * Update the article.
+ * Update an article.
  * @param articleId The article ID.
- * @param title The title of the article.
- * @param body The body of the article.
+ * @param title The article title.
+ * @param body The article body.
  * @returns The article.
  */
 export async function updateArticle(
   articleId: string,
   title: string,
   body: string
-): Promise<Article | null> {
+): Promise<ArticleType | null> {
   try {
     const response: AxiosResponse<ApiResponses.CreateArticleResponse> =
       await axios.post('/api/updateArticle', { articleId, title, body })
@@ -97,20 +96,20 @@ export async function updateArticle(
 
 // TODO: tie reactions to user, persistent + block >1 reactions
 /**
- * Increment the count for the given reaction and article.
- * @param articleId
- * @param reaction
+ * Add a reaction to an article.
+ * @param articleId The article ID.
+ * @param reaction The reaction emoji.
+ * @returns Whether the reaction was added.
  */
 export async function addReaction(
   articleId: string,
   reaction: string
-): Promise<void> {
+): Promise<boolean> {
   try {
-    await axios.post('/api/addReaction', {
-      articleId,
-      reaction,
-    })
+    await axios.post('/api/addReaction', { articleId, reaction })
+    return true
   } catch (error) {
     console.log(error)
+    return false
   }
 }

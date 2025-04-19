@@ -5,7 +5,7 @@ const CONSTANTS = require('../constants.js')
 
 // TODO: Article (or any param) null checks
 /**
- * Add a comment to an article.
+ * Add a comment to an article in the database.
  * @param {Express.Request} request Express request.
  * @param {Express.Response} response Express response.
  */
@@ -24,7 +24,7 @@ const addComment = async (request, response) => {
     }
 
     let article = realm.objectForPrimaryKey(
-      'Article',
+      Article,
       new Realm.BSON.ObjectId(articleId)
     )
     let comment
@@ -55,14 +55,14 @@ const addCommentLike = async (request, response) => {
     // TODO: article null checks
 
     let comment = realm.objectForPrimaryKey(
-      'Comment',
+      Comment,
       Realm.BSON.ObjectId(commentId)
     )
     realm.write(() => {
       comment.likes += 1
     })
 
-    response.status(200).send({ body: { comment } })
+    response.status(200).send()
   } catch (error) {
     console.log(error)
     response.status(400).send(error)

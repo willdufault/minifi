@@ -13,21 +13,21 @@ import {
   getArticle,
 } from '../../services/ArticleService.ts'
 import { addComment } from '../../services/CommentService.ts'
-import { Article } from '../../types/Article.ts'
+import { Article as ArticleType } from '../../types/Article.ts'
 import { Comment as CommentType } from '../../types/Comment.ts'
-import { Reactions } from '../../types/Reactions.ts'
+import { Reactions as ReactionsType } from '../../types/Reactions.ts'
 import NotFound from '../NotFound/NotFound.tsx'
 
 function ArticleRead() {
   const origin: string = window.location.origin
-  const location: Location<any> = useLocation()
+  const location: Location = useLocation()
   const navigator: NavigateFunction = useNavigate()
 
-  const [article, setArticle] = useState<Article | null>(null)
+  const [article, setArticle] = useState<ArticleType | null>(null)
   const [loading, setLoading] = useState<boolean>(true)
   const [notFound, setNotFound] = useState<boolean>(false)
-  const commentInputElement = useRef<HTMLTextAreaElement>(null)
   const [commentLength, setCommentLength] = useState<number>(0)
+  const commentInputElement = useRef<HTMLTextAreaElement>(null)
 
   /**
    * Get the article ID from the query parameters.
@@ -41,7 +41,7 @@ function ArticleRead() {
   const articleId: string | null = getArticleId()
 
   /**
-   * Delete the article and return to the homepage.
+   * Delete the article and redirect the user to the homepage.
    */
   const deleteArticleHandler = async (): Promise<void> => {
     const deleted: boolean = await deleteArticle(articleId!)
@@ -52,6 +52,7 @@ function ArticleRead() {
 
   /**
    * Load the article on the screen.
+   * @param articleId The article ID.
    */
   const loadArticle = async (articleId: string | null): Promise<void> => {
     if (articleId === null) {
@@ -100,14 +101,16 @@ function ArticleRead() {
       return
     }
 
-    await addReaction(articleId!, reaction)
-    setArticle({
-      ...article!,
-      reactions: {
-        ...article!.reactions,
-        [reaction]: article!.reactions[reaction as keyof Reactions] + 1,
-      },
-    })
+    const added: boolean = await addReaction(articleId!, reaction)
+    if (added) {
+      setArticle({
+        ...article!,
+        reactions: {
+          ...article!.reactions,
+          [reaction]: article!.reactions[reaction as keyof ReactionsType] + 1,
+        },
+      })
+    }
   }
 
   useEffect(() => {

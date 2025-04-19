@@ -1,10 +1,11 @@
 import { Article as ArticleType } from '../../types/Article.ts'
 
 type Props = {
-  article: ArticleType
+  data: ArticleType
 }
 
-function Article({ article }: Props) {
+function Article({ data }: Props) {
+  const article: ArticleType = data
   return (
     <>
       <div style={{ border: 'solid black 1px', padding: '1rem' }}>

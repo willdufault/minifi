@@ -1,17 +1,17 @@
 import axios, { AxiosResponse } from 'axios'
-import { Reply } from '../types/Reply.ts'
+import { Reply as ReplyType } from '../types/Reply.ts'
 import * as ApiResponses from '../types/ReplyApiResponses.ts'
 
 /**
- * Add a reply to the comment.
+ * Add a reply to a comment.
  * @param commentId The comment ID.
- * @param text The content of the reply.
- * @returns
+ * @param text The reply text.
+ * @returns The reply.
  */
 export async function addReply(
   commentId: string,
   text: string
-): Promise<Reply | null> {
+): Promise<ReplyType | null> {
   try {
     const response: AxiosResponse<ApiResponses.AddReplyResponse> =
       await axios.post('/api/addReply', { commentId, text })
@@ -25,15 +25,15 @@ export async function addReply(
 
 // TODO: tie likes to user, persistent + block >1 likes
 /**
- * Increment the like count for a reply.
+ * Add a like to a reply.
  * @param replyId The reply ID.
  */
-export async function addReplyLike(replyId: string): Promise<void> {
+export async function addReplyLike(replyId: string): Promise<boolean> {
   try {
-    await axios.post('/api/addReplyLike', {
-      replyId,
-    })
+    await axios.post('/api/addReplyLike', { replyId })
+    return true
   } catch (error) {
     console.log(error)
+    return false
   }
 }

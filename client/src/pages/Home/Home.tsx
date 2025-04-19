@@ -33,7 +33,7 @@ function Home() {
       <br />
       <h1>Articles:</h1>
       {articles.map((article) => (
-        <Article key={article._id} article={article} />
+        <Article key={article._id} data={article} />
       ))}
     </>
   )

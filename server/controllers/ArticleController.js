@@ -2,26 +2,20 @@ const Article = require('../models/Article.js')
 const CONSTANTS = require('../constants.js')
 const Realm = require('realm')
 
-// TODO: Article (or any param) null checks
-
 /**
- * Gets an article from the database.
- * @param {Express.Request} request Express request.
- * @param {Express.Response} response Express response.
+ * Get an article from the database.
+ * @param {Express.Request} request The request.
+ * @param {Express.Response} response The response.
  */
 const getArticle = async (request, response) => {
   try {
     const realm = request.realm
     const { articleId } = request.query
-
-    response.status(200).send({
-      body: {
-        article: realm.objectForPrimaryKey(
-          'Article',
-          new Realm.BSON.ObjectId(articleId)
-        ),
-      },
-    })
+    const article = realm.objectForPrimaryKey(
+      Article,
+      new Realm.BSON.ObjectId(articleId)
+    )
+    response.status(200).send({ body: { article } })
   } catch (error) {
     console.log(error)
     response.status(400).send(error)
@@ -29,17 +23,15 @@ const getArticle = async (request, response) => {
 }
 
 /**
- * Gets all articles from the database.
- * @param {Express.Request} request Express request.
- * @param {Express.Response} response Express response.
+ * Get all articles from the database.
+ * @param {Express.Request} request The request.
+ * @param {Express.Response} response The response.
  */
 const getArticles = async (request, response) => {
   try {
     const realm = request.realm
-
-    response.status(200).send({
-      body: { articles: realm.objects('Article') },
-    })
+    const articles = realm.objects(Article)
+    response.status(200).send({ body: { articles } })
   } catch (error) {
     console.log(error)
     response.status(400).send(error)
@@ -47,9 +39,9 @@ const getArticles = async (request, response) => {
 }
 
 /**
- * Create an article.
- * @param {Express.Request} request Express request.
- * @param {Express.Response} response Express response.
+ * Create an article in the database.
+ * @param {Express.Request} request The request.
+ * @param {Express.Response} response The response.
  */
 const createArticle = async (request, response) => {
   try {
@@ -91,9 +83,9 @@ const createArticle = async (request, response) => {
 }
 
 /**
- * Update an article.
- * @param {Express.Request} request Express request.
- * @param {Express.Response} response Express response.
+ * Update an article in the database.
+ * @param {Express.Request} request The request.
+ * @param {Express.Response} response The response.
  */
 const updateArticle = async (request, response) => {
   try {
@@ -118,11 +110,12 @@ const updateArticle = async (request, response) => {
     }
 
     let article = realm.objectForPrimaryKey(
-      'Article',
+      Article,
       new Realm.BSON.ObjectId(articleId)
     )
     realm.write(() => {
-      title, body
+      article.title = title
+      article.body = body
     })
     response.status(200).send({ body: { article } })
   } catch (error) {
@@ -133,8 +126,8 @@ const updateArticle = async (request, response) => {
 
 /**
  * Delete an article from the database.
- * @param {Express.Request} request Express request.
- * @param {Express.Response} response Express response.
+ * @param {Express.Request} request The request.
+ * @param {Express.Response} response The response.
  */
 const deleteArticle = async (request, response) => {
   try {
@@ -142,7 +135,7 @@ const deleteArticle = async (request, response) => {
     const { articleId } = request.body
 
     let article = realm.objectForPrimaryKey(
-      'Article',
+      Article,
       new Realm.BSON.ObjectId(articleId)
     )
     realm.write(() => {
@@ -156,16 +149,14 @@ const deleteArticle = async (request, response) => {
 }
 
 /**
- * Increment the count for a reaction on an article.
- * @param {Express.Request} request Express request.
- * @param {Express.Response} response Express response.
+ * Increment the count for a reaction on an article in the database.
+ * @param {Express.Request} request The request.
+ * @param {Express.Response} response The response.
  */
 const addReaction = async (request, response) => {
   try {
     const realm = request.realm
     const { articleId, reaction } = request.body
-
-    // TODO: article null checks
 
     if (!CONSTANTS.REACTIONS.includes(reaction)) {
       response.status(400).send({
@@ -177,14 +168,14 @@ const addReaction = async (request, response) => {
     }
 
     let article = realm.objectForPrimaryKey(
-      'Article',
+      Article,
       Realm.BSON.ObjectId(articleId)
     )
     realm.write(() => {
       article.reactions[reaction] += 1
     })
 
-    response.status(200).send({ body: { article } })
+    response.status(200).send()
   } catch (error) {
     console.log(error)
     response.status(400).send(error)

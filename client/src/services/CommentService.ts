@@ -1,17 +1,17 @@
 import axios, { AxiosResponse } from 'axios'
-import { Comment } from '../types/Comment.ts'
+import { Comment as CommentType } from '../types/Comment.ts'
 import * as ApiResponses from '../types/CommentApiResponses.ts'
 
 /**
- * Add a comment to the given article.
+ * Add a comment to an article.
  * @param articleId The article ID.
- * @param text The content of the comment.
- * @returns
+ * @param text The comment text.
+ * @returns Whether the comment was added.
  */
 export async function addComment(
   articleId: string,
   text: string
-): Promise<Comment | null> {
+): Promise<CommentType | null> {
   try {
     const response: AxiosResponse<ApiResponses.AddCommentResponse> =
       await axios.post('/api/addComment', { articleId, text })
@@ -25,16 +25,16 @@ export async function addComment(
 
 // TODO: tie likes to user, persistent + block >1 likes
 /**
- * Increment the like count for a comment.
- * @param articleId
- * @param reaction
+ * Add a like to a comment.
+ * @param commentId The comment ID.
+ * @returns //TODO
  */
-export async function addCommentLike(commentId: string): Promise<void> {
+export async function addCommentLike(commentId: string): Promise<boolean> {
   try {
-    await axios.post('/api/addCommentLike', {
-      commentId,
-    })
+    await axios.post('/api/addCommentLike', { commentId })
+    return true
   } catch (error) {
     console.log(error)
+    return false
   }
 }

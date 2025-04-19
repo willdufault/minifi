@@ -2,13 +2,13 @@ import { useEffect, useRef, useState } from 'react'
 import { NavigateFunction, useNavigate } from 'react-router'
 import CONSTANTS from '../../constants'
 import { getArticle, updateArticle } from '../../services/ArticleService'
-import { Article } from '../../types/Article'
+import { Article as ArticleType } from '../../types/Article'
 import NotFound from '../NotFound/NotFound'
 
-function ArticleWrite() {
+function ArticleEdit() {
   const navigate: NavigateFunction = useNavigate()
 
-  const [article, setArticle] = useState<Article | null>(null)
+  const [article, setArticle] = useState<ArticleType | null>(null)
   const [loading, setLoading] = useState<boolean>(true)
   const [notFound, setNotFound] = useState<boolean>(false)
   const [titleLength, setTitleLength] = useState<number>(0)
@@ -28,8 +28,8 @@ function ArticleWrite() {
   const articleId: string | null = getArticleId()
 
   /**
-   * Redirects the user to the read view of their article.
-   * @param article The user's article.
+   * Redirect the user to the read view of the article.
+   * @param articleId The article ID.
    */
   function openArticleRead(articleId: string): void {
     navigate(`/read?id=${articleId}`)
@@ -37,6 +37,7 @@ function ArticleWrite() {
 
   /**
    * Update the article.
+   * @param articleId The article ID.
    */
   async function updateArticleHandler(articleId: string): Promise<void> {
     if (titleLength == 0 || titleLength > CONSTANTS.TITLE_MAX_LENGTH) {
@@ -52,20 +53,21 @@ function ArticleWrite() {
       return
     }
 
-    const article: Article | null = await updateArticle(
+    const article: ArticleType | null = await updateArticle(
       articleId,
       titleInputElement.current!.value,
       bodyInputElement.current!.value
     )
     if (article !== null) {
-      openArticleRead(article._id)
+      openArticleRead(articleId)
     }
   }
 
   /**
    * Load the article into the input fields.
+   * @param articleId The article ID.
    */
-  const loadArticle = async (articleId: string | null) => {
+  const loadArticle = async (articleId: string | null): Promise<void> => {
     if (articleId === null) {
       setNotFound(true)
     } else {
@@ -126,4 +128,4 @@ function ArticleWrite() {
   )
 }
 
-export default ArticleWrite
+export default ArticleEdit
