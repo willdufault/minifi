@@ -23,7 +23,7 @@ const addReply = async (request, response) => {
       return
     }
 
-    let comment = realm.objectForPrimaryKey(
+    const comment = realm.objectForPrimaryKey(
       Comment,
       new Realm.BSON.ObjectId(commentId)
     )
@@ -43,22 +43,19 @@ const addReply = async (request, response) => {
 }
 
 /**
- * Increment the like count for a reply.
+ * Add a like to a reply.
  * @param {Express.Request} request Express request.
  * @param {Express.Response} response Express response.
  */
 const addReplyLike = async (request, response) => {
   try {
+    // TODO: comment null checks
     const realm = request.realm
     const { replyId } = request.body
-
-    // TODO: comment null checks
-
-    let reply = realm.objectForPrimaryKey(Reply, Realm.BSON.ObjectId(replyId))
+    const reply = realm.objectForPrimaryKey(Reply, Realm.BSON.ObjectId(replyId))
     realm.write(() => {
       reply.likes += 1
     })
-
     response.status(200).send()
   } catch (error) {
     console.log(error)

@@ -39,7 +39,7 @@ const getArticles = async (request, response) => {
 }
 
 /**
- * Create an article in the database.
+ * Create an article.
  * @param {Express.Request} request The request.
  * @param {Express.Response} response The response.
  */
@@ -83,14 +83,14 @@ const createArticle = async (request, response) => {
 }
 
 /**
- * Update an article in the database.
+ * Update an article.
  * @param {Express.Request} request The request.
  * @param {Express.Response} response The response.
  */
 const updateArticle = async (request, response) => {
   try {
     const realm = request.realm
-    const { title, body, articleId } = request.body
+    const { articleId, title, body } = request.body
 
     if (title.length == 0 || title.length > CONSTANTS.TITLE_MAX_LENGTH) {
       response.status(400).send({
@@ -109,7 +109,7 @@ const updateArticle = async (request, response) => {
       return
     }
 
-    let article = realm.objectForPrimaryKey(
+    const article = realm.objectForPrimaryKey(
       Article,
       new Realm.BSON.ObjectId(articleId)
     )
@@ -133,8 +133,7 @@ const deleteArticle = async (request, response) => {
   try {
     const realm = request.realm
     const { articleId } = request.body
-
-    let article = realm.objectForPrimaryKey(
+    const article = realm.objectForPrimaryKey(
       Article,
       new Realm.BSON.ObjectId(articleId)
     )
@@ -149,7 +148,7 @@ const deleteArticle = async (request, response) => {
 }
 
 /**
- * Increment the count for a reaction on an article in the database.
+ * Add a reaction to an article.
  * @param {Express.Request} request The request.
  * @param {Express.Response} response The response.
  */
@@ -167,14 +166,13 @@ const addReaction = async (request, response) => {
       return
     }
 
-    let article = realm.objectForPrimaryKey(
+    const article = realm.objectForPrimaryKey(
       Article,
       Realm.BSON.ObjectId(articleId)
     )
     realm.write(() => {
       article.reactions[reaction] += 1
     })
-
     response.status(200).send()
   } catch (error) {
     console.log(error)
