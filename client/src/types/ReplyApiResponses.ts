@@ -5,3 +5,9 @@ export type AddReplyResponse = {
     reply: Reply
   }
 }
+
+export type UpdateReplyResponse = {
+  body: {
+    reply: Reply
+  }
+}

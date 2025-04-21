@@ -5,7 +5,7 @@ const CommentController = require('./controllers/CommentController.js')
 const ReplyController = require('./controllers/ReplyController.js')
 const RealmController = require('./controllers/RealmController.js')
 
-async function init() {
+async function main() {
   const app = express()
   const port = 3000
   app.use(express.static('client/dist'))
@@ -47,12 +47,20 @@ async function init() {
     await CommentController.addComment(request, response)
   })
 
+  app.post('/api/updateComment', async (request, response) => {
+    await CommentController.updateComment(request, response)
+  })
+
   app.post('/api/addCommentLike', async (request, response) => {
     await CommentController.addCommentLike(request, response)
   })
 
   app.post('/api/addReply', async (request, response) => {
     await ReplyController.addReply(request, response)
+  })
+
+  app.post('/api/updateReply', async (request, response) => {
+    await ReplyController.updateReply(request, response)
   })
 
   app.post('/api/addReplyLike', async (request, response) => {
@@ -71,4 +79,4 @@ async function init() {
   })
 }
 
-init()
+main()

@@ -5,3 +5,9 @@ export type AddCommentResponse = {
     comment: Comment
   }
 }
+
+export type UpdateCommentResponse = {
+  body: {
+    comment: Comment
+  }
+}

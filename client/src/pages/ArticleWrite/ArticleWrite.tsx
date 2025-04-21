@@ -51,7 +51,7 @@ function ArticleWrite() {
       <h1>article write</h1>
       <br />
       <div>
-        <label>title</label>
+        <label>title: </label>
         <input
           ref={titleInputElement}
           onChange={(event) => setTitleLength(event.target.value.length)}
@@ -62,7 +62,7 @@ function ArticleWrite() {
       </div>
       <br />
       <div>
-        <label>body</label>
+        <label>body: </label>
         <textarea
           ref={bodyInputElement}
           onChange={(event) => setBodyLength(event.target.value.length)}

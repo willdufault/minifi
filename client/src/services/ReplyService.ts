@@ -37,3 +37,24 @@ export async function addReplyLike(replyId: string): Promise<boolean> {
     return false
   }
 }
+
+/**
+ * Update a reply.
+ * @param replyId The reply ID.
+ * @param text The reply text.
+ * @returns The reply.
+ */
+export async function updateReply(
+  replyId: string,
+  text: string
+): Promise<ReplyType | null> {
+  try {
+    const response: AxiosResponse<ApiResponses.UpdateReplyResponse> =
+      await axios.post('/api/updateReply', { replyId, text })
+    const data: ApiResponses.UpdateReplyResponse = response.data
+    return data.body.reply
+  } catch (error) {
+    console.log(error)
+    return null
+  }
+}

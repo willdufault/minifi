@@ -66,7 +66,32 @@ const addCommentLike = async (request, response) => {
   }
 }
 
+/**
+ * Update a comment.
+ * @param {Express.Request} request Express request.
+ * @param {Express.Response} response Express response.
+ */
+const updateComment = async (request, response) => {
+  try {
+    // TODO: article null checks
+    const realm = request.realm
+    const { commentId, text } = request.body
+    const comment = realm.objectForPrimaryKey(
+      Comment,
+      Realm.BSON.ObjectId(commentId)
+    )
+    realm.write(() => {
+      comment.text = text
+    })
+    response.status(200).send({ body: { comment } })
+  } catch (error) {
+    console.log(error)
+    response.status(400).send(error)
+  }
+}
+
 module.exports = {
   addComment,
   addCommentLike,
+  updateComment,
 }

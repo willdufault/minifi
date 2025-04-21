@@ -73,7 +73,7 @@ function ArticleRead() {
    */
   async function submitComment(): Promise<void> {
     if (commentLength == 0 || commentLength > CONSTANTS.COMMENT_MAX_LENGTH) {
-      alert(`Comment between 1 and ${CONSTANTS.COMMENT_MAX_LENGTH} characters.`)
+      alert(`Comment must be between 1 and ${CONSTANTS.COMMENT_MAX_LENGTH} characters.`)
       return
     }
 
@@ -144,7 +144,7 @@ function ArticleRead() {
       </div>
       <br />
       <div style={{ border: 'solid green 1px', padding: '1rem' }}>
-        <label>comment</label>
+        <label>comment: </label>
         <textarea
           ref={commentInputElement}
           onChange={(event) => setCommentLength(event.target.value.length)}
@@ -152,7 +152,6 @@ function ArticleRead() {
         <p>
           {commentLength}/{CONSTANTS.COMMENT_MAX_LENGTH}
         </p>
-        <br />
         <button onClick={submitComment}>submit</button>
       </div>
       <br />

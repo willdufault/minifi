@@ -27,7 +27,7 @@ export async function addComment(
 /**
  * Add a like to a comment.
  * @param commentId The comment ID.
- * @returns //TODO
+ * @returns Whether the comment was liked.
  */
 export async function addCommentLike(commentId: string): Promise<boolean> {
   try {
@@ -36,5 +36,26 @@ export async function addCommentLike(commentId: string): Promise<boolean> {
   } catch (error) {
     console.log(error)
     return false
+  }
+}
+
+/**
+ * Update a comment.
+ * @param commentId The comment ID.
+ * @param text The comment text.
+ * @returns The comment.
+ */
+export async function updateComment(
+  commentId: string,
+  text: string
+): Promise<CommentType | null> {
+  try {
+    const response: AxiosResponse<ApiResponses.UpdateCommentResponse> =
+      await axios.post('/api/updateComment', { commentId, text })
+    const data: ApiResponses.UpdateCommentResponse = response.data
+    return data.body.comment
+  } catch (error) {
+    console.log(error)
+    return null
   }
 }

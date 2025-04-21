@@ -100,7 +100,7 @@ function ArticleEdit() {
       <h1>article edit</h1>
       <br />
       <div>
-        <label>title</label>
+        <label>title: </label>
         <input
           ref={titleInputElement}
           defaultValue={article!.title}
@@ -112,7 +112,7 @@ function ArticleEdit() {
       </div>
       <br />
       <div>
-        <label>body</label>
+        <label>body: </label>
         <textarea
           ref={bodyInputElement}
           defaultValue={article!.body}
