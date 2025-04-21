@@ -1,15 +1,11 @@
 ### Current
 
-- add comment, reply edit
-- add article edit cancel
-- add comment, reply edit cancel
+- delete comments, replies
 
 ---
 
 ### Next
 
-- delete comments, replies
-- code review, track with excel
 - delete comment = delete nested replies
 - delete article = delete nested comments
 - code review, track with excel

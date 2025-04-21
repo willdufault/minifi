@@ -93,6 +93,7 @@ function Comment({ data }: Props) {
             {editText.length}/{CONSTANTS.COMMENT_MAX_LENGTH}
           </p>
           <button onClick={editComment}>submit</button>
+          <button onClick={() => setEditText(comment.text)}>cancel</button>
         </div>
         <br />
         <br />

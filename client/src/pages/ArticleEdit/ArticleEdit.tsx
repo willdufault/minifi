@@ -29,9 +29,8 @@ function ArticleEdit() {
 
   /**
    * Redirect the user to the read view of the article.
-   * @param articleId The article ID.
    */
-  function openArticleRead(articleId: string): void {
+  function openArticleRead(): void {
     navigate(`/read?id=${articleId}`)
   }
 
@@ -59,7 +58,7 @@ function ArticleEdit() {
       bodyInputElement.current!.value
     )
     if (article !== null) {
-      openArticleRead(articleId)
+      openArticleRead()
     }
   }
 
@@ -124,6 +123,7 @@ function ArticleEdit() {
       </div>
       <br />
       <button onClick={() => updateArticleHandler(articleId!)}>update</button>
+      <button onClick={openArticleRead}>cancel</button>
     </>
   )
 }

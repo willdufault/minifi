@@ -65,6 +65,7 @@ function Reply({ data }: Props) {
             {editText.length}/{CONSTANTS.REPLY_MAX_LENGTH}
           </p>
           <button onClick={editReply}>submit</button>
+          <button onClick={() => setEditText(reply.text)}>cancel</button>
         </div>
       </div>
     </>
