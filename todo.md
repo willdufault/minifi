@@ -1,14 +1,12 @@
 ### Current
 
-- delete comments, replies
+- fix all handlers
 
 ---
 
 ### Next
 
-- delete comment = delete nested replies
-- delete article = delete nested comments
-- code review, track with excel
+- fix server file to have helper init routes (/routes folder?)
 
 ---
 
@@ -20,7 +18,7 @@
 - add preset images
 - add filters
 - search pagination
-- code review, track with excel
+- code review
 - article sort order
 - comment sort order
 - newline support for articles, comments, replies
@@ -29,7 +27,7 @@
 - tie reactions to user
 - limit actions only if you're logged in
 - password hash + salt
-- code review, track with excel
+- code review
 - fix api path access from browser
 - add jsdoc comments, clean up everything (client + server)
 - remove "in the database?" comments
@@ -38,8 +36,8 @@
 - add types to inline tsx (map function vars, etc.)
 - add types to useStates
 - add comment, reply, article edit cancel
-- code review, track with excel
+- code review
 - ui
-- code review, track with excel
+- code review
 - set up glitch.me
 - buy domain? (TBD, maybe willdufault.dev/...)

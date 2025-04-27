@@ -55,6 +55,10 @@ async function main() {
     await CommentController.addCommentLike(request, response)
   })
 
+  app.post('/api/deleteComment', async (request, response) => {
+    await CommentController.deleteComment(request, response)
+  })
+
   app.post('/api/addReply', async (request, response) => {
     await ReplyController.addReply(request, response)
   })
@@ -65,6 +69,10 @@ async function main() {
 
   app.post('/api/addReplyLike', async (request, response) => {
     await ReplyController.addReplyLike(request, response)
+  })
+
+  app.post('/api/deleteReply', async (request, response) => {
+    await ReplyController.deleteReply(request, response)
   })
 
   app.get('*', (request, response, next) => {

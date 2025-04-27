@@ -59,3 +59,18 @@ export async function updateComment(
     return null
   }
 }
+
+/**
+ * Delete a comment.
+ * @param commentId The comment ID.
+ * @returns Whether the comment was deleted.
+ */
+export async function deleteComment(commentId: string): Promise<boolean> {
+  try {
+    await axios.post('/api/deleteComment', { commentId })
+    return true
+  } catch (error) {
+    console.log(error)
+    return false
+  }
+}

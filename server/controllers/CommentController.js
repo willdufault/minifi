@@ -90,8 +90,38 @@ const updateComment = async (request, response) => {
   }
 }
 
+/**
+ * Delete a comment.
+ * @param {Express.Request} request Express request.
+ * @param {Express.Response} response Express response.
+ */
+const deleteComment = async (request, response) => {
+  try {
+    // TODO: article null checks
+    const realm = request.realm
+    const { commentId } = request.body
+    const comment = realm.objectForPrimaryKey(
+      Comment,
+      Realm.BSON.ObjectId(commentId)
+    )
+    for (const reply of comment.replies) {
+      realm.write(() => {
+        realm.delete(reply)
+      })
+    }
+    realm.write(() => {
+      realm.delete(comment)
+    })
+    response.status(200).send()
+  } catch (error) {
+    console.log(error)
+    response.status(400).send(error)
+  }
+}
+
 module.exports = {
   addComment,
   addCommentLike,
   updateComment,
+  deleteComment,
 }

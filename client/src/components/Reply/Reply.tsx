@@ -1,6 +1,10 @@
 import { useState } from 'react'
 import CONSTANTS from '../../constants.ts'
-import { addReplyLike, updateReply } from '../../services/ReplyService.ts'
+import {
+  addReplyLike,
+  deleteReply,
+  updateReply,
+} from '../../services/ReplyService.ts'
 import { Reply as ReplyType } from '../../types/Reply'
 
 type Props = {
@@ -10,6 +14,7 @@ type Props = {
 function Reply({ data }: Props) {
   const [reply, setReply] = useState<ReplyType>(data)
   const [editText, setEditText] = useState<string>(reply.text)
+  const [isDeleted, setIsDeleted] = useState<boolean>(false)
 
   /**
    * Add a like to a reply.
@@ -48,11 +53,26 @@ function Reply({ data }: Props) {
     }
   }
 
+  /**
+   * Delete the reply.
+   */
+  async function deleteReplyHandler(): Promise<void> {
+    const deleted: boolean = await deleteReply(reply!._id)
+    if (deleted) {
+      setIsDeleted(true)
+    }
+  }
+
+  if (isDeleted) {
+    return null
+  }
+
   return (
     <>
       <div style={{ border: 'solid blue 1px', padding: '1rem' }}>
         <p>{reply.text}</p>
         <button onClick={submitReplyLike}>👍 {reply.likes}</button>
+        <button onClick={deleteReplyHandler}>delete</button>
         <br />
         <br />
         <div style={{ border: 'solid purple 1px', padding: '1rem' }}>

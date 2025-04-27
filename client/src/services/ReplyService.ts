@@ -58,3 +58,18 @@ export async function updateReply(
     return null
   }
 }
+
+/**
+ * Delete a reply.
+ * @param replyId The reply ID.
+ * @returns Whether the reply was deleted.
+ */
+export async function deleteReply(replyId: string): Promise<boolean> {
+  try {
+    await axios.post('/api/deleteReply', { replyId })
+    return true
+  } catch (error) {
+    console.log(error)
+    return false
+  }
+}

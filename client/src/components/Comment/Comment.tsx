@@ -1,6 +1,10 @@
 import { useState } from 'react'
 import CONSTANTS from '../../constants.ts'
-import { addCommentLike, updateComment } from '../../services/CommentService.ts'
+import {
+  addCommentLike,
+  deleteComment,
+  updateComment,
+} from '../../services/CommentService.ts'
 import { addReply } from '../../services/ReplyService.ts'
 import { Comment as CommentType } from '../../types/Comment'
 import { Reply as ReplyType } from '../../types/Reply'
@@ -14,6 +18,7 @@ function Comment({ data }: Props) {
   const [comment, setComment] = useState<CommentType>(data)
   const [editText, setEditText] = useState<string>(comment.text)
   const [replyText, setReplyText] = useState<string>('')
+  const [isDeleted, setIsDeleted] = useState<boolean>(false)
 
   /**
    * Add a like to a comment.
@@ -76,11 +81,26 @@ function Comment({ data }: Props) {
     }
   }
 
+  /**
+   * Delete the comment.
+   */
+  async function deleteCommentHandler(): Promise<void> {
+    const deleted: boolean = await deleteComment(comment!._id)
+    if (deleted) {
+      setIsDeleted(true)
+    }
+  }
+
+  if (isDeleted) {
+    return null
+  }
+
   return (
     <>
       <div style={{ border: 'solid red 1px', padding: '1rem' }}>
         <p>{comment.text}</p>
         <button onClick={submitCommentLike}>👍 {comment.likes}</button>
+        <button onClick={deleteCommentHandler}>delete</button>
         <br />
         <br />
         <div style={{ border: 'solid lime 1px', padding: '1rem' }}>

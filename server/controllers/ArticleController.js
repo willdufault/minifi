@@ -137,6 +137,16 @@ const deleteArticle = async (request, response) => {
       Article,
       new Realm.BSON.ObjectId(articleId)
     )
+    for (const comment of article.comments) {
+      for (const reply of comment.replies) {
+        realm.write(() => {
+          realm.delete(reply)
+        })
+      }
+      realm.write(() => {
+        realm.delete(comment)
+      })
+    }
     realm.write(() => {
       realm.delete(article)
     })
