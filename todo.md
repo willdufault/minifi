@@ -1,12 +1,8 @@
 ### Current
 
-- fix all handlers
-
 ---
 
 ### Next
-
-- fix server file to have helper init routes (/routes folder?)
 
 ---
 
