@@ -17,9 +17,9 @@ function Reply({ data }: Props) {
   const [isDeleted, setIsDeleted] = useState<boolean>(false)
 
   /**
-   * Add a like to a reply.
+   * Add a like to the reply.
    */
-  const submitReplyLike = async (): Promise<void> => {
+  const addReplyLikeHandler = async (): Promise<void> => {
     // TODO: account check
     const added: boolean = await addReplyLike(reply._id)
     if (added) {
@@ -31,9 +31,9 @@ function Reply({ data }: Props) {
   }
 
   /**
-   * Edit the reply.
+   * Update the reply.
    */
-  async function editReply(): Promise<void> {
+  async function updateReplyHandler(): Promise<void> {
     if (editText.length == 0 || editText.length > CONSTANTS.REPLY_MAX_LENGTH) {
       alert(
         `Reply must be between 1 and ${CONSTANTS.REPLY_MAX_LENGTH} characters.`
@@ -71,7 +71,7 @@ function Reply({ data }: Props) {
     <>
       <div style={{ border: 'solid blue 1px', padding: '1rem' }}>
         <p>{reply.text}</p>
-        <button onClick={submitReplyLike}>👍 {reply.likes}</button>
+        <button onClick={addReplyLikeHandler}>👍 {reply.likes}</button>
         <button onClick={deleteReplyHandler}>delete</button>
         <br />
         <br />
@@ -84,7 +84,7 @@ function Reply({ data }: Props) {
           <p>
             {editText.length}/{CONSTANTS.REPLY_MAX_LENGTH}
           </p>
-          <button onClick={editReply}>submit</button>
+          <button onClick={updateReplyHandler}>submit</button>
           <button onClick={() => setEditText(reply.text)}>cancel</button>
         </div>
       </div>

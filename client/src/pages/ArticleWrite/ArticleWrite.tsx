@@ -13,7 +13,7 @@ function ArticleWrite() {
   const [bodyLength, setBodyLength] = useState<number>(0)
 
   /**
-   * Redirects the user to the read view of their article.
+   * Redirect the user to the read view of their article.
    * @param article The user's article.
    */
   function openArticleRead(articleId: string): void {
@@ -21,9 +21,9 @@ function ArticleWrite() {
   }
 
   /**
-   * Submit the article.
+   * Create an article.
    */
-  async function submitArticle(): Promise<void> {
+  async function createArticleHandler(): Promise<void> {
     if (titleLength == 0 || titleLength > CONSTANTS.TITLE_MAX_LENGTH) {
       alert(
         `Title must be between 1 and ${CONSTANTS.TITLE_MAX_LENGTH} characters.`
@@ -72,7 +72,7 @@ function ArticleWrite() {
         </p>
       </div>
       <br />
-      <button onClick={submitArticle}>submit</button>
+      <button onClick={createArticleHandler}>submit</button>
     </>
   )
 }

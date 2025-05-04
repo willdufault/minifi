@@ -9,9 +9,9 @@ function Home() {
   const [articles, setArticles] = useState<ArticleType[]>([])
 
   /**
-   * Reload the articles on screen.
+   * Load the articles on screen.
    */
-  const reloadArticles = async (): Promise<void> => {
+  const loadArticles = async (): Promise<void> => {
     const articles: ArticleType[] | null = await getArticles()
     if (articles !== null) {
       setArticles(articles)
@@ -19,13 +19,13 @@ function Home() {
   }
 
   useEffect(() => {
-    reloadArticles()
+    loadArticles()
   }, [])
 
   return (
     <>
       <div>
-        <button onClick={reloadArticles}>reload articles</button>
+        <button onClick={loadArticles}>reload articles</button>
         <a href={`${origin}/write`}>
           <button>write article</button>
         </a>

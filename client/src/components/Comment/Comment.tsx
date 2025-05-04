@@ -21,9 +21,9 @@ function Comment({ data }: Props) {
   const [isDeleted, setIsDeleted] = useState<boolean>(false)
 
   /**
-   * Add a like to a comment.
+   * Add a like to the comment.
    */
-  const submitCommentLike = async (): Promise<void> => {
+  const addCommentLikeHandler = async (): Promise<void> => {
     // TODO: account check
     const added: boolean = await addCommentLike(comment._id)
     if (added) {
@@ -35,9 +35,9 @@ function Comment({ data }: Props) {
   }
 
   /**
-   * Edit the comment.
+   * Update the comment.
    */
-  async function editComment(): Promise<void> {
+  async function updateCommentHandler(): Promise<void> {
     if (editText.length == 0 || editText.length > CONSTANTS.REPLY_MAX_LENGTH) {
       alert(
         `Comment must be between 1 and ${CONSTANTS.COMMENT_MAX_LENGTH} characters.`
@@ -58,9 +58,9 @@ function Comment({ data }: Props) {
   }
 
   /**
-   * Submit a reply to the comment.
+   * Add a reply to the comment.
    */
-  async function submitReply(): Promise<void> {
+  async function addReplyHandler(): Promise<void> {
     if (
       replyText.length == 0 ||
       replyText.length > CONSTANTS.REPLY_MAX_LENGTH
@@ -99,7 +99,7 @@ function Comment({ data }: Props) {
     <>
       <div style={{ border: 'solid red 1px', padding: '1rem' }}>
         <p>{comment.text}</p>
-        <button onClick={submitCommentLike}>👍 {comment.likes}</button>
+        <button onClick={addCommentLikeHandler}>👍 {comment.likes}</button>
         <button onClick={deleteCommentHandler}>delete</button>
         <br />
         <br />
@@ -112,7 +112,7 @@ function Comment({ data }: Props) {
           <p>
             {editText.length}/{CONSTANTS.COMMENT_MAX_LENGTH}
           </p>
-          <button onClick={editComment}>submit</button>
+          <button onClick={updateCommentHandler}>submit</button>
           <button onClick={() => setEditText(comment.text)}>cancel</button>
         </div>
         <br />
@@ -126,7 +126,7 @@ function Comment({ data }: Props) {
           <p>
             {replyText.length}/{CONSTANTS.REPLY_MAX_LENGTH}
           </p>
-          <button onClick={submitReply}>submit</button>
+          <button onClick={addReplyHandler}>submit</button>
         </div>
         <br />
         {comment.replies.map((reply: ReplyType) => (
