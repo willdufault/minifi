@@ -21,6 +21,7 @@ async function main() {
   app.use('/api', commentRoutes)
   app.use('/api', replyRoutes)
 
+  // TODO: if possible, block browser from accessing api, might be fixed by jwt
   app.get('*', (request, response, next) => {
     if (request.path.startsWith('/api')) {
       return next()

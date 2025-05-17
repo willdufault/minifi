@@ -4,6 +4,7 @@ const CONSTANTS: Record<string, any> = {
   COMMENT_MAX_LENGTH: 50,
   REPLY_MAX_LENGTH: 50,
   REACTIONS: ['👍', '❤️', '🔥', '😂', '🐐'],
+  TOPICS: ['AI', 'Software', 'Cloud', 'Cybersecurity', 'Other'],
 }
 
 export default CONSTANTS

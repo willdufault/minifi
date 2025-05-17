@@ -1,30 +1,24 @@
 ### Current
+- add topics (AI, cloud, software, cybersec, other)
+  - added to constants, need to update article create/update + ui
 
 ---
 
 ### Next
+- add images for chosen topic
+- add filter by topic
 
 ---
 
-### All
-
-- validate/clean user input
-- null/param checks on node
-- add tags
-- add preset images
-- add filters
+### Core
+- article search by title
 - search pagination
-- code review
 - article sort order
 - comment sort order
 - newline support for articles, comments, replies
-- markdown body (TBD)
-- add users (with jwt for requests)
+- add users
 - tie reactions to user
 - limit actions only if you're logged in
-- password hash + salt
-- code review
-- fix api path access from browser
 - add jsdoc comments, clean up everything (client + server)
 - remove "in the database?" comments
 - remove "the given ..." comments
@@ -32,8 +26,21 @@
 - add types to inline tsx (map function vars, etc.)
 - add types to useStates
 - add comment, reply, article edit cancel
-- code review
-- ui
-- code review
+- validate/clean user input
+- null/param checks on node
+- featured articles on homepage
+- basic ui
 - set up glitch.me
-- buy domain? (TBD, maybe willdufault.dev/...)
+- set up domain (willdufault.dev/...)
+
+---
+
+### Extra
+- add preset images (figure out how to make this sfw)
+- add fuzzy title search
+- markdown body (TBD)
+- add jwt for user requests
+- password hash + salt
+- fix api path access from browser
+- better ui
+
