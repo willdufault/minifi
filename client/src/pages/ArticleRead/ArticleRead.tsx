@@ -73,7 +73,9 @@ function ArticleRead() {
    */
   async function submitComment(): Promise<void> {
     if (commentLength == 0 || commentLength > CONSTANTS.COMMENT_MAX_LENGTH) {
-      alert(`Comment must be between 1 and ${CONSTANTS.COMMENT_MAX_LENGTH} characters.`)
+      alert(
+        `Comment must be between 1 and ${CONSTANTS.COMMENT_MAX_LENGTH} characters.`
+      )
       return
     }
 
@@ -135,6 +137,7 @@ function ArticleRead() {
       <button onClick={deleteArticleHandler}>delete</button>
       <div style={{ border: 'solid black 1px', padding: '1rem' }}>
         <h1>title: {article!.title}</h1>
+        <em>topic: {article!.topic}</em>
         <p>body: {article!.body}</p>
         {Object.entries(article!.reactions).map(([reaction, count]) => (
           <button key={reaction} onClick={() => submitReaction(reaction)}>

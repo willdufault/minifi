@@ -15,6 +15,7 @@ function ArticleEdit() {
   const [bodyLength, setBodyLength] = useState<number>(0)
   const titleInputElement = useRef<HTMLInputElement>(null)
   const bodyInputElement = useRef<HTMLTextAreaElement>(null)
+  const topicSelectElement = useRef<HTMLSelectElement>(null)
 
   /**
    * Get the article ID from the query parameters.
@@ -51,11 +52,16 @@ function ArticleEdit() {
       )
       return
     }
+    if (!CONSTANTS.TOPICS.includes(topicSelectElement.current!.value)) {
+      alert(`Topic must be one of  ${CONSTANTS.TOPICS}.`)
+      return
+    }
 
     const article: ArticleType | null = await updateArticle(
       articleId,
       titleInputElement.current!.value,
-      bodyInputElement.current!.value
+      bodyInputElement.current!.value,
+      topicSelectElement.current!.value
     )
     if (article !== null) {
       openArticleRead()
@@ -108,6 +114,15 @@ function ArticleEdit() {
         <p>
           {titleLength}/{CONSTANTS.TITLE_MAX_LENGTH}
         </p>
+      </div>
+      <br />
+      <div>
+        <label>topic: </label>
+        <select ref={topicSelectElement} defaultValue={article!.topic}>
+          {CONSTANTS.TOPICS.map((topic: string, index: number) => (
+            <option key={index}>{topic}</option>
+          ))}
+        </select>
       </div>
       <br />
       <div>

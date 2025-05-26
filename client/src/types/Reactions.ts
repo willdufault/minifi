@@ -1,5 +1,5 @@
-import CONSTANTS from "../constants"
+import CONSTANTS from '../constants'
 
 export type Reactions = {
-  [reaction in typeof CONSTANTS.REACTIONS]: number
+  [reaction in string & (typeof CONSTANTS)['REACTIONS'][number]]: number
 }

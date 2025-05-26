@@ -3,8 +3,8 @@ const CONSTANTS: Record<string, any> = {
   BODY_MAX_LENGTH: 500,
   COMMENT_MAX_LENGTH: 50,
   REPLY_MAX_LENGTH: 50,
-  REACTIONS: ['👍', '❤️', '🔥', '😂', '🐐'],
-  TOPICS: ['AI', 'Software', 'Cloud', 'Cybersecurity', 'Other'],
-}
+  REACTIONS: ['👍', '❤️', '🔥', '😂', '🐐'] as const,
+  TOPICS: ['AI', 'Software', 'Cloud', 'Cybersecurity', 'Other'] as const,
+} as const
 
 export default CONSTANTS

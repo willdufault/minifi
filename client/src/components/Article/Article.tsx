@@ -11,6 +11,7 @@ function Article({ data }: Props) {
       <div style={{ border: 'solid black 1px', padding: '1rem' }}>
         <a href={`${origin}/read?id=${article._id}`}>link</a>
         <h1>{article.title}</h1>
+        <em>{article.topic}</em>
         <p>{article.body}</p>
         {Object.entries(article.reactions).map(([reaction, count]) => (
           <p key={reaction}>

@@ -23,7 +23,9 @@ export async function getArticles(): Promise<ArticleType[] | null> {
  * @param articleId The article ID.
  * @returns The article.
  */
-export async function getArticle(articleId: string): Promise<ArticleType | null> {
+export async function getArticle(
+  articleId: string
+): Promise<ArticleType | null> {
   try {
     const response: AxiosResponse<ApiResponses.GetArticleResponse> =
       await axios.get('/api/getArticle', { params: { articleId } })
@@ -54,15 +56,17 @@ export async function deleteArticle(articleId: string): Promise<boolean> {
  * Create an article.
  * @param title The article title.
  * @param body The article body.
+ * @param topic The article topic.
  * @returns The article.
  */
 export async function createArticle(
   title: string,
-  body: string
+  body: string,
+  topic: string
 ): Promise<ArticleType | null> {
   try {
     const response: AxiosResponse<ApiResponses.CreateArticleResponse> =
-      await axios.post('/api/createArticle', { title, body })
+      await axios.post('/api/createArticle', { title, body, topic })
     const data: ApiResponses.CreateArticleResponse = response.data
     return data.body.article
   } catch (error) {
@@ -76,16 +80,18 @@ export async function createArticle(
  * @param articleId The article ID.
  * @param title The article title.
  * @param body The article body.
+ * @param topic The article topic.
  * @returns The article.
  */
 export async function updateArticle(
   articleId: string,
   title: string,
-  body: string
+  body: string,
+  topic: string
 ): Promise<ArticleType | null> {
   try {
     const response: AxiosResponse<ApiResponses.CreateArticleResponse> =
-      await axios.post('/api/updateArticle', { articleId, title, body })
+      await axios.post('/api/updateArticle', { articleId, title, body, topic })
     const data: ApiResponses.CreateArticleResponse = response.data
     return data.body.article
   } catch (error) {
