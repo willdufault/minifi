@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
 import { NavigateFunction, useNavigate } from 'react-router'
+import NotFound from '../../components/NotFound/NotFound'
 import CONSTANTS from '../../constants'
 import { getArticle, updateArticle } from '../../services/ArticleService'
 import { Article as ArticleType } from '../../types/Article'
-import NotFound from '../NotFound/NotFound'
 
 function ArticleEdit() {
   const navigate: NavigateFunction = useNavigate()

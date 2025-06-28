@@ -6,6 +6,8 @@ import {
   useNavigate,
 } from 'react-router'
 import Comment from '../../components/Comment/Comment.tsx'
+import Loading from '../../components/Loading/Loading.tsx'
+import NotFound from '../../components/NotFound/NotFound.tsx'
 import CONSTANTS from '../../constants.ts'
 import {
   addReaction,
@@ -16,7 +18,6 @@ import { addComment } from '../../services/CommentService.ts'
 import { Article as ArticleType } from '../../types/Article.ts'
 import { Comment as CommentType } from '../../types/Comment.ts'
 import { Reactions as ReactionsType } from '../../types/Reactions.ts'
-import NotFound from '../NotFound/NotFound.tsx'
 
 function ArticleRead() {
   const origin: string = window.location.origin
@@ -48,24 +49,6 @@ function ArticleRead() {
     if (deleted) {
       navigator('/')
     }
-  }
-
-  /**
-   * Load the article on the screen.
-   * @param articleId The article ID.
-   */
-  const loadArticle = async (articleId: string | null): Promise<void> => {
-    if (articleId === null) {
-      setNotFound(true)
-    } else {
-      const responseArticle = await getArticle(articleId)
-      if (responseArticle === null) {
-        setNotFound(true)
-      } else {
-        setArticle(responseArticle)
-      }
-    }
-    setLoading(false)
   }
 
   /**
@@ -115,18 +98,43 @@ function ArticleRead() {
     }
   }
 
+  /**
+   * Load the article on the screen.
+   */
+  const loadArticle = async (): Promise<void> => {
+    if (articleId === null) {
+      setNotFound(true)
+      setLoading(false)
+      return
+    }
+
+    const responseArticle = await getArticle(articleId)
+    if (responseArticle === null) {
+      setNotFound(true)
+      setLoading(false)
+      return
+    }
+
+    console.log('here')
+    setArticle(responseArticle)
+    setLoading(false)
+  }
+
   useEffect(() => {
-    loadArticle(articleId)
+    loadArticle()
   }, [])
 
   if (loading) {
-    return <p>loading...</p>
+    console.log('loading')
+    return <Loading />
   }
 
   if (notFound) {
+    console.log('not found')
     return <NotFound />
   }
 
+  console.log('main')
   return (
     <>
       <h1>article view</h1>

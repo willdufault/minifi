@@ -1,14 +1,20 @@
 import { Article } from './Article'
 
+export type GetArticleResponse = {
+  body: {
+    article: Article
+  }
+}
+
 export type GetArticlesResponse = {
   body: {
     articles: Article[]
   }
 }
 
-export type GetArticleResponse = {
+export type SearchArticlesResponse = {
   body: {
-    article: Article
+    articles: Article[]
   }
 }
 

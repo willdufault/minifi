@@ -3,6 +3,25 @@ import { Article as ArticleType } from '../types/Article.ts'
 import * as ApiResponses from '../types/ArticleApiResponses.ts'
 
 /**
+ * Get an article.
+ * @param articleId The article ID.
+ * @returns The article.
+ */
+export async function getArticle(
+  articleId: string
+): Promise<ArticleType | null> {
+  try {
+    const response: AxiosResponse<ApiResponses.GetArticleResponse> =
+      await axios.get('/api/getArticle', { params: { articleId } })
+    const data: ApiResponses.GetArticleResponse = response.data
+    return data.body.article
+  } catch (error) {
+    console.log(error)
+    return null
+  }
+}
+
+/**
  * Get a list of all articles.
  * @returns The list of articles.
  */
@@ -19,18 +38,18 @@ export async function getArticles(): Promise<ArticleType[] | null> {
 }
 
 /**
- * Get an article.
- * @param articleId The article ID.
- * @returns The article.
+ * Search all articles.
+ * @param query The search query.
+ * @returns The list of articles.
  */
-export async function getArticle(
-  articleId: string
-): Promise<ArticleType | null> {
+export async function searchArticles(
+  query: string
+): Promise<ArticleType[] | null> {
   try {
-    const response: AxiosResponse<ApiResponses.GetArticleResponse> =
-      await axios.get('/api/getArticle', { params: { articleId } })
-    const data: ApiResponses.GetArticleResponse = response.data
-    return data.body.article
+    const response: AxiosResponse<ApiResponses.SearchArticlesResponse> =
+      await axios.get('/api/searchArticles', { params: { query } })
+    const data: ApiResponses.SearchArticlesResponse = response.data
+    return data.body.articles
   } catch (error) {
     console.log(error)
     return null
