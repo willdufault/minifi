@@ -13,11 +13,13 @@ function Article({ data }: Props) {
         <h1>{article.title}</h1>
         <em>{article.topic}</em>
         <p>{article.body}</p>
-        {Object.entries(article.reactions).map(([reaction, count]) => (
-          <p key={reaction}>
-            {reaction} {count}
-          </p>
-        ))}
+        {Object.entries(article.reactions).map(
+          ([reaction, count]: [string, number]) => (
+            <p key={reaction}>
+              {reaction} {count}
+            </p>
+          )
+        )}
       </div>
     </>
   )

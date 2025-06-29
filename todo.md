@@ -1,46 +1,50 @@
 ### Current
-- add topics (AI, cloud, software, cybersec, other)
-  - added to constants, need to update article create/update + ui
+
+- arrow functions vs function keyword
+- consistent handler fcn names
+- add jsdoc comments, clean up everything (client + server)
+- add types to inline tsx (map function vars, etc.)
+- add types to useStates
+- review all code, make sure typescript vars have types
 
 ---
 
 ### Next
-- add images for chosen topic
-- add filter by topic
+
+- add types to inline tsx (map function vars, etc.)
+- add types to useStates
+- review all code, make sure typescript vars have types
+
+- null/param checks on node
+- validate/clean user input
 
 ---
 
 ### Core
-- article search by title
-- search pagination
-- article sort order
-- comment sort order
-- newline support for articles, comments, replies
-- add users
-- tie reactions to user
-- limit actions only if you're logged in
-- add jsdoc comments, clean up everything (client + server)
-- remove "in the database?" comments
-- remove "the given ..." comments
-- for realm api calls, can i use model var instead of string? same for in model definition
-- add types to inline tsx (map function vars, etc.)
-- add types to useStates
-- add comment, reply, article edit cancel
-- validate/clean user input
-- null/param checks on node
-- featured articles on homepage
-- basic ui
+
+- basic ui (desktop only, bootstrap)
 - set up glitch.me
 - set up domain (willdufault.dev/...)
 
 ---
 
 ### Extra
-- add preset images (figure out how to make this sfw)
-- add fuzzy title search
-- markdown body (TBD)
+
+- remove search "query=" (no query, all articles)
+- search pagination, multiple sizes (10, 25, 50)
+- add filter by topic
+- click to expand articles/comments/replies if too many lines (TBD)
+- article sort order
+- comment sort order
+- add icons to topic buttons?
+- add preset images (based on topic, TBD)
+- add users
+- tie reactions to user
+- limit actions only if you're logged in
 - add jwt for user requests
 - password hash + salt
+- add fuzzy title search
+- censor inappropriate words
+- markdown body (TBD)
 - fix api path access from browser
-- better ui
-
+- better ui (mobile-first, tailwind?)

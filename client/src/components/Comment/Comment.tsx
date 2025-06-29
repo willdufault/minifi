@@ -18,7 +18,7 @@ function Comment({ data }: Props) {
   const [comment, setComment] = useState<CommentType>(data)
   const [editText, setEditText] = useState<string>(comment.text)
   const [replyText, setReplyText] = useState<string>('')
-  const [isDeleted, setIsDeleted] = useState<boolean>(false)
+  const [hidden, setHidden] = useState<boolean>(false)
 
   /**
    * Add a like to the comment.
@@ -37,7 +37,7 @@ function Comment({ data }: Props) {
   /**
    * Update the comment.
    */
-  async function updateCommentHandler(): Promise<void> {
+  const updateCommentHandler = async (): Promise<void> => {
     if (editText.length == 0 || editText.length > CONSTANTS.REPLY_MAX_LENGTH) {
       alert(
         `Comment must be between 1 and ${CONSTANTS.COMMENT_MAX_LENGTH} characters.`
@@ -60,7 +60,7 @@ function Comment({ data }: Props) {
   /**
    * Add a reply to the comment.
    */
-  async function addReplyHandler(): Promise<void> {
+  const addReplyHandler = async (): Promise<void> => {
     if (
       replyText.length == 0 ||
       replyText.length > CONSTANTS.REPLY_MAX_LENGTH
@@ -84,14 +84,12 @@ function Comment({ data }: Props) {
   /**
    * Delete the comment.
    */
-  async function deleteCommentHandler(): Promise<void> {
+  const deleteCommentHandler = async (): Promise<void> => {
     const deleted: boolean = await deleteComment(comment!._id)
-    if (deleted) {
-      setIsDeleted(true)
-    }
+    setHidden(deleted)
   }
 
-  if (isDeleted) {
+  if (hidden) {
     return null
   }
 

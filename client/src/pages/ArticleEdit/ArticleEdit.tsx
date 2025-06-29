@@ -31,7 +31,7 @@ function ArticleEdit() {
   /**
    * Redirect the user to the read view of the article.
    */
-  function openArticleRead(): void {
+  const openArticleRead = (): void => {
     navigate(`/read?id=${articleId}`)
   }
 
@@ -39,7 +39,7 @@ function ArticleEdit() {
    * Update the article.
    * @param articleId The article ID.
    */
-  async function updateArticleHandler(articleId: string): Promise<void> {
+  const updateArticleHandler = async (articleId: string): Promise<void> => {
     if (titleLength == 0 || titleLength > CONSTANTS.TITLE_MAX_LENGTH) {
       alert(
         `Title must be between 1 and ${CONSTANTS.TITLE_MAX_LENGTH} characters.`

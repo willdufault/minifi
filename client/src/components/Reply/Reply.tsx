@@ -14,7 +14,7 @@ type Props = {
 function Reply({ data }: Props) {
   const [reply, setReply] = useState<ReplyType>(data)
   const [editText, setEditText] = useState<string>(reply.text)
-  const [isDeleted, setIsDeleted] = useState<boolean>(false)
+  const [hidden, setHidden] = useState<boolean>(false)
 
   /**
    * Add a like to the reply.
@@ -33,7 +33,7 @@ function Reply({ data }: Props) {
   /**
    * Update the reply.
    */
-  async function updateReplyHandler(): Promise<void> {
+  const updateReplyHandler = async (): Promise<void> => {
     if (editText.length == 0 || editText.length > CONSTANTS.REPLY_MAX_LENGTH) {
       alert(
         `Reply must be between 1 and ${CONSTANTS.REPLY_MAX_LENGTH} characters.`
@@ -56,14 +56,12 @@ function Reply({ data }: Props) {
   /**
    * Delete the reply.
    */
-  async function deleteReplyHandler(): Promise<void> {
+  const deleteReplyHandler = async (): Promise<void> => {
     const deleted: boolean = await deleteReply(reply!._id)
-    if (deleted) {
-      setIsDeleted(true)
-    }
+    setHidden(deleted)
   }
 
-  if (isDeleted) {
+  if (hidden) {
     return null
   }
 

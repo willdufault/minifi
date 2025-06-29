@@ -17,14 +17,14 @@ function ArticleWrite() {
    * Redirect the user to the read view of their article.
    * @param article The user's article.
    */
-  function openArticleRead(articleId: string): void {
+  const openArticleRead = (articleId: string): void => {
     navigate(`/read?id=${articleId}`)
   }
 
   /**
    * Create an article.
    */
-  async function createArticleHandler(): Promise<void> {
+  const createArticleHandler = async (): Promise<void> => {
     if (titleLength == 0 || titleLength > CONSTANTS.TITLE_MAX_LENGTH) {
       alert(
         `Title must be between 1 and ${CONSTANTS.TITLE_MAX_LENGTH} characters.`

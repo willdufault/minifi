@@ -7,9 +7,9 @@ class Article extends Realm.Object {
       _id: { type: 'objectId', default: () => new Realm.BSON.ObjectId() },
       title: 'string',
       body: 'string',
+      topic: 'string',
       reactions: { type: 'dictionary', objectType: 'int' },
       comments: 'Comment[]',
-      topic: 'string' 
     },
     primaryKey: '_id',
   }

@@ -52,9 +52,9 @@ function ArticleRead() {
   }
 
   /**
-   * Submit a comment to the article.
+   * Add a comment to the article.
    */
-  async function submitComment(): Promise<void> {
+  const addCommentHandler = async (): Promise<void> => {
     if (commentLength == 0 || commentLength > CONSTANTS.COMMENT_MAX_LENGTH) {
       alert(
         `Comment must be between 1 and ${CONSTANTS.COMMENT_MAX_LENGTH} characters.`
@@ -115,7 +115,6 @@ function ArticleRead() {
       return
     }
 
-    console.log('here')
     setArticle(responseArticle)
     setLoading(false)
   }
@@ -125,16 +124,13 @@ function ArticleRead() {
   }, [])
 
   if (loading) {
-    console.log('loading')
     return <Loading />
   }
 
   if (notFound) {
-    console.log('not found')
     return <NotFound />
   }
 
-  console.log('main')
   return (
     <>
       <h1>article view</h1>
@@ -163,7 +159,7 @@ function ArticleRead() {
         <p>
           {commentLength}/{CONSTANTS.COMMENT_MAX_LENGTH}
         </p>
-        <button onClick={submitComment}>submit</button>
+        <button onClick={addCommentHandler}>submit</button>
       </div>
       <br />
       {article!.comments.map((comment: CommentType) => (

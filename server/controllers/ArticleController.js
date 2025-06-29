@@ -3,7 +3,7 @@ const CONSTANTS = require('../constants.js')
 const Realm = require('realm')
 
 /**
- * Get an article from the database.
+ * Get an article.
  * @param {Express.Request} request The request.
  * @param {Express.Response} response The response.
  */
@@ -23,7 +23,7 @@ const getArticle = async (request, response) => {
 }
 
 /**
- * Get all articles from the database.
+ * Get all articles.
  * @param {Express.Request} request The request.
  * @param {Express.Response} response The response.
  */
@@ -39,6 +39,25 @@ const getArticles = async (request, response) => {
 }
 
 /**
+ * Search all articles.
+ * @param {Express.Request} request The request.
+ * @param {Express.Response} response The response.
+ */
+const searchArticles = async (request, response) => {
+  try {
+    const realm = request.realm
+    const { query } = request.query
+    const articles = realm
+      .objects(Article)
+      .filtered(`title BEGINSWITH "${query}"`)
+    response.status(200).send({ body: { articles } })
+  } catch (error) {
+    console.log(error)
+    response.status(400).send(error)
+  }
+}
+
+/**
  * Create an article.
  * @param {Express.Request} request The request.
  * @param {Express.Response} response The response.
@@ -46,7 +65,7 @@ const getArticles = async (request, response) => {
 const createArticle = async (request, response) => {
   try {
     const realm = request.realm
-    const { title, body } = request.body
+    const { title, body, topic } = request.body
 
     if (title.length == 0 || title.length > CONSTANTS.TITLE_MAX_LENGTH) {
       response.status(400).send({
@@ -64,12 +83,21 @@ const createArticle = async (request, response) => {
       })
       return
     }
+    if (!CONSTANTS.TOPICS.includes(topic)) {
+      response.status(400).send({
+        body: {
+          message: `Topic must be one of [${CONSTANTS.TOPICS}].`,
+        },
+      })
+      return
+    }
 
     let article
     realm.write(() => {
       article = realm.create(Article, {
         title,
         body,
+        topic,
         reactions: Object.fromEntries(
           CONSTANTS.REACTIONS.map((reaction) => [reaction, 0])
         ),
@@ -90,7 +118,7 @@ const createArticle = async (request, response) => {
 const updateArticle = async (request, response) => {
   try {
     const realm = request.realm
-    const { articleId, title, body } = request.body
+    const { articleId, title, body, topic } = request.body
 
     if (title.length == 0 || title.length > CONSTANTS.TITLE_MAX_LENGTH) {
       response.status(400).send({
@@ -108,6 +136,14 @@ const updateArticle = async (request, response) => {
       })
       return
     }
+    if (!CONSTANTS.TOPICS.includes(topic)) {
+      response.status(400).send({
+        body: {
+          message: `Topic must be one of [${CONSTANTS.TOPICS}].`,
+        },
+      })
+      return
+    }
 
     const article = realm.objectForPrimaryKey(
       Article,
@@ -116,6 +152,7 @@ const updateArticle = async (request, response) => {
     realm.write(() => {
       article.title = title
       article.body = body
+      article.topic = topic
     })
     response.status(200).send({ body: { article } })
   } catch (error) {
@@ -125,7 +162,7 @@ const updateArticle = async (request, response) => {
 }
 
 /**
- * Delete an article from the database.
+ * Delete an article.
  * @param {Express.Request} request The request.
  * @param {Express.Response} response The response.
  */
@@ -193,6 +230,7 @@ const addReaction = async (request, response) => {
 module.exports = {
   getArticle,
   getArticles,
+  searchArticles,
   createArticle,
   updateArticle,
   deleteArticle,

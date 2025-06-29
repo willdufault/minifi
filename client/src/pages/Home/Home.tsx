@@ -1,7 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
 import { NavigateFunction, useNavigate } from 'react-router'
 import Article from '../../components/Article/Article.tsx'
-import { getArticles } from '../../services/ArticleService.ts'
+import Loading from '../../components/Loading/Loading.tsx'
+import CONSTANTS from '../../constants.ts'
+import { getArticle } from '../../services/ArticleService.ts'
 import { Article as ArticleType } from '../../types/Article.ts'
 
 function Home() {
@@ -9,16 +11,30 @@ function Home() {
   const navigate: NavigateFunction = useNavigate()
 
   const [articles, setArticles] = useState<ArticleType[]>([])
+  const [loading, setLoading] = useState<boolean>(true)
   const searchInputElement = useRef<HTMLInputElement>(null)
+
+  /**
+   * Get a list of featured articles.
+   * @returns The list of articles.
+   */
+  const getFeaturedArticles = async (): Promise<ArticleType[]> => {
+    let featuredArticles: ArticleType[] = []
+    for (let articleId of CONSTANTS.FEATURED_ARTICLE_IDS) {
+      const responseArticle: ArticleType | null = await getArticle(articleId)
+      if (responseArticle !== null) {
+        featuredArticles.push(responseArticle)
+      }
+    }
+    return featuredArticles
+  }
 
   /**
    * Load the articles on screen.
    */
   const loadArticles = async (): Promise<void> => {
-    const articles: ArticleType[] | null = await getArticles()
-    if (articles !== null) {
-      setArticles(articles)
-    }
+    setArticles(await getFeaturedArticles())
+    setLoading(false)
   }
 
   /**
@@ -35,6 +51,10 @@ function Home() {
     loadArticles()
   }, [])
 
+  if (loading) {
+    return <Loading />
+  }
+
   return (
     <>
       <div>
@@ -46,8 +66,7 @@ function Home() {
         <button onClick={searchArticles}>search</button>
       </div>
       <br />
-      {/* //TODO: have fixed list of featured articles so no db fetch or "Loading..." required*/}
-      <h1>Articles:</h1>
+      <h1>Featured articles:</h1>
       {articles.map((article) => (
         <Article key={article._id} data={article} />
       ))}

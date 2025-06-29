@@ -7,4 +7,8 @@ const CONSTANTS = {
   TOPICS: ['AI', 'Software', 'Cloud', 'Cybersecurity', 'Other'],
 }
 
+Object.freeze(CONSTANTS.REACTIONS)
+Object.freeze(CONSTANTS.TOPICS)
+Object.freeze(CONSTANTS)
+
 module.exports = CONSTANTS

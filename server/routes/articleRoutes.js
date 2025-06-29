@@ -6,6 +6,7 @@ const ArticleController = require('../controllers/ArticleController')
 // ? cors? jwt auth token?
 router.get('/getArticle', ArticleController.getArticle)
 router.get('/getArticles', ArticleController.getArticles)
+router.get('/searchArticles', ArticleController.searchArticles)
 router.post('/createArticle', ArticleController.createArticle)
 router.post('/updateArticle', ArticleController.updateArticle)
 router.post('/deleteArticle', ArticleController.deleteArticle)
