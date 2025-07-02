@@ -23,8 +23,7 @@ function Comment({ data }: Props) {
   /**
    * Add a like to the comment.
    */
-  const addCommentLikeHandler = async (): Promise<void> => {
-    // TODO: account check
+  async function addCommentLikeHandler(): Promise<void> {
     const added: boolean = await addCommentLike(comment._id)
     if (added) {
       setComment({
@@ -37,7 +36,7 @@ function Comment({ data }: Props) {
   /**
    * Update the comment.
    */
-  const updateCommentHandler = async (): Promise<void> => {
+  async function updateCommentHandler(): Promise<void> {
     if (editText.length == 0 || editText.length > CONSTANTS.REPLY_MAX_LENGTH) {
       alert(
         `Comment must be between 1 and ${CONSTANTS.COMMENT_MAX_LENGTH} characters.`
@@ -60,7 +59,7 @@ function Comment({ data }: Props) {
   /**
    * Add a reply to the comment.
    */
-  const addReplyHandler = async (): Promise<void> => {
+  async function addReplyHandler(): Promise<void> {
     if (
       replyText.length == 0 ||
       replyText.length > CONSTANTS.REPLY_MAX_LENGTH
@@ -84,7 +83,7 @@ function Comment({ data }: Props) {
   /**
    * Delete the comment.
    */
-  const deleteCommentHandler = async (): Promise<void> => {
+  async function deleteCommentHandler(): Promise<void> {
     const deleted: boolean = await deleteComment(comment!._id)
     setHidden(deleted)
   }

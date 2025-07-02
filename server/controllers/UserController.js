@@ -2,7 +2,7 @@ const Realm = require('realm')
 const User = require('../models/User.js')
 
 // TODO: can i check this in O(1) by setting PK to username?
-const checkUserExists = async (request, response) => {
+function checkUserExists(request, response) {
   try {
     const realm = request.realm
 
@@ -21,7 +21,7 @@ const checkUserExists = async (request, response) => {
   }
 }
 
-const createUser = async (request, response) => {
+function createUser(request, response) {
   try {
     const realm = request.realm
 

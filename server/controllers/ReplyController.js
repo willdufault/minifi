@@ -9,7 +9,7 @@ const Comment = require('../models/Comment.js')
  * @param {Express.Request} request Express request.
  * @param {Express.Response} response Express response.
  */
-const addReply = async (request, response) => {
+function addReply(request, response) {
   try {
     const realm = request.realm
     const { commentId, text } = request.body
@@ -47,7 +47,7 @@ const addReply = async (request, response) => {
  * @param {Express.Request} request Express request.
  * @param {Express.Response} response Express response.
  */
-const addReplyLike = async (request, response) => {
+function addReplyLike(request, response) {
   try {
     // TODO: comment null checks
     const realm = request.realm
@@ -68,7 +68,7 @@ const addReplyLike = async (request, response) => {
  * @param {Express.Request} request Express request.
  * @param {Express.Response} response Express response.
  */
-const updateReply = async (request, response) => {
+function updateReply(request, response) {
   try {
     // TODO: comment null checks
     const realm = request.realm
@@ -89,7 +89,7 @@ const updateReply = async (request, response) => {
  * @param {Express.Request} request Express request.
  * @param {Express.Response} response Express response.
  */
-const deleteReply = async (request, response) => {
+function deleteReply(request, response) {
   try {
     // TODO: comment null checks
     const realm = request.realm

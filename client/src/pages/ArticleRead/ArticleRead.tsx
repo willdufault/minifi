@@ -22,7 +22,7 @@ import { Reactions as ReactionsType } from '../../types/Reactions.ts'
 function ArticleRead() {
   const origin: string = window.location.origin
   const location: Location = useLocation()
-  const navigator: NavigateFunction = useNavigate()
+  const navigate: NavigateFunction = useNavigate()
 
   const [article, setArticle] = useState<ArticleType | null>(null)
   const [loading, setLoading] = useState<boolean>(true)
@@ -44,17 +44,17 @@ function ArticleRead() {
   /**
    * Delete the article and redirect the user to the homepage.
    */
-  const deleteArticleHandler = async (): Promise<void> => {
+  async function deleteArticleHandler(): Promise<void> {
     const deleted: boolean = await deleteArticle(articleId!)
     if (deleted) {
-      navigator('/')
+      navigate('/')
     }
   }
 
   /**
    * Add a comment to the article.
    */
-  const addCommentHandler = async (): Promise<void> => {
+  async function addCommentHandler(): Promise<void> {
     if (commentLength == 0 || commentLength > CONSTANTS.COMMENT_MAX_LENGTH) {
       alert(
         `Comment must be between 1 and ${CONSTANTS.COMMENT_MAX_LENGTH} characters.`
@@ -77,10 +77,10 @@ function ArticleRead() {
   }
 
   /**
-   * Add a reaction to the current article.
+   * Add a reaction to the article.
    * @param reaction Reaction emoji.
    */
-  const submitReaction = async (reaction: string): Promise<void> => {
+  async function addReactionHandler(reaction: string): Promise<void> {
     if (!CONSTANTS.REACTIONS.includes(reaction)) {
       alert(`Reaction must be one of [${CONSTANTS.REACTIONS}].`)
       return
@@ -101,7 +101,7 @@ function ArticleRead() {
   /**
    * Load the article on the screen.
    */
-  const loadArticle = async (): Promise<void> => {
+  async function loadArticle(): Promise<void> {
     if (articleId === null) {
       setNotFound(true)
       setLoading(false)
@@ -143,11 +143,13 @@ function ArticleRead() {
         <h1>title: {article!.title}</h1>
         <em>topic: {article!.topic}</em>
         <p>body: {article!.body}</p>
-        {Object.entries(article!.reactions).map(([reaction, count]) => (
-          <button key={reaction} onClick={() => submitReaction(reaction)}>
-            {reaction} {count}
-          </button>
-        ))}
+        {Object.entries(article!.reactions).map(
+          ([reaction, count]: [string, number]) => (
+            <button key={reaction} onClick={() => addReactionHandler(reaction)}>
+              {reaction} {count}
+            </button>
+          )
+        )}
       </div>
       <br />
       <div style={{ border: 'solid green 1px', padding: '1rem' }}>

@@ -4,7 +4,7 @@ const Comment = require('../models/Comment.js')
 const User = require('../models/User.js')
 const Reply = require('../models/Reply.js')
 
-const getRealm = async () => {
+async function getRealm() {
   return await Realm.open({
     path: 'server/database/realm',
     schema: [Article, Comment, Reply, User],

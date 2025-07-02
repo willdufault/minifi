@@ -7,7 +7,7 @@ const Realm = require('realm')
  * @param {Express.Request} request The request.
  * @param {Express.Response} response The response.
  */
-const getArticle = async (request, response) => {
+function getArticle(request, response) {
   try {
     const realm = request.realm
     const { articleId } = request.query
@@ -27,7 +27,7 @@ const getArticle = async (request, response) => {
  * @param {Express.Request} request The request.
  * @param {Express.Response} response The response.
  */
-const getArticles = async (request, response) => {
+function getArticles(request, response) {
   try {
     const realm = request.realm
     const articles = realm.objects(Article)
@@ -43,7 +43,7 @@ const getArticles = async (request, response) => {
  * @param {Express.Request} request The request.
  * @param {Express.Response} response The response.
  */
-const searchArticles = async (request, response) => {
+function searchArticles(request, response) {
   try {
     const realm = request.realm
     const { query } = request.query
@@ -62,7 +62,7 @@ const searchArticles = async (request, response) => {
  * @param {Express.Request} request The request.
  * @param {Express.Response} response The response.
  */
-const createArticle = async (request, response) => {
+function createArticle(request, response) {
   try {
     const realm = request.realm
     const { title, body, topic } = request.body
@@ -115,7 +115,7 @@ const createArticle = async (request, response) => {
  * @param {Express.Request} request The request.
  * @param {Express.Response} response The response.
  */
-const updateArticle = async (request, response) => {
+function updateArticle(request, response) {
   try {
     const realm = request.realm
     const { articleId, title, body, topic } = request.body
@@ -166,7 +166,7 @@ const updateArticle = async (request, response) => {
  * @param {Express.Request} request The request.
  * @param {Express.Response} response The response.
  */
-const deleteArticle = async (request, response) => {
+function deleteArticle(request, response) {
   try {
     const realm = request.realm
     const { articleId } = request.body
@@ -199,7 +199,7 @@ const deleteArticle = async (request, response) => {
  * @param {Express.Request} request The request.
  * @param {Express.Response} response The response.
  */
-const addReaction = async (request, response) => {
+function addReaction(request, response) {
   try {
     const realm = request.realm
     const { articleId, reaction } = request.body

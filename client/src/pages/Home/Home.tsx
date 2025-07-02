@@ -18,7 +18,7 @@ function Home() {
    * Get a list of featured articles.
    * @returns The list of articles.
    */
-  const getFeaturedArticles = async (): Promise<ArticleType[]> => {
+  async function getFeaturedArticles(): Promise<ArticleType[]> {
     let featuredArticles: ArticleType[] = []
     for (let articleId of CONSTANTS.FEATURED_ARTICLE_IDS) {
       const responseArticle: ArticleType | null = await getArticle(articleId)
@@ -30,17 +30,18 @@ function Home() {
   }
 
   /**
-   * Load the articles on screen.
+   * Load the featured articles on screen.
    */
-  const loadArticles = async (): Promise<void> => {
-    setArticles(await getFeaturedArticles())
+  async function loadFeaturedArticles(): Promise<void> {
+    const featuredArticles: ArticleType[] = await getFeaturedArticles()
+    setArticles(featuredArticles)
     setLoading(false)
   }
 
   /**
    * Search all articles by title.
    */
-  const searchArticles = (): void => {
+  function searchArticles(): void {
     const query: string = searchInputElement.current!.value
     if (query.length > 0) {
       navigate(`/search?query=${query}`)
@@ -48,7 +49,7 @@ function Home() {
   }
 
   useEffect(() => {
-    loadArticles()
+    loadFeaturedArticles()
   }, [])
 
   if (loading) {
@@ -58,7 +59,7 @@ function Home() {
   return (
     <>
       <div>
-        <button onClick={loadArticles}>reload articles</button>
+        <button onClick={loadFeaturedArticles}>reload articles</button>
         <a href={`${origin}/write`}>
           <button>write article</button>
         </a>

@@ -19,7 +19,7 @@ function Reply({ data }: Props) {
   /**
    * Add a like to the reply.
    */
-  const addReplyLikeHandler = async (): Promise<void> => {
+  async function addReplyLikeHandler(): Promise<void> {
     // TODO: account check
     const added: boolean = await addReplyLike(reply._id)
     if (added) {
@@ -33,7 +33,7 @@ function Reply({ data }: Props) {
   /**
    * Update the reply.
    */
-  const updateReplyHandler = async (): Promise<void> => {
+  async function updateReplyHandler(): Promise<void> {
     if (editText.length == 0 || editText.length > CONSTANTS.REPLY_MAX_LENGTH) {
       alert(
         `Reply must be between 1 and ${CONSTANTS.REPLY_MAX_LENGTH} characters.`
@@ -56,7 +56,7 @@ function Reply({ data }: Props) {
   /**
    * Delete the reply.
    */
-  const deleteReplyHandler = async (): Promise<void> => {
+  async function deleteReplyHandler(): Promise<void> {
     const deleted: boolean = await deleteReply(reply!._id)
     setHidden(deleted)
   }

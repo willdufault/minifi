@@ -9,7 +9,7 @@ const CONSTANTS = require('../constants.js')
  * @param {Express.Request} request Express request.
  * @param {Express.Response} response Express response.
  */
-const addComment = async (request, response) => {
+function addComment(request, response) {
   try {
     const realm = request.realm
     const { articleId, text } = request.body
@@ -47,7 +47,7 @@ const addComment = async (request, response) => {
  * @param {Express.Request} request Express request.
  * @param {Express.Response} response Express response.
  */
-const addCommentLike = async (request, response) => {
+function addCommentLike(request, response) {
   try {
     // TODO: article null checks
     const realm = request.realm
@@ -71,7 +71,7 @@ const addCommentLike = async (request, response) => {
  * @param {Express.Request} request Express request.
  * @param {Express.Response} response Express response.
  */
-const updateComment = async (request, response) => {
+function updateComment(request, response) {
   try {
     // TODO: article null checks
     const realm = request.realm
@@ -95,7 +95,7 @@ const updateComment = async (request, response) => {
  * @param {Express.Request} request Express request.
  * @param {Express.Response} response Express response.
  */
-const deleteComment = async (request, response) => {
+function deleteComment(request, response) {
   try {
     // TODO: article null checks
     const realm = request.realm

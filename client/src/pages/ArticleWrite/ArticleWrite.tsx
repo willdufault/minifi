@@ -14,17 +14,9 @@ function ArticleWrite() {
   const [bodyLength, setBodyLength] = useState<number>(0)
 
   /**
-   * Redirect the user to the read view of their article.
-   * @param article The user's article.
+   * Create an article and redirect the user to the read view of their article.
    */
-  const openArticleRead = (articleId: string): void => {
-    navigate(`/read?id=${articleId}`)
-  }
-
-  /**
-   * Create an article.
-   */
-  const createArticleHandler = async (): Promise<void> => {
+  async function createArticleHandler(): Promise<void> {
     if (titleLength == 0 || titleLength > CONSTANTS.TITLE_MAX_LENGTH) {
       alert(
         `Title must be between 1 and ${CONSTANTS.TITLE_MAX_LENGTH} characters.`
@@ -48,7 +40,7 @@ function ArticleWrite() {
       topicSelectElement.current!.value
     )
     if (article !== null) {
-      openArticleRead(article._id)
+      navigate(`/read?id=${article._id}`)
     }
   }
 

@@ -1,22 +1,27 @@
 ### Current
 
-- arrow functions vs function keyword
-- consistent handler fcn names
-- add jsdoc comments, clean up everything (client + server)
-- add types to inline tsx (map function vars, etc.)
-- add types to useStates
-- review all code, make sure typescript vars have types
+client
+
+- jsdoc
+- type everything
+- ensure await is everywhere it's supposed to be (+ add await)
+
+server
+
+- occams razor args
+- jsdoc
 
 ---
 
 ### Next
 
-- add types to inline tsx (map function vars, etc.)
-- add types to useStates
-- review all code, make sure typescript vars have types
-
 - null/param checks on node
 - validate/clean user input
+
+- client cr
+- server cr
+
+- full e2e testing
 
 ---
 

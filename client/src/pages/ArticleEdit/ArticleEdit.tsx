@@ -1,11 +1,13 @@
 import { useEffect, useRef, useState } from 'react'
 import { NavigateFunction, useNavigate } from 'react-router'
+import Loading from '../../components/Loading/Loading'
 import NotFound from '../../components/NotFound/NotFound'
 import CONSTANTS from '../../constants'
 import { getArticle, updateArticle } from '../../services/ArticleService'
 import { Article as ArticleType } from '../../types/Article'
 
 function ArticleEdit() {
+  const origin: string = window.location.origin
   const navigate: NavigateFunction = useNavigate()
 
   const [article, setArticle] = useState<ArticleType | null>(null)
@@ -21,7 +23,7 @@ function ArticleEdit() {
    * Get the article ID from the query parameters.
    * @returns The article ID.
    */
-  const getArticleId = (): string | null => {
+  function getArticleId(): string | null {
     const queryParameters = new URLSearchParams(location.search)
     return queryParameters.get('id')
   }
@@ -29,17 +31,9 @@ function ArticleEdit() {
   const articleId: string | null = getArticleId()
 
   /**
-   * Redirect the user to the read view of the article.
+   * Update the article and redirect the user to the read view of their article.
    */
-  const openArticleRead = (): void => {
-    navigate(`/read?id=${articleId}`)
-  }
-
-  /**
-   * Update the article.
-   * @param articleId The article ID.
-   */
-  const updateArticleHandler = async (articleId: string): Promise<void> => {
+  async function updateArticleHandler(): Promise<void> {
     if (titleLength == 0 || titleLength > CONSTANTS.TITLE_MAX_LENGTH) {
       alert(
         `Title must be between 1 and ${CONSTANTS.TITLE_MAX_LENGTH} characters.`
@@ -58,42 +52,45 @@ function ArticleEdit() {
     }
 
     const article: ArticleType | null = await updateArticle(
-      articleId,
+      articleId!,
       titleInputElement.current!.value,
       bodyInputElement.current!.value,
       topicSelectElement.current!.value
     )
     if (article !== null) {
-      openArticleRead()
+      navigate(`/read?id=${articleId}`)
     }
   }
 
   /**
    * Load the article into the input fields.
-   * @param articleId The article ID.
    */
-  const loadArticle = async (articleId: string | null): Promise<void> => {
+  async function loadArticleFields(): Promise<void> {
     if (articleId === null) {
       setNotFound(true)
-    } else {
-      const responseArticle = await getArticle(articleId)
-      if (responseArticle === null) {
-        setNotFound(true)
-      } else {
-        setArticle(responseArticle)
-        setTitleLength(responseArticle.title.length)
-        setBodyLength(responseArticle.body.length)
-      }
+      setLoading(false)
+      return
     }
+
+    const responseArticle = await getArticle(articleId)
+    if (responseArticle === null) {
+      setNotFound(true)
+      setLoading(false)
+      return
+    }
+
+    setArticle(responseArticle)
+    setTitleLength(responseArticle!.title.length)
+    setBodyLength(responseArticle!.body.length)
     setLoading(false)
   }
 
   useEffect(() => {
-    loadArticle(articleId)
+    loadArticleFields()
   }, [])
 
   if (loading) {
-    return <p>loading...</p>
+    return <Loading />
   }
 
   if (notFound) {
@@ -137,8 +134,10 @@ function ArticleEdit() {
         </p>
       </div>
       <br />
-      <button onClick={() => updateArticleHandler(articleId!)}>update</button>
-      <button onClick={openArticleRead}>cancel</button>
+      <button onClick={updateArticleHandler}>update</button>
+      <a href={`${origin}/read?id=${articleId}`}>
+        <button>cancel</button>
+      </a>
     </>
   )
 }

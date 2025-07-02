@@ -14,7 +14,7 @@ function ArticleSearch() {
    * Get the search query from the query parameters.
    * @returns The search query.
    */
-  const getQuery = (): string | null => {
+  function getQuery(): string | null {
     const queryParameters = new URLSearchParams(location.search)
     return queryParameters.get('query')
   }
@@ -22,9 +22,9 @@ function ArticleSearch() {
   const query: string | null = getQuery()
 
   /**
-   * Load the article on the screen.
+   * Load the search results on the screen.
    */
-  const loadArticles = async (): Promise<void> => {
+  async function loadSearchResults(): Promise<void> {
     if (query === null) {
       setNotFound(true)
       setLoading(false)
@@ -43,7 +43,7 @@ function ArticleSearch() {
   }
 
   useEffect(() => {
-    loadArticles()
+    loadSearchResults()
   }, [])
 
   if (loading) {
