@@ -17,13 +17,17 @@ function ArticleWrite() {
    * Create an article and redirect the user to the read view of their article.
    */
   async function createArticleHandler(): Promise<void> {
-    if (titleLength == 0 || titleLength > CONSTANTS.TITLE_MAX_LENGTH) {
+    if (titleLength == 0 || bodyLength == 0) {
+      return
+    }
+
+    if (titleLength > CONSTANTS.TITLE_MAX_LENGTH) {
       alert(
         `Title must be between 1 and ${CONSTANTS.TITLE_MAX_LENGTH} characters.`
       )
       return
     }
-    if (bodyLength == 0 || bodyLength > CONSTANTS.BODY_MAX_LENGTH) {
+    if (bodyLength > CONSTANTS.BODY_MAX_LENGTH) {
       alert(
         `Body must be between 1 and ${CONSTANTS.BODY_MAX_LENGTH} characters.`
       )

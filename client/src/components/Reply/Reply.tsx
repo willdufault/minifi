@@ -33,7 +33,11 @@ function Reply({ data }: Props) {
    * Update the reply.
    */
   async function updateReplyHandler(): Promise<void> {
-    if (editText.length == 0 || editText.length > CONSTANTS.REPLY_MAX_LENGTH) {
+    if (editText.length == 0) {
+      return
+    }
+
+    if (editText.length > CONSTANTS.REPLY_MAX_LENGTH) {
       alert(
         `Reply must be between 1 and ${CONSTANTS.REPLY_MAX_LENGTH} characters.`
       )

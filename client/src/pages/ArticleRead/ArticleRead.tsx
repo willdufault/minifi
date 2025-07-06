@@ -57,7 +57,11 @@ function ArticleRead() {
    * Add a comment to the article.
    */
   async function addCommentHandler(): Promise<void> {
-    if (commentLength == 0 || commentLength > CONSTANTS.COMMENT_MAX_LENGTH) {
+    if (commentLength == 0) {
+      return
+    }
+
+    if (commentLength > CONSTANTS.COMMENT_MAX_LENGTH) {
       alert(
         `Comment must be between 1 and ${CONSTANTS.COMMENT_MAX_LENGTH} characters.`
       )

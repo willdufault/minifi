@@ -37,7 +37,11 @@ function Comment({ data }: Props) {
    * Update the comment.
    */
   async function updateCommentHandler(): Promise<void> {
-    if (editText.length == 0 || editText.length > CONSTANTS.REPLY_MAX_LENGTH) {
+    if (editText.length == 0) {
+      return
+    }
+
+    if (editText.length > CONSTANTS.REPLY_MAX_LENGTH) {
       alert(
         `Comment must be between 1 and ${CONSTANTS.COMMENT_MAX_LENGTH} characters.`
       )
@@ -60,17 +64,21 @@ function Comment({ data }: Props) {
    * Add a reply to the comment.
    */
   async function addReplyHandler(): Promise<void> {
-    if (
-      replyText.length == 0 ||
-      replyText.length > CONSTANTS.REPLY_MAX_LENGTH
-    ) {
+    if (replyText.length == 0) {
+      return
+    }
+
+    if (replyText.length > CONSTANTS.REPLY_MAX_LENGTH) {
       alert(
         `Reply must be between 1 and ${CONSTANTS.REPLY_MAX_LENGTH} characters.`
       )
       return
     }
 
-    const responseReply: ReplyType | null = await addReply(comment!._id, replyText)
+    const responseReply: ReplyType | null = await addReply(
+      comment!._id,
+      replyText
+    )
     if (responseReply !== null) {
       setComment({
         ...comment,
