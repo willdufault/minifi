@@ -1,15 +1,10 @@
 ### Current
 
-- client cr
-- server cr
+- full e2e testing
 
 ---
 
 ### Next
-
-- remove old api calls (getarticles)
-
-- full e2e testing
 
 ---
 

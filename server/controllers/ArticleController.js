@@ -23,22 +23,6 @@ function getArticle(request, response) {
 }
 
 /**
- * Get all articles.
- * @param {Express.Request} request The request.
- * @param {Express.Response} response The response.
- */
-function getArticles(request, response) {
-  try {
-    const realm = request.realm
-    const articles = realm.objects(Article)
-    response.status(200).send({ body: { articles } })
-  } catch (error) {
-    console.log(error)
-    response.status(400).send(error)
-  }
-}
-
-/**
  * Search all articles.
  * @param {Express.Request} request The request.
  * @param {Express.Response} response The response.
@@ -235,7 +219,6 @@ function addReaction(request, response) {
 
 module.exports = {
   getArticle,
-  getArticles,
   searchArticles,
   createArticle,
   updateArticle,

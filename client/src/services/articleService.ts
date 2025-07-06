@@ -22,22 +22,6 @@ export async function getArticle(
 }
 
 /**
- * Get a list of all articles.
- * @returns The list of articles.
- */
-export async function getArticles(): Promise<ArticleType[] | null> {
-  try {
-    const response: AxiosResponse<ApiResponses.GetArticlesResponse> =
-      await axios.get('/api/getArticles')
-    const data: ApiResponses.GetArticlesResponse = response.data
-    return data.body.articles
-  } catch (error) {
-    console.log(error)
-    return null
-  }
-}
-
-/**
  * Search all articles.
  * @param query The query.
  * @returns The list of articles.
