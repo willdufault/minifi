@@ -39,7 +39,7 @@ export async function getArticles(): Promise<ArticleType[] | null> {
 
 /**
  * Search all articles.
- * @param query The search query.
+ * @param query The query.
  * @returns The list of articles.
  */
 export async function searchArticles(
@@ -119,7 +119,6 @@ export async function updateArticle(
   }
 }
 
-// TODO: tie reactions to user, persistent + block >1 reactions
 /**
  * Add a reaction to an article.
  * @param articleId The article ID.

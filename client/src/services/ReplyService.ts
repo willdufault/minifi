@@ -23,7 +23,6 @@ export async function addReply(
   }
 }
 
-// TODO: tie likes to user, persistent + block >1 likes
 /**
  * Add a like to a reply.
  * @param replyId The reply ID.

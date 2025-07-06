@@ -34,8 +34,10 @@ function ArticleRead() {
    * Get the article ID from the query parameters.
    * @returns The article ID.
    */
-  const getArticleId = (): string | null => {
-    const queryParameters = new URLSearchParams(location.search)
+  function getArticleId(): string | null {
+    const queryParameters: URLSearchParams = new URLSearchParams(
+      location.search
+    )
     return queryParameters.get('id')
   }
 
@@ -62,14 +64,14 @@ function ArticleRead() {
       return
     }
 
-    const comment: CommentType | null = await addComment(
+    const responseComment: CommentType | null = await addComment(
       articleId!,
       commentInputElement.current!.value
     )
-    if (comment !== null) {
+    if (responseComment !== null) {
       setArticle({
         ...article!,
-        comments: [comment, ...article!.comments],
+        comments: [responseComment, ...article!.comments],
       })
       commentInputElement.current!.value = ''
       setCommentLength(0)
@@ -108,7 +110,7 @@ function ArticleRead() {
       return
     }
 
-    const responseArticle = await getArticle(articleId)
+    const responseArticle: ArticleType | null = await getArticle(articleId)
     if (responseArticle === null) {
       setNotFound(true)
       setLoading(false)

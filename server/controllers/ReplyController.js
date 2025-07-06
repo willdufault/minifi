@@ -3,7 +3,6 @@ const CONSTANTS = require('../constants.js')
 const Reply = require('../models/Reply.js')
 const Comment = require('../models/Comment.js')
 
-// TODO: Article (or any param) null checks
 /**
  * Add a reply to a comment.
  * @param {Express.Request} request Express request.
@@ -49,7 +48,6 @@ function addReply(request, response) {
  */
 function addReplyLike(request, response) {
   try {
-    // TODO: comment null checks
     const realm = request.realm
     const { replyId } = request.body
     const reply = realm.objectForPrimaryKey(Reply, Realm.BSON.ObjectId(replyId))
@@ -70,9 +68,18 @@ function addReplyLike(request, response) {
  */
 function updateReply(request, response) {
   try {
-    // TODO: comment null checks
     const realm = request.realm
     const { replyId, text } = request.body
+
+    if (text.length == 0 || text.length > CONSTANTS.REPLY_MAX_LENGTH) {
+      response.status(400).send({
+        body: {
+          message: `Reply must be between 1 and ${CONSTANTS.REPLY_MAX_LENGTH} characters.`,
+        },
+      })
+      return
+    }
+
     const reply = realm.objectForPrimaryKey(Reply, Realm.BSON.ObjectId(replyId))
     realm.write(() => {
       reply.text = text
@@ -91,7 +98,6 @@ function updateReply(request, response) {
  */
 function deleteReply(request, response) {
   try {
-    // TODO: comment null checks
     const realm = request.realm
     const { replyId } = request.body
     const reply = realm.objectForPrimaryKey(Reply, Realm.BSON.ObjectId(replyId))

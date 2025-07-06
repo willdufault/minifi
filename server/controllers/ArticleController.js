@@ -47,6 +47,12 @@ function searchArticles(request, response) {
   try {
     const realm = request.realm
     const { query } = request.query
+
+    if (query.length == 0) {
+      response.status(200).send({ body: { articles: [] } })
+      return
+    }
+
     const articles = realm
       .objects(Article)
       .filtered(`title BEGINSWITH "${query}"`)
@@ -86,7 +92,7 @@ function createArticle(request, response) {
     if (!CONSTANTS.TOPICS.includes(topic)) {
       response.status(400).send({
         body: {
-          message: `Topic must be one of [${CONSTANTS.TOPICS}].`,
+          message: `Topic must be one of ${CONSTANTS.TOPICS}.`,
         },
       })
       return
@@ -139,7 +145,7 @@ function updateArticle(request, response) {
     if (!CONSTANTS.TOPICS.includes(topic)) {
       response.status(400).send({
         body: {
-          message: `Topic must be one of [${CONSTANTS.TOPICS}].`,
+          message: `Topic must be one of ${CONSTANTS.TOPICS}.`,
         },
       })
       return
@@ -207,7 +213,7 @@ function addReaction(request, response) {
     if (!CONSTANTS.REACTIONS.includes(reaction)) {
       response.status(400).send({
         body: {
-          message: `Reaction must be one of [${CONSTANTS.REACTIONS}].`,
+          message: `Reaction must be one of ${CONSTANTS.REACTIONS}.`,
         },
       })
       return

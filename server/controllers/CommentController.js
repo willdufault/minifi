@@ -3,7 +3,6 @@ const Comment = require('../models/Comment.js')
 const Realm = require('realm')
 const CONSTANTS = require('../constants.js')
 
-// TODO: Article (or any param) null checks
 /**
  * Add a comment to an article.
  * @param {Express.Request} request Express request.
@@ -49,7 +48,6 @@ function addComment(request, response) {
  */
 function addCommentLike(request, response) {
   try {
-    // TODO: article null checks
     const realm = request.realm
     const { commentId } = request.body
     const comment = realm.objectForPrimaryKey(
@@ -73,9 +71,18 @@ function addCommentLike(request, response) {
  */
 function updateComment(request, response) {
   try {
-    // TODO: article null checks
     const realm = request.realm
     const { commentId, text } = request.body
+
+    if (text.length == 0 || text.length > CONSTANTS.COMMENT_MAX_LENGTH) {
+      response.status(400).send({
+        body: {
+          message: `Comment must be between 1 and ${CONSTANTS.COMMENT_MAX_LENGTH} characters.`,
+        },
+      })
+      return
+    }
+
     const comment = realm.objectForPrimaryKey(
       Comment,
       Realm.BSON.ObjectId(commentId)
@@ -97,7 +104,6 @@ function updateComment(request, response) {
  */
 function deleteComment(request, response) {
   try {
-    // TODO: article null checks
     const realm = request.realm
     const { commentId } = request.body
     const comment = realm.objectForPrimaryKey(

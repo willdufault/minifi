@@ -24,7 +24,9 @@ function ArticleEdit() {
    * @returns The article ID.
    */
   function getArticleId(): string | null {
-    const queryParameters = new URLSearchParams(location.search)
+    const queryParameters: URLSearchParams = new URLSearchParams(
+      location.search
+    )
     return queryParameters.get('id')
   }
 
@@ -47,17 +49,17 @@ function ArticleEdit() {
       return
     }
     if (!CONSTANTS.TOPICS.includes(topicSelectElement.current!.value)) {
-      alert(`Topic must be one of  ${CONSTANTS.TOPICS}.`)
+      alert(`Topic must be one of ${CONSTANTS.TOPICS}.`)
       return
     }
 
-    const article: ArticleType | null = await updateArticle(
+    const responseArticle: ArticleType | null = await updateArticle(
       articleId!,
       titleInputElement.current!.value,
       bodyInputElement.current!.value,
       topicSelectElement.current!.value
     )
-    if (article !== null) {
+    if (responseArticle !== null) {
       navigate(`/read?id=${articleId}`)
     }
   }
@@ -72,7 +74,7 @@ function ArticleEdit() {
       return
     }
 
-    const responseArticle = await getArticle(articleId)
+    const responseArticle: ArticleType | null = await getArticle(articleId)
     if (responseArticle === null) {
       setNotFound(true)
       setLoading(false)

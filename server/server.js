@@ -5,6 +5,9 @@ const articleRoutes = require('./routes/articleRoutes.js')
 const commentRoutes = require('./routes/commentRoutes.js')
 const replyRoutes = require('./routes/replyRoutes.js')
 
+/**
+ * Initializes the server.
+ */
 async function main() {
   const app = express()
   const port = 3000

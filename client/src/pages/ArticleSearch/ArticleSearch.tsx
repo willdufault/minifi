@@ -11,11 +11,11 @@ function ArticleSearch() {
   const [notFound, setNotFound] = useState<boolean>(false)
 
   /**
-   * Get the search query from the query parameters.
-   * @returns The search query.
+   * Get the query from the query parameters.
+   * @returns The query.
    */
   function getQuery(): string | null {
-    const queryParameters = new URLSearchParams(location.search)
+    const queryParameters: URLSearchParams = new URLSearchParams(location.search)
     return queryParameters.get('query')
   }
 
@@ -31,7 +31,7 @@ function ArticleSearch() {
       return
     }
 
-    const responseArticles = await searchArticles(query)
+    const responseArticles: ArticleType[] | null = await searchArticles(query)
     if (responseArticles === null) {
       setNotFound(true)
       setLoading(false)

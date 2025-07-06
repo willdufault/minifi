@@ -70,11 +70,11 @@ function Comment({ data }: Props) {
       return
     }
 
-    const reply: ReplyType | null = await addReply(comment!._id, replyText)
-    if (reply !== null) {
+    const responseReply: ReplyType | null = await addReply(comment!._id, replyText)
+    if (responseReply !== null) {
       setComment({
         ...comment,
-        replies: [reply, ...comment.replies],
+        replies: [responseReply, ...comment.replies],
       })
       setReplyText('')
     }

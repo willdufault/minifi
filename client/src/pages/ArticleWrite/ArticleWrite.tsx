@@ -7,11 +7,11 @@ import { Article as ArticleType } from '../../types/Article'
 function ArticleWrite() {
   const navigate: NavigateFunction = useNavigate()
 
+  const [titleLength, setTitleLength] = useState<number>(0)
+  const [bodyLength, setBodyLength] = useState<number>(0)
   const titleInputElement = useRef<HTMLInputElement>(null)
   const bodyInputElement = useRef<HTMLTextAreaElement>(null)
   const topicSelectElement = useRef<HTMLSelectElement>(null)
-  const [titleLength, setTitleLength] = useState<number>(0)
-  const [bodyLength, setBodyLength] = useState<number>(0)
 
   /**
    * Create an article and redirect the user to the read view of their article.
@@ -30,17 +30,17 @@ function ArticleWrite() {
       return
     }
     if (!CONSTANTS.TOPICS.includes(topicSelectElement.current!.value)) {
-      alert(`Topic must be one of  ${CONSTANTS.TOPICS}.`)
+      alert(`Topic must be one of ${CONSTANTS.TOPICS}.`)
       return
     }
 
-    const article: ArticleType | null = await createArticle(
+    const responseArticle: ArticleType | null = await createArticle(
       titleInputElement.current!.value,
       bodyInputElement.current!.value,
       topicSelectElement.current!.value
     )
-    if (article !== null) {
-      navigate(`/read?id=${article._id}`)
+    if (responseArticle !== null) {
+      navigate(`/read?id=${responseArticle._id}`)
     }
   }
 

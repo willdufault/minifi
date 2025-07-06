@@ -16,7 +16,7 @@ function Home() {
 
   /**
    * Get a list of featured articles.
-   * @returns The list of articles.
+   * @returns The list of featured articles.
    */
   async function getFeaturedArticles(): Promise<ArticleType[]> {
     let featuredArticles: ArticleType[] = []
@@ -39,7 +39,7 @@ function Home() {
   }
 
   /**
-   * Search all articles by title.
+   * Redirect the user to the search page with their query.
    */
   function searchArticles(): void {
     const query: string = searchInputElement.current!.value

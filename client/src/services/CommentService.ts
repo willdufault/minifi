@@ -23,7 +23,6 @@ export async function addComment(
   }
 }
 
-// TODO: tie likes to user, persistent + block >1 likes
 /**
  * Add a like to a comment.
  * @param commentId The comment ID.

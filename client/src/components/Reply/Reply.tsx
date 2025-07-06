@@ -20,7 +20,6 @@ function Reply({ data }: Props) {
    * Add a like to the reply.
    */
   async function addReplyLikeHandler(): Promise<void> {
-    // TODO: account check
     const added: boolean = await addReplyLike(reply._id)
     if (added) {
       setReply({
