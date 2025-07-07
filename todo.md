@@ -6,11 +6,12 @@
 
 ### Next
 
+- full ui (tailwind, mobile first)
+
 ---
 
 ### Core
 
-- full ui (tailwind, mobile first)
 - set up glitch.me
 - set up domain (willdufault.dev/...)
 
