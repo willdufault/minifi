@@ -1,3 +1,5 @@
+import { Link } from 'react-router'
+import CONSTANTS from '../../constants.ts'
 import { Article as ArticleType } from '../../types/Article.ts'
 
 type Props = {
@@ -6,20 +8,37 @@ type Props = {
 
 function Article({ data }: Props) {
   const article: ArticleType = data
+
+  function getTruncatedBody(): string {
+    if (article.body.length < 100) {
+      return article.body
+    }
+    return `${article.body.substring(0, 100)}...`
+  }
+
+  function getReactionTotal(): number {
+    let total = 0
+    for (const count of Object.values(article.reactions)) {
+      total += count
+    }
+    return total
+  }
+
   return (
     <>
-      <div style={{ border: 'solid black 1px', padding: '1rem' }}>
-        <a href={`${origin}/read?id=${article._id}`}>link</a>
-        <h1>{article.title}</h1>
-        <em>{article.topic}</em>
-        <p>{article.body}</p>
-        {Object.entries(article.reactions).map(
-          ([reaction, count]: [string, number]) => (
-            <p key={reaction}>
-              {reaction} {count}
-            </p>
-          )
-        )}
+      <div>
+        <Link
+          className="font-bold text-xl w-fit mb-1 block hover:underline"
+          to={`/read?id=${article._id}`}
+        >
+          {article.title}
+        </Link>
+        <p className="text-sm text-gray-500 mb-4">{getTruncatedBody()}</p>
+        <p>
+          {CONSTANTS.TOPIC_TO_EMOJI[article.topic]} {article.topic}
+          &nbsp;&nbsp;•&nbsp;&nbsp;👏 {getReactionTotal()}
+          &nbsp;&nbsp;•&nbsp;&nbsp;💬 {article.comments.length}
+        </p>
       </div>
     </>
   )

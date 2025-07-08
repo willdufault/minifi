@@ -5,12 +5,19 @@ const CONSTANTS: Record<string, any> = {
   REPLY_MAX_LENGTH: 50,
   REACTIONS: ['👍', '❤️', '🔥', '😂', '🐐'],
   TOPICS: ['AI', 'Software', 'Cloud', 'Cybersecurity', 'Other'],
+  TOPIC_TO_EMOJI: {
+    AI: '🧠',
+    Software: '💻',
+    Cloud: '☁️',
+    Cybersecurity: '🔒',
+    Other: '❓',
+  },
   FEATURED_ARTICLE_IDS: [
-    '68613da526eaa646a282d481',
-    '68613dbd26eaa646a282d482',
-    '68613d8026eaa646a282d480',
-    '68613ddc26eaa646a282d483',
-    '68613df226eaa646a282d484',
+    '686c5c572a1135ef5127e6fc',
+    '686c5cdb12685a4e5b34a405',
+    '686c5ce912685a4e5b34a406',
+    '686c69e6749a8ea88649dc44',
+    '686c69fe749a8ea88649dc45',
   ],
 } as const
 

@@ -1,18 +1,17 @@
-import { useEffect, useRef, useState } from 'react'
-import { NavigateFunction, useNavigate } from 'react-router'
+import { useEffect, useState } from 'react'
 import Article from '../../components/Article/Article.tsx'
+import Container from '../../components/Container/Container.tsx'
+import Divider from '../../components/Divider/Divider.tsx'
+import Footer from '../../components/Footer/Footer.tsx'
 import Loading from '../../components/Loading/Loading.tsx'
+import NavigationBar from '../../components/NavigationBar/NavigationBar.tsx'
 import CONSTANTS from '../../constants.ts'
 import { getArticle } from '../../services/ArticleService.ts'
 import { Article as ArticleType } from '../../types/Article.ts'
 
 function Home() {
-  const origin: string = window.location.origin
-  const navigate: NavigateFunction = useNavigate()
-
   const [articles, setArticles] = useState<ArticleType[]>([])
   const [loading, setLoading] = useState<boolean>(true)
-  const searchInputElement = useRef<HTMLInputElement>(null)
 
   /**
    * Get a list of featured articles.
@@ -38,16 +37,6 @@ function Home() {
     setLoading(false)
   }
 
-  /**
-   * Redirect the user to the search page with their query.
-   */
-  function searchArticles(): void {
-    const query: string = searchInputElement.current!.value
-    if (query.length > 0) {
-      navigate(`/search?query=${query}`)
-    }
-  }
-
   useEffect(() => {
     loadFeaturedArticles()
   }, [])
@@ -58,19 +47,17 @@ function Home() {
 
   return (
     <>
-      <div>
-        <button onClick={loadFeaturedArticles}>reload articles</button>
-        <a href={`${origin}/write`}>
-          <button>write article</button>
-        </a>
-        <input placeholder="search here" ref={searchInputElement}></input>
-        <button onClick={searchArticles}>search</button>
-      </div>
-      <br />
-      <h1>Featured articles:</h1>
-      {articles.map((article) => (
-        <Article key={article._id} data={article} />
-      ))}
+      <NavigationBar />
+      <Container>
+        <h1 className="text-2xl font-bold">Featured</h1>
+        {articles.map((article) => (
+          <>
+            <Divider />
+            <Article key={article._id} data={article} />
+          </>
+        ))}
+      </Container>
+      <Footer />
     </>
   )
 }

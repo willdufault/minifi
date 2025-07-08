@@ -1,0 +1,6 @@
+@import 'tailwindcss';
+
+html {
+  font-size: 110%;
+  @apply scroll-smooth;
+}
