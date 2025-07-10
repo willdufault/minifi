@@ -26,7 +26,7 @@ function Article({ data }: Props) {
 
   return (
     <>
-      <div>
+      <div className="wrap-break-word">
         <Link
           className="font-bold text-xl w-fit mb-1 block hover:underline"
           to={`/read?id=${article._id}`}

@@ -1,10 +1,35 @@
 import { faPenToSquare } from '@fortawesome/free-solid-svg-icons'
-import { Link, NavigateFunction, useNavigate } from 'react-router'
+import { ReactNode } from 'react'
+import {
+  Link,
+  Location,
+  NavigateFunction,
+  useLocation,
+  useNavigate,
+} from 'react-router'
 import IconButton from '../IconButton/IconButton'
 import SearchBar from '../SearchBar/SearchBar'
 
 function NavigationBar() {
+  const location: Location = useLocation()
   const navigate: NavigateFunction = useNavigate()
+
+  /**
+   * Render the write button.
+   * @returns The write button.
+   */
+  function renderWriteButton(): ReactNode {
+    if (location.pathname !== '/write') {
+      return (
+        <IconButton
+          icon={faPenToSquare}
+          text="Write"
+          color="blue"
+          callback={() => navigate('/write')}
+        />
+      )
+    }
+  }
 
   return (
     <>
@@ -16,12 +41,7 @@ function NavigationBar() {
         </Link>
         <div className="flex gap-4">
           <SearchBar />
-          <IconButton
-            icon={faPenToSquare}
-            text="Write"
-            color="blue"
-            callback={() => navigate('/write')}
-          />
+          {renderWriteButton()}
         </div>
       </div>
     </>

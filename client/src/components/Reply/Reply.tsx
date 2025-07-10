@@ -1,9 +1,9 @@
 import { useState } from 'react'
 import CONSTANTS from '../../constants.ts'
 import {
-  addReplyLike,
-  deleteReply,
-  updateReply,
+    addReplyLike,
+    deleteReply,
+    updateReply,
 } from '../../services/ReplyService.ts'
 import { Reply as ReplyType } from '../../types/Reply'
 
@@ -33,7 +33,7 @@ function Reply({ data }: Props) {
    * Update the reply.
    */
   async function updateReplyHandler(): Promise<void> {
-    if (editText.length == 0) {
+    if (editText.length === 0) {
       return
     }
 

@@ -36,7 +36,7 @@ function ArticleEdit() {
    * Update the article and redirect the user to the read view of their article.
    */
   async function updateArticleHandler(): Promise<void> {
-    if (titleLength == 0 || bodyLength == 0) {
+    if (titleLength === 0 || bodyLength === 0) {
       return
     }
 
@@ -53,7 +53,7 @@ function ArticleEdit() {
       return
     }
     if (!CONSTANTS.TOPICS.includes(topicSelectElement.current!.value)) {
-      alert(`Topic must be one of ${CONSTANTS.TOPICS}.`)
+      alert(`Topic must be one of [${CONSTANTS.TOPICS}].`)
       return
     }
 

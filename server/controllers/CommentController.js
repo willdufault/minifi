@@ -13,7 +13,7 @@ function addComment(request, response) {
     const realm = request.realm
     const { articleId, text } = request.body
 
-    if (text.length == 0 || text.length > CONSTANTS.COMMENT_MAX_LENGTH) {
+    if (text.length === 0 || text.length > CONSTANTS.COMMENT_MAX_LENGTH) {
       response.status(400).send({
         body: {
           message: `Comment must be between 1 and ${CONSTANTS.COMMENT_MAX_LENGTH} characters.`,
@@ -74,7 +74,7 @@ function updateComment(request, response) {
     const realm = request.realm
     const { commentId, text } = request.body
 
-    if (text.length == 0 || text.length > CONSTANTS.COMMENT_MAX_LENGTH) {
+    if (text.length === 0 || text.length > CONSTANTS.COMMENT_MAX_LENGTH) {
       response.status(400).send({
         body: {
           message: `Comment must be between 1 and ${CONSTANTS.COMMENT_MAX_LENGTH} characters.`,

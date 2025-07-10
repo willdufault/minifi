@@ -32,14 +32,14 @@ function searchArticles(request, response) {
     const realm = request.realm
     const { query } = request.query
 
-    if (query.length == 0) {
+    if (query.length === 0) {
       response.status(200).send({ body: { articles: [] } })
       return
     }
 
     const articles = realm
       .objects(Article)
-      .filtered(`title BEGINSWITH "${query}"`)
+      .filtered(`title BEGINSWITH[c] "${query}"`)
     response.status(200).send({ body: { articles } })
   } catch (error) {
     console.log(error)
@@ -57,7 +57,7 @@ function createArticle(request, response) {
     const realm = request.realm
     const { title, body, topic } = request.body
 
-    if (title.length == 0 || title.length > CONSTANTS.TITLE_MAX_LENGTH) {
+    if (title.length === 0 || title.length > CONSTANTS.TITLE_MAX_LENGTH) {
       response.status(400).send({
         body: {
           message: `Title must be between 1 and ${CONSTANTS.TITLE_MAX_LENGTH} characters.`,
@@ -65,7 +65,7 @@ function createArticle(request, response) {
       })
       return
     }
-    if (body.length == 0 || body.length > CONSTANTS.BODY_MAX_LENGTH) {
+    if (body.length === 0 || body.length > CONSTANTS.BODY_MAX_LENGTH) {
       response.status(400).send({
         body: {
           message: `Body must be between 1 and ${CONSTANTS.BODY_MAX_LENGTH} characters.`,
@@ -76,7 +76,7 @@ function createArticle(request, response) {
     if (!CONSTANTS.TOPICS.includes(topic)) {
       response.status(400).send({
         body: {
-          message: `Topic must be one of ${CONSTANTS.TOPICS}.`,
+          message: `Topic must be one of [${CONSTANTS.TOPICS}].`,
         },
       })
       return
@@ -110,7 +110,7 @@ function updateArticle(request, response) {
     const realm = request.realm
     const { articleId, title, body, topic } = request.body
 
-    if (title.length == 0 || title.length > CONSTANTS.TITLE_MAX_LENGTH) {
+    if (title.length === 0 || title.length > CONSTANTS.TITLE_MAX_LENGTH) {
       response.status(400).send({
         body: {
           message: `Title must be between 1 and ${CONSTANTS.TITLE_MAX_LENGTH} characters.`,
@@ -118,7 +118,7 @@ function updateArticle(request, response) {
       })
       return
     }
-    if (body.length == 0 || body.length > CONSTANTS.BODY_MAX_LENGTH) {
+    if (body.length === 0 || body.length > CONSTANTS.BODY_MAX_LENGTH) {
       response.status(400).send({
         body: {
           message: `Body must be between 1 and ${CONSTANTS.BODY_MAX_LENGTH} characters.`,
@@ -129,7 +129,7 @@ function updateArticle(request, response) {
     if (!CONSTANTS.TOPICS.includes(topic)) {
       response.status(400).send({
         body: {
-          message: `Topic must be one of ${CONSTANTS.TOPICS}.`,
+          message: `Topic must be one of [${CONSTANTS.TOPICS}].`,
         },
       })
       return
@@ -197,7 +197,7 @@ function addReaction(request, response) {
     if (!CONSTANTS.REACTIONS.includes(reaction)) {
       response.status(400).send({
         body: {
-          message: `Reaction must be one of ${CONSTANTS.REACTIONS}.`,
+          message: `Reaction must be one of [${CONSTANTS.REACTIONS}].`,
         },
       })
       return

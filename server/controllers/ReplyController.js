@@ -13,7 +13,7 @@ function addReply(request, response) {
     const realm = request.realm
     const { commentId, text } = request.body
 
-    if (text.length == 0 || text.length > CONSTANTS.REPLY_MAX_LENGTH) {
+    if (text.length === 0 || text.length > CONSTANTS.REPLY_MAX_LENGTH) {
       response.status(400).send({
         body: {
           message: `Reply must be between 1 and ${CONSTANTS.REPLY_MAX_LENGTH} characters.`,
@@ -71,7 +71,7 @@ function updateReply(request, response) {
     const realm = request.realm
     const { replyId, text } = request.body
 
-    if (text.length == 0 || text.length > CONSTANTS.REPLY_MAX_LENGTH) {
+    if (text.length === 0 || text.length > CONSTANTS.REPLY_MAX_LENGTH) {
       response.status(400).send({
         body: {
           message: `Reply must be between 1 and ${CONSTANTS.REPLY_MAX_LENGTH} characters.`,

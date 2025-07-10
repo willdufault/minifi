@@ -57,7 +57,7 @@ function ArticleRead() {
    * Add a comment to the article.
    */
   async function addCommentHandler(): Promise<void> {
-    if (commentLength == 0) {
+    if (commentLength === 0) {
       return
     }
 

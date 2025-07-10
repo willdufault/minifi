@@ -1,9 +1,9 @@
 import { useState } from 'react'
 import CONSTANTS from '../../constants.ts'
 import {
-  addCommentLike,
-  deleteComment,
-  updateComment,
+    addCommentLike,
+    deleteComment,
+    updateComment,
 } from '../../services/CommentService.ts'
 import { addReply } from '../../services/ReplyService.ts'
 import { Comment as CommentType } from '../../types/Comment'
@@ -37,7 +37,7 @@ function Comment({ data }: Props) {
    * Update the comment.
    */
   async function updateCommentHandler(): Promise<void> {
-    if (editText.length == 0) {
+    if (editText.length === 0) {
       return
     }
 
@@ -64,7 +64,7 @@ function Comment({ data }: Props) {
    * Add a reply to the comment.
    */
   async function addReplyHandler(): Promise<void> {
-    if (replyText.length == 0) {
+    if (replyText.length === 0) {
       return
     }
 
