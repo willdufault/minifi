@@ -42,7 +42,7 @@ function ArticleSearch() {
         </>
       )
     }
-    return articles.map((article) => (
+    return articles.map((article: ArticleType) => (
       <>
         <Divider />
         <Article key={article._id} data={article} />

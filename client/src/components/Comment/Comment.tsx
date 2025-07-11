@@ -1,13 +1,15 @@
 import { useState } from 'react'
 import CONSTANTS from '../../constants.ts'
 import {
-    addCommentLike,
-    deleteComment,
-    updateComment,
+  addCommentLike,
+  deleteComment,
+  updateComment,
 } from '../../services/CommentService.ts'
 import { addReply } from '../../services/ReplyService.ts'
 import { Comment as CommentType } from '../../types/Comment'
 import { Reply as ReplyType } from '../../types/Reply'
+import Divider from '../Divider/Divider.tsx'
+import EmojiButton from '../EmojiButton/EmojiButton.tsx'
 import Reply from '../Reply/Reply.tsx'
 
 type Props = {
@@ -102,13 +104,20 @@ function Comment({ data }: Props) {
 
   return (
     <>
-      <div style={{ border: 'solid red 1px', padding: '1rem' }}>
-        <p>{comment.text}</p>
-        <button onClick={addCommentLikeHandler}>👍 {comment.likes}</button>
-        <button onClick={deleteCommentHandler}>delete</button>
-        <br />
-        <br />
-        <div style={{ border: 'solid lime 1px', padding: '1rem' }}>
+      <div className="my-4">
+        <p className="mb-4">{comment.text}</p>
+        <EmojiButton
+          emoji="👍"
+          count={comment.likes}
+          callback={addCommentLikeHandler}
+        />
+        <button className="hidden" onClick={deleteCommentHandler}>
+          delete
+        </button>
+        <div
+          className="hidden"
+          style={{ border: 'solid lime 1px', padding: '1rem' }}
+        >
           <label>edit comment: </label>
           <textarea
             onChange={(event) => setEditText(event.target.value)}
@@ -120,23 +129,35 @@ function Comment({ data }: Props) {
           <button onClick={updateCommentHandler}>submit</button>
           <button onClick={() => setEditText(comment.text)}>cancel</button>
         </div>
-        <br />
-        <br />
-        <div style={{ border: 'solid orange 1px', padding: '1rem' }}>
+        <Divider />
+        <div className="my-4 ml-8 border-l border-gray-200">
+          {/* <input
+            className="w-full outline-none border-b border-gray-400 focus:border-gray-600"
+            ref={commentInputElement}
+            placeholder="Add a comment..."
+            onChange={(event) => setCommentLength(event.target.value.length)}
+          ></input>
+          {renderLengthCount(commentLength, CONSTANTS.COMMENT_MAX_LENGTH)}
+          <div className="flex justify-end mt-2">
+            {renderSubmitCommentButton()}
+          </div> */}
+
           <label>reply: </label>
-          <textarea
+          <input
             onChange={(event) => setReplyText(event.target.value)}
             value={replyText}
-          ></textarea>
+          ></input>
           <p>
             {replyText.length}/{CONSTANTS.REPLY_MAX_LENGTH}
           </p>
           <button onClick={addReplyHandler}>submit</button>
+          {comment.replies.map((reply: ReplyType) => (
+            <>
+              <Divider />
+              <Reply key={reply._id} data={reply} />
+            </>
+          ))}
         </div>
-        <br />
-        {comment.replies.map((reply: ReplyType) => (
-          <Reply key={reply._id} data={reply} />
-        ))}
       </div>
     </>
   )

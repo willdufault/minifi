@@ -44,7 +44,6 @@ function ArticleWrite() {
     const topic: string = Array.from(topicSelectElement.current!.value)
       .slice(2, -1)
       .join('')
-    console.log(topic)
     if (!CONSTANTS.TOPICS.includes(topic)) {
       alert(`Topic must be one of [${CONSTANTS.TOPICS}].`)
       return
@@ -60,8 +59,6 @@ function ArticleWrite() {
     }
   }
 
-  /**
-   */
   /**
    * Render the length count.
    * @param current The current length.
@@ -104,7 +101,7 @@ function ArticleWrite() {
       <NavigationBar />
       <Container>
         <input
-          className="font-bold text-xl w-full outline-none"
+          className="font-bold text-xl w-full outline-none border-b border-gray-400 focus:border-gray-600"
           ref={titleInputElement}
           placeholder="Your title"
           onChange={(event) => setTitleLength(event.target.value.length)}
@@ -114,7 +111,7 @@ function ArticleWrite() {
           <select
             ref={topicSelectElement}
             defaultValue={CONSTANTS.TOPICS[0]}
-            className="outline-none"
+            className="outline-none cursor-pointer"
           >
             {CONSTANTS.TOPICS.map((topic: string, index: number) => (
               <option key={index}>
@@ -125,7 +122,7 @@ function ArticleWrite() {
         </div>
         <Divider />
         <textarea
-          className="w-full h-64 outline-none"
+          className="w-full h-64 outline-none border-b border-gray-400 focus:border-gray-600"
           ref={bodyInputElement}
           placeholder="Your thoughts..."
           onChange={(event) => setBodyLength(event.target.value.length)}

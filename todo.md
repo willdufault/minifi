@@ -8,6 +8,7 @@
 
 ### Next
 
+- lighthouse testing
 - full e2e testing
 
 ---
@@ -21,6 +22,8 @@
 
 ### Extra
 
+- make comments/replies less cluttered, things should come from clicking menu option
+- redo edit/delete, make it 3 dots dropdown i think
 - add date to article
 - move featured to DB side, search for articles with featured=True
 - share button

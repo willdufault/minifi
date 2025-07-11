@@ -1,11 +1,12 @@
 import { useState } from 'react'
 import CONSTANTS from '../../constants.ts'
 import {
-    addReplyLike,
-    deleteReply,
-    updateReply,
+  addReplyLike,
+  deleteReply,
+  updateReply,
 } from '../../services/ReplyService.ts'
 import { Reply as ReplyType } from '../../types/Reply'
+import EmojiButton from '../EmojiButton/EmojiButton.tsx'
 
 type Props = {
   data: ReplyType
@@ -70,18 +71,26 @@ function Reply({ data }: Props) {
 
   return (
     <>
-      <div style={{ border: 'solid blue 1px', padding: '1rem' }}>
-        <p>{reply.text}</p>
-        <button onClick={addReplyLikeHandler}>👍 {reply.likes}</button>
-        <button onClick={deleteReplyHandler}>delete</button>
-        <br />
-        <br />
-        <div style={{ border: 'solid purple 1px', padding: '1rem' }}>
+      <div className="my-4 pl-4">
+        <p className="mb-4">{reply.text}</p>
+        <EmojiButton
+          emoji="👍"
+          count={reply.likes}
+          callback={addReplyLikeHandler}
+        />
+        <button className="hidden" onClick={deleteReplyHandler}>
+          delete
+        </button>
+        {/* // TODO */}
+        <div
+          className="hidden"
+          style={{ border: 'solid purple 1px', padding: '1rem' }}
+        >
           <label>edit reply: </label>
-          <textarea
+          <input
             onChange={(event) => setEditText(event.target.value)}
             value={editText}
-          ></textarea>
+          ></input>
           <p>
             {editText.length}/{CONSTANTS.REPLY_MAX_LENGTH}
           </p>

@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState } from 'react'
+import { faCheck, faPen, faTrash } from '@fortawesome/free-solid-svg-icons'
+import { ReactNode, useEffect, useRef, useState } from 'react'
 import {
   Location,
   NavigateFunction,
@@ -6,7 +7,13 @@ import {
   useNavigate,
 } from 'react-router'
 import Comment from '../../components/Comment/Comment.tsx'
+import Container from '../../components/Container/Container.tsx'
+import Divider from '../../components/Divider/Divider.tsx'
+import EmojiButton from '../../components/EmojiButton/EmojiButton.tsx'
+import Footer from '../../components/Footer/Footer.tsx'
+import IconButton from '../../components/IconButton/IconButton.tsx'
 import Loading from '../../components/Loading/Loading.tsx'
+import NavigationBar from '../../components/NavigationBar/NavigationBar.tsx'
 import NotFound from '../../components/NotFound/NotFound.tsx'
 import CONSTANTS from '../../constants.ts'
 import {
@@ -20,7 +27,6 @@ import { Comment as CommentType } from '../../types/Comment.ts'
 import { Reactions as ReactionsType } from '../../types/Reactions.ts'
 
 function ArticleRead() {
-  const origin: string = window.location.origin
   const location: Location = useLocation()
   const navigate: NavigateFunction = useNavigate()
 
@@ -28,7 +34,7 @@ function ArticleRead() {
   const [loading, setLoading] = useState<boolean>(true)
   const [notFound, setNotFound] = useState<boolean>(false)
   const [commentLength, setCommentLength] = useState<number>(0)
-  const commentInputElement = useRef<HTMLTextAreaElement>(null)
+  const commentInputElement = useRef<HTMLInputElement>(null)
 
   /**
    * Get the article ID from the query parameters.
@@ -105,6 +111,53 @@ function ArticleRead() {
   }
 
   /**
+   * Render comments title.
+   * @param count The comment count.
+   * @returns The comments title.
+   */
+  function renderCommentsTitle(count: number): ReactNode {
+    return (
+      <h2 className="font-bold text-xl mb-4">
+        {count} Comment{count === 1 ? '' : 's'}
+      </h2>
+    )
+  }
+
+  /**
+   * Render the length count.
+   * @param current The current length.
+   * @param limit The max length.
+   * @returns The length count.
+   */
+  function renderLengthCount(current: number, limit: number): ReactNode {
+    const colorClass: string =
+      current > limit ? 'text-red-400' : 'text-gray-400'
+    return (
+      <p className={`text-xs text-right ${colorClass}`}>
+        {current}/{limit}
+      </p>
+    )
+  }
+
+  /**
+   * Render the submit comment button.
+   * @returns The submit comment button.
+   */
+  function renderSubmitCommentButton(): ReactNode {
+    const disabled: boolean =
+      commentLength === 0 || commentLength > CONSTANTS.COMMENT_MAX_LENGTH
+    return (
+      <IconButton
+        icon={faCheck}
+        text="Submit"
+        color="green"
+        disabled={disabled}
+        callback={addCommentHandler}
+      />
+    )
+  }
+
+  /**
    * Load the article on the screen.
    */
   async function loadArticle(): Promise<void> {
@@ -139,40 +192,60 @@ function ArticleRead() {
 
   return (
     <>
-      <h1>article view</h1>
-      <br />
-      <a href={`${origin}/edit?id=${articleId}`}>
-        <button>edit</button>
-      </a>
-      <button onClick={deleteArticleHandler}>delete</button>
-      <div style={{ border: 'solid black 1px', padding: '1rem' }}>
-        <h1>title: {article!.title}</h1>
-        <em>topic: {article!.topic}</em>
-        <p>body: {article!.body}</p>
-        {Object.entries(article!.reactions).map(
-          ([reaction, count]: [string, number]) => (
-            <button key={reaction} onClick={() => addReactionHandler(reaction)}>
-              {reaction} {count}
-            </button>
-          )
-        )}
-      </div>
-      <br />
-      <div style={{ border: 'solid green 1px', padding: '1rem' }}>
-        <label>comment: </label>
-        <textarea
-          ref={commentInputElement}
-          onChange={(event) => setCommentLength(event.target.value.length)}
-        ></textarea>
-        <p>
-          {commentLength}/{CONSTANTS.COMMENT_MAX_LENGTH}
+      <NavigationBar />
+      <Container>
+        <div className="flex gap-4 justify-end mb-3">
+          <IconButton
+            icon={faPen}
+            text="Edit"
+            color="amber"
+            callback={() => navigate(`/edit?id=${articleId}`)}
+          />
+          <IconButton
+            icon={faTrash}
+            text="Delete"
+            color="red"
+            callback={deleteArticleHandler}
+          />
+        </div>
+        <h1 className="font-bold text-2xl mb-2">{article!.title}</h1>
+        <p className="mb-4">
+          {CONSTANTS.TOPIC_TO_EMOJI[article!.topic]} {article!.topic}
         </p>
-        <button onClick={addCommentHandler}>submit</button>
-      </div>
-      <br />
-      {article!.comments.map((comment: CommentType) => (
-        <Comment key={comment._id} data={comment} />
-      ))}
+        <div className="flex gap-2">
+          {CONSTANTS.REACTIONS.map((reaction: string, index: number) => (
+            <EmojiButton
+              emoji={reaction}
+              count={article!.reactions[reaction]}
+              key={index}
+              callback={() => addReactionHandler(reaction)}
+            />
+          ))}
+        </div>
+        <Divider />
+        <p className="mb-4">{article!.body}</p>
+        <Divider />
+        {renderCommentsTitle(article!.comments.length)}
+        <Divider />
+        {/* //todo: pick up here, working on formatting add reply + styling comments & replies to look good + why do i use commentinputelement here but there is no replyinputelement anywhere?? */}
+        <input
+          className="w-full outline-none border-b border-gray-400 focus:border-gray-600"
+          ref={commentInputElement}
+          placeholder="Add a comment..."
+          onChange={(event) => setCommentLength(event.target.value.length)}
+        ></input>
+        {renderLengthCount(commentLength, CONSTANTS.COMMENT_MAX_LENGTH)}
+        <div className="flex justify-end mt-2">
+          {renderSubmitCommentButton()}
+        </div>
+        {article!.comments.map((comment: CommentType) => (
+          <>
+            <Divider />
+            <Comment key={comment._id} data={comment} />
+          </>
+        ))}
+      </Container>
+      <Footer />
     </>
   )
 }
