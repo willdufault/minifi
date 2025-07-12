@@ -1,7 +1,6 @@
 ### Current
 
 - full ui (tailwind, mobile first)
-- notfound
 
 ---
 
