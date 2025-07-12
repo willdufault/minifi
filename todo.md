@@ -1,8 +1,7 @@
 ### Current
 
 - full ui (tailwind, mobile first)
-- loading, notfound, footer
-- alphabetical order topics + featured by topic
+- notfound
 
 ---
 
