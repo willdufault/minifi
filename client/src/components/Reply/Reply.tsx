@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { ChangeEvent, useState } from 'react'
 import CONSTANTS from '../../constants.ts'
 import {
   addReplyLike,
@@ -71,7 +71,7 @@ function Reply({ data }: Props) {
 
   return (
     <>
-      <div className="my-4 pl-4">
+      <div className="my-4">
         <p className="mb-4">{reply.text}</p>
         <EmojiButton
           emoji="👍"
@@ -81,14 +81,15 @@ function Reply({ data }: Props) {
         <button className="hidden" onClick={deleteReplyHandler}>
           delete
         </button>
-        {/* // TODO */}
         <div
           className="hidden"
           style={{ border: 'solid purple 1px', padding: '1rem' }}
         >
           <label>edit reply: </label>
           <input
-            onChange={(event) => setEditText(event.target.value)}
+            onChange={(event: ChangeEvent<HTMLInputElement>) =>
+              setEditText(event.target.value)
+            }
             value={editText}
           ></input>
           <p>

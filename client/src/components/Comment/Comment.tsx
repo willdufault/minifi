@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { faCheck } from '@fortawesome/free-solid-svg-icons'
+import { ChangeEvent, ReactNode, useState } from 'react'
 import CONSTANTS from '../../constants.ts'
 import {
   addCommentLike,
@@ -10,6 +11,7 @@ import { Comment as CommentType } from '../../types/Comment'
 import { Reply as ReplyType } from '../../types/Reply'
 import Divider from '../Divider/Divider.tsx'
 import EmojiButton from '../EmojiButton/EmojiButton.tsx'
+import IconButton from '../IconButton/IconButton.tsx'
 import Reply from '../Reply/Reply.tsx'
 
 type Props = {
@@ -98,6 +100,40 @@ function Comment({ data }: Props) {
     setHidden(deleted)
   }
 
+  /**
+   * Render the length count.
+   * @param current The current length.
+   * @param limit The max length.
+   * @returns The length count.
+   */
+  function renderLengthCount(current: number, limit: number): ReactNode {
+    const colorClass: string =
+      current > limit ? 'text-red-400' : 'text-gray-400'
+    return (
+      <p className={`text-xs text-right ${colorClass}`}>
+        {current}/{limit}
+      </p>
+    )
+  }
+
+  /**
+   * Render the reply button.
+   * @returns The  reply button.
+   */
+  function renderReplyButton(): ReactNode {
+    const disabled: boolean =
+      replyText.length === 0 || replyText.length > CONSTANTS.REPLY_MAX_LENGTH
+    return (
+      <IconButton
+        icon={faCheck}
+        text="Reply"
+        color="green"
+        disabled={disabled}
+        callback={addReplyHandler}
+      />
+    )
+  }
+
   if (hidden) {
     return null
   }
@@ -120,7 +156,9 @@ function Comment({ data }: Props) {
         >
           <label>edit comment: </label>
           <textarea
-            onChange={(event) => setEditText(event.target.value)}
+            onChange={(event: ChangeEvent<HTMLTextAreaElement>) =>
+              setEditText(event.target.value)
+            }
             value={editText}
           ></textarea>
           <p>
@@ -130,27 +168,17 @@ function Comment({ data }: Props) {
           <button onClick={() => setEditText(comment.text)}>cancel</button>
         </div>
         <Divider />
-        <div className="my-4 ml-8 border-l border-gray-200">
-          {/* <input
-            className="w-full outline-none border-b border-gray-400 focus:border-gray-600"
-            ref={commentInputElement}
-            placeholder="Add a comment..."
-            onChange={(event) => setCommentLength(event.target.value.length)}
-          ></input>
-          {renderLengthCount(commentLength, CONSTANTS.COMMENT_MAX_LENGTH)}
-          <div className="flex justify-end mt-2">
-            {renderSubmitCommentButton()}
-          </div> */}
-
-          <label>reply: </label>
+        <div className="my-4 ml-12">
           <input
-            onChange={(event) => setReplyText(event.target.value)}
+            className="w-full outline-none border-b border-gray-400 focus:border-gray-600"
+            placeholder="Add a reply..."
             value={replyText}
+            onChange={(event: ChangeEvent<HTMLInputElement>) =>
+              setReplyText(event.target.value)
+            }
           ></input>
-          <p>
-            {replyText.length}/{CONSTANTS.REPLY_MAX_LENGTH}
-          </p>
-          <button onClick={addReplyHandler}>submit</button>
+          {renderLengthCount(replyText.length, CONSTANTS.COMMENT_MAX_LENGTH)}
+          <div className="flex justify-end mt-2">{renderReplyButton()}</div>
           {comment.replies.map((reply: ReplyType) => (
             <>
               <Divider />

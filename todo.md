@@ -17,6 +17,7 @@
 
 - set up glitch.me
 - set up domain (willdufault.dev/...)
+- make sure all (event) have type
 
 ---
 

@@ -1,5 +1,5 @@
 import { faCheck, faXmark } from '@fortawesome/free-solid-svg-icons'
-import { ReactNode, useRef, useState } from 'react'
+import { ChangeEvent, ReactNode, useState } from 'react'
 import { NavigateFunction, useNavigate } from 'react-router'
 import Container from '../../components/Container/Container'
 import Divider from '../../components/Divider/Divider'
@@ -13,45 +13,48 @@ import { Article as ArticleType } from '../../types/Article'
 function ArticleWrite() {
   const navigate: NavigateFunction = useNavigate()
 
-  const [titleLength, setTitleLength] = useState<number>(0)
-  const [bodyLength, setBodyLength] = useState<number>(0)
-  const titleInputElement = useRef<HTMLInputElement>(null)
-  const bodyInputElement = useRef<HTMLTextAreaElement>(null)
-  const topicSelectElement = useRef<HTMLSelectElement>(null)
+  const [title, setTitle] = useState<string>('')
+  const [body, setBody] = useState<string>('')
+  const [topic, setTopic] = useState<string>(CONSTANTS.TOPICS[0])
+
+  /**
+   * Extract the topic from the dropdown option.
+   * @param option The dropdown option.
+   * @returns The topic.
+   */
+  function extractTopic(option: string): string {
+    // Remove the emoji and space from the start.
+    return option.split(' ')[1]
+  }
 
   /**
    * Create an article and redirect the user to the read view of their article.
    */
   async function createArticleHandler(): Promise<void> {
-    if (titleLength === 0 || bodyLength === 0) {
+    if (title.length === 0 || body.length === 0) {
       return
     }
 
-    if (titleLength > CONSTANTS.TITLE_MAX_LENGTH) {
+    if (title.length > CONSTANTS.TITLE_MAX_LENGTH) {
       alert(
         `Title must be between 1 and ${CONSTANTS.TITLE_MAX_LENGTH} characters.`
       )
       return
     }
-    if (bodyLength > CONSTANTS.BODY_MAX_LENGTH) {
+    if (body.length > CONSTANTS.BODY_MAX_LENGTH) {
       alert(
         `Body must be between 1 and ${CONSTANTS.BODY_MAX_LENGTH} characters.`
       )
       return
     }
-
-    // Remove emoji and space from start and extra space from end.
-    const topic: string = Array.from(topicSelectElement.current!.value)
-      .slice(2, -1)
-      .join('')
     if (!CONSTANTS.TOPICS.includes(topic)) {
       alert(`Topic must be one of [${CONSTANTS.TOPICS}].`)
       return
     }
 
     const responseArticle: ArticleType | null = await createArticle(
-      titleInputElement.current!.value,
-      bodyInputElement.current!.value,
+      title,
+      body,
       topic
     )
     if (responseArticle !== null) {
@@ -76,19 +79,19 @@ function ArticleWrite() {
   }
 
   /**
-   * Render the submit button.
-   * @returns The submit button.
+   * Render the publish button.
+   * @returns The publish button.
    */
-  function renderSubmitButton(): ReactNode {
+  function renderPublishButton(): ReactNode {
     const disabled: boolean =
-      titleLength === 0 ||
-      titleLength > CONSTANTS.TITLE_MAX_LENGTH ||
-      bodyLength === 0 ||
-      bodyLength > CONSTANTS.BODY_MAX_LENGTH
+      title.length === 0 ||
+      title.length > CONSTANTS.TITLE_MAX_LENGTH ||
+      body.length === 0 ||
+      body.length > CONSTANTS.BODY_MAX_LENGTH
     return (
       <IconButton
         icon={faCheck}
-        text="Submit"
+        text="Publish"
         color="green"
         disabled={disabled}
         callback={createArticleHandler}
@@ -102,20 +105,22 @@ function ArticleWrite() {
       <Container>
         <input
           className="font-bold text-xl w-full outline-none border-b border-gray-400 focus:border-gray-600"
-          ref={titleInputElement}
           placeholder="Your title"
-          onChange={(event) => setTitleLength(event.target.value.length)}
+          onChange={(event: ChangeEvent<HTMLInputElement>) =>
+            setTitle(event.target.value)
+          }
         />
-        {renderLengthCount(titleLength, CONSTANTS.TITLE_MAX_LENGTH)}
+        {renderLengthCount(title.length, CONSTANTS.TITLE_MAX_LENGTH)}
         <div className="border border-gray-400 hover:border-gray-600 focus-within:border-gray-600 p-2 w-fit rounded-full">
           <select
-            ref={topicSelectElement}
-            defaultValue={CONSTANTS.TOPICS[0]}
-            className="outline-none cursor-pointer"
+            onChange={(event: ChangeEvent<HTMLSelectElement>) =>
+              setTopic(extractTopic(event.target.value))
+            }
+            className="outline-none cursor-pointer pr-1"
           >
             {CONSTANTS.TOPICS.map((topic: string, index: number) => (
               <option key={index}>
-                {CONSTANTS.TOPIC_TO_EMOJI[topic]} {topic}&nbsp;
+                {CONSTANTS.TOPIC_TO_EMOJI[topic]} {topic}
               </option>
             ))}
           </select>
@@ -123,11 +128,12 @@ function ArticleWrite() {
         <Divider />
         <textarea
           className="w-full h-64 outline-none border-b border-gray-400 focus:border-gray-600"
-          ref={bodyInputElement}
           placeholder="Your thoughts..."
-          onChange={(event) => setBodyLength(event.target.value.length)}
+          onChange={(event: ChangeEvent<HTMLTextAreaElement>) =>
+            setBody(event.target.value)
+          }
         ></textarea>
-        {renderLengthCount(bodyLength, CONSTANTS.BODY_MAX_LENGTH)}
+        {renderLengthCount(body.length, CONSTANTS.BODY_MAX_LENGTH)}
         <div className="mt-4 flex justify-end gap-4">
           <IconButton
             icon={faXmark}
@@ -135,7 +141,7 @@ function ArticleWrite() {
             color="red"
             callback={() => navigate('/')}
           />
-          {renderSubmitButton()}
+          {renderPublishButton()}
         </div>
       </Container>
       <Footer />

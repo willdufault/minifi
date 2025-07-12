@@ -1,5 +1,5 @@
 import { faCheck, faPen, faTrash } from '@fortawesome/free-solid-svg-icons'
-import { ReactNode, useEffect, useRef, useState } from 'react'
+import { ChangeEvent, ReactNode, useEffect, useState } from 'react'
 import {
   Location,
   NavigateFunction,
@@ -33,8 +33,7 @@ function ArticleRead() {
   const [article, setArticle] = useState<ArticleType | null>(null)
   const [loading, setLoading] = useState<boolean>(true)
   const [notFound, setNotFound] = useState<boolean>(false)
-  const [commentLength, setCommentLength] = useState<number>(0)
-  const commentInputElement = useRef<HTMLInputElement>(null)
+  const [commentText, setCommentText] = useState<string>('')
 
   /**
    * Get the article ID from the query parameters.
@@ -63,11 +62,11 @@ function ArticleRead() {
    * Add a comment to the article.
    */
   async function addCommentHandler(): Promise<void> {
-    if (commentLength === 0) {
+    if (commentText.length === 0) {
       return
     }
 
-    if (commentLength > CONSTANTS.COMMENT_MAX_LENGTH) {
+    if (commentText.length > CONSTANTS.COMMENT_MAX_LENGTH) {
       alert(
         `Comment must be between 1 and ${CONSTANTS.COMMENT_MAX_LENGTH} characters.`
       )
@@ -76,15 +75,14 @@ function ArticleRead() {
 
     const responseComment: CommentType | null = await addComment(
       articleId!,
-      commentInputElement.current!.value
+      commentText
     )
     if (responseComment !== null) {
       setArticle({
         ...article!,
         comments: [responseComment, ...article!.comments],
       })
-      commentInputElement.current!.value = ''
-      setCommentLength(0)
+      setCommentText('')
     }
   }
 
@@ -140,16 +138,17 @@ function ArticleRead() {
   }
 
   /**
-   * Render the submit comment button.
-   * @returns The submit comment button.
+   * Render the comment button.
+   * @returns The comment button.
    */
-  function renderSubmitCommentButton(): ReactNode {
+  function renderCommentButton(): ReactNode {
     const disabled: boolean =
-      commentLength === 0 || commentLength > CONSTANTS.COMMENT_MAX_LENGTH
+      commentText.length === 0 ||
+      commentText.length > CONSTANTS.COMMENT_MAX_LENGTH
     return (
       <IconButton
         icon={faCheck}
-        text="Submit"
+        text="Comment"
         color="green"
         disabled={disabled}
         callback={addCommentHandler}
@@ -227,17 +226,19 @@ function ArticleRead() {
         <Divider />
         {renderCommentsTitle(article!.comments.length)}
         <Divider />
-        {/* //todo: pick up here, working on formatting add reply + styling comments & replies to look good + why do i use commentinputelement here but there is no replyinputelement anywhere?? */}
+        {/* //todo: pick up here, working on formatting add reply + styling comments & replies to look good 
+
+        // TODO why do i use commentinputelement here but there is no replyinputelement anywhere?? */}
         <input
           className="w-full outline-none border-b border-gray-400 focus:border-gray-600"
-          ref={commentInputElement}
           placeholder="Add a comment..."
-          onChange={(event) => setCommentLength(event.target.value.length)}
+          value={commentText}
+          onChange={(event: ChangeEvent<HTMLInputElement>) =>
+            setCommentText(event.target.value)
+          }
         ></input>
-        {renderLengthCount(commentLength, CONSTANTS.COMMENT_MAX_LENGTH)}
-        <div className="flex justify-end mt-2">
-          {renderSubmitCommentButton()}
-        </div>
+        {renderLengthCount(commentText.length, CONSTANTS.COMMENT_MAX_LENGTH)}
+        <div className="flex justify-end mt-2">{renderCommentButton()}</div>
         {article!.comments.map((comment: CommentType) => (
           <>
             <Divider />
