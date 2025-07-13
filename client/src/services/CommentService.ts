@@ -14,7 +14,7 @@ export async function addComment(
 ): Promise<CommentType | null> {
   try {
     const response: AxiosResponse<ApiResponses.AddCommentResponse> =
-      await axios.post('/api/addComment', { articleId, text })
+      await axios.post('/api/comments', { articleId, text })
     const data: ApiResponses.AddCommentResponse = response.data
     return data.body.comment
   } catch (error) {
@@ -30,7 +30,7 @@ export async function addComment(
  */
 export async function addCommentLike(commentId: string): Promise<boolean> {
   try {
-    await axios.post('/api/addCommentLike', { commentId })
+    await axios.patch(`/api/comments/${commentId}/likes`)
     return true
   } catch (error) {
     console.log(error)
@@ -50,7 +50,7 @@ export async function updateComment(
 ): Promise<CommentType | null> {
   try {
     const response: AxiosResponse<ApiResponses.UpdateCommentResponse> =
-      await axios.post('/api/updateComment', { commentId, text })
+      await axios.put(`/api/comments/${commentId}`, { text })
     const data: ApiResponses.UpdateCommentResponse = response.data
     return data.body.comment
   } catch (error) {
@@ -66,7 +66,7 @@ export async function updateComment(
  */
 export async function deleteComment(commentId: string): Promise<boolean> {
   try {
-    await axios.post('/api/deleteComment', { commentId })
+    await axios.delete(`/api/comments/${commentId}`)
     return true
   } catch (error) {
     console.log(error)

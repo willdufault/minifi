@@ -49,7 +49,7 @@ function addReply(request, response) {
 function addReplyLike(request, response) {
   try {
     const realm = request.realm
-    const { replyId } = request.body
+    const replyId = request.params.id
     const reply = realm.objectForPrimaryKey(Reply, Realm.BSON.ObjectId(replyId))
     realm.write(() => {
       reply.likes += 1
@@ -69,7 +69,8 @@ function addReplyLike(request, response) {
 function updateReply(request, response) {
   try {
     const realm = request.realm
-    const { replyId, text } = request.body
+    const replyId = request.params.id
+    const { text } = request.body
 
     if (text.length === 0 || text.length > CONSTANTS.REPLY_MAX_LENGTH) {
       response.status(400).send({
@@ -99,7 +100,7 @@ function updateReply(request, response) {
 function deleteReply(request, response) {
   try {
     const realm = request.realm
-    const { replyId } = request.body
+    const replyId = request.params.id
     const reply = realm.objectForPrimaryKey(Reply, Realm.BSON.ObjectId(replyId))
     realm.write(() => {
       realm.delete(reply)

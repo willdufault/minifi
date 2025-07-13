@@ -49,7 +49,7 @@ function addComment(request, response) {
 function addCommentLike(request, response) {
   try {
     const realm = request.realm
-    const { commentId } = request.body
+    const commentId = request.params.id
     const comment = realm.objectForPrimaryKey(
       Comment,
       Realm.BSON.ObjectId(commentId)
@@ -72,7 +72,8 @@ function addCommentLike(request, response) {
 function updateComment(request, response) {
   try {
     const realm = request.realm
-    const { commentId, text } = request.body
+    const commentId = request.params.id
+    const { text } = request.body
 
     if (text.length === 0 || text.length > CONSTANTS.COMMENT_MAX_LENGTH) {
       response.status(400).send({
@@ -105,7 +106,7 @@ function updateComment(request, response) {
 function deleteComment(request, response) {
   try {
     const realm = request.realm
-    const { commentId } = request.body
+    const commentId = request.params.id
     const comment = realm.objectForPrimaryKey(
       Comment,
       Realm.BSON.ObjectId(commentId)

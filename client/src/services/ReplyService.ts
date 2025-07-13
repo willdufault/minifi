@@ -14,7 +14,7 @@ export async function addReply(
 ): Promise<ReplyType | null> {
   try {
     const response: AxiosResponse<ApiResponses.AddReplyResponse> =
-      await axios.post('/api/addReply', { commentId, text })
+      await axios.post('/api/replies', { commentId, text })
     const data: ApiResponses.AddReplyResponse = response.data
     return data.body.reply
   } catch (error) {
@@ -29,7 +29,7 @@ export async function addReply(
  */
 export async function addReplyLike(replyId: string): Promise<boolean> {
   try {
-    await axios.post('/api/addReplyLike', { replyId })
+    await axios.patch(`/api/replies/${replyId}/likes`)
     return true
   } catch (error) {
     console.log(error)
@@ -49,7 +49,7 @@ export async function updateReply(
 ): Promise<ReplyType | null> {
   try {
     const response: AxiosResponse<ApiResponses.UpdateReplyResponse> =
-      await axios.post('/api/updateReply', { replyId, text })
+      await axios.put(`/api/replies/${replyId}`, { text })
     const data: ApiResponses.UpdateReplyResponse = response.data
     return data.body.reply
   } catch (error) {
@@ -65,7 +65,7 @@ export async function updateReply(
  */
 export async function deleteReply(replyId: string): Promise<boolean> {
   try {
-    await axios.post('/api/deleteReply', { replyId })
+    await axios.delete(`/api/replies/${replyId}`)
     return true
   } catch (error) {
     console.log(error)
