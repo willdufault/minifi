@@ -108,7 +108,7 @@ function Comment({ data }: Props) {
    */
   function renderLengthCount(current: number, limit: number): ReactNode {
     const colorClass: string =
-      current > limit ? 'text-red-400' : 'text-gray-400'
+      current > limit ? 'text-red-500' : 'text-gray-400'
     return (
       <p className={`text-xs text-right ${colorClass}`}>
         {current}/{limit}

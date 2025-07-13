@@ -6,6 +6,12 @@ export type GetArticleResponse = {
   }
 }
 
+export type ListArticlesResponse = {
+  body: {
+    articles: Article[]
+  }
+}
+
 export type SearchArticlesResponse = {
   body: {
     articles: Article[]

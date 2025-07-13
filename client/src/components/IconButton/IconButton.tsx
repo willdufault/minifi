@@ -16,8 +16,6 @@ function IconButton({ icon, text, color, disabled = false, callback }: Props) {
     green:
       'hover:border-green-500 active:text-green-500 active:border-green-500',
     red: 'hover:border-red-500 active:text-red-500 active:border-red-500',
-    amber:
-      'hover:border-amber-600 active:text-amber-600 active:border-amber-600',
   }
 
   if (disabled) {

@@ -22,7 +22,7 @@ function SearchBar() {
 
   return (
     <>
-      <div className="border border-gray-400 rounded-full p-3 flex gap-2 justify-center items-center  hover:border-violet-600 focus-within:text-violet-600 focus-within:border-violet-600">
+      <div className="border border-gray-400 rounded-full p-3 flex gap-2 justify-center items-center  hover:border-blue-500 focus-within:text-blue-500 focus-within:border-blue-500">
         <FontAwesomeIcon icon={faMagnifyingGlass} />
         <input
           onKeyDown={searchArticles}

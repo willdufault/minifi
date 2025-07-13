@@ -1,6 +1,7 @@
 ### Current
 
-- full ui (tailwind, mobile first)
+- create admin page
+- redo api routes to be more "restful" (ask chatgpt)
 
 ---
 
@@ -13,7 +14,8 @@
 
 ### Core
 
-- set up glitch.me
+- find new node hosting option (vercel?)
+- migrate to mongodb atlas?
 - set up domain (willdufault.dev/...)
 - make sure all (event) have type
 
@@ -24,8 +26,8 @@
 - make comments/replies less cluttered, things should come from clicking menu option
 - redo edit/delete, make it 3 dots dropdown i think
 - add date to article
-- move featured to DB side, search for articles with featured=True
-- share button
+- move featured to DB side, search for articles with featured=True, set and remove from admin page
+- share article button
 - light +dark mode slider
 - search pagination, multiple sizes (10, 25, 50)
 - add filter by topic

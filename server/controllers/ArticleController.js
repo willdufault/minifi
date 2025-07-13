@@ -2,6 +2,9 @@ const Article = require('../models/Article.js')
 const CONSTANTS = require('../constants.js')
 const Realm = require('realm')
 
+const Comment = require('../models/Comment.js')
+const Reply = require('../models/Reply.js')
+
 /**
  * Get an article.
  * @param {Express.Request} request The request.
@@ -16,6 +19,22 @@ function getArticle(request, response) {
       new Realm.BSON.ObjectId(articleId)
     )
     response.status(200).send({ body: { article } })
+  } catch (error) {
+    console.log(error)
+    response.status(400).send(error)
+  }
+}
+
+/**
+ * List all articles.
+ * @param {Express.Request} request The request.
+ * @param {Express.Response} response The response.
+ */
+function listArticles(request, response) {
+  try {
+    const realm = request.realm
+    const articles = realm.objects(Article)
+    response.status(200).send({ body: { articles } })
   } catch (error) {
     console.log(error)
     response.status(400).send(error)
@@ -183,6 +202,36 @@ function deleteArticle(request, response) {
     response.status(400).send(error)
   }
 }
+/**
+ * Delete all articles.
+ * @param {Express.Request} request The request.
+ * @param {Express.Response} response The response.
+ */
+function purgeArticles(request, response) {
+  try {
+    const realm = request.realm
+    const articles = realm.objects(Article)
+    for (const article of articles) {
+      for (const comment of article.comments) {
+        for (const reply of comment.replies) {
+          realm.write(() => {
+            realm.delete(reply)
+          })
+        }
+        realm.write(() => {
+          realm.delete(comment)
+        })
+      }
+      realm.write(() => {
+        realm.delete(article)
+      })
+    }
+    response.status(200).send()
+  } catch (error) {
+    console.log(error)
+    response.status(400).send(error)
+  }
+}
 
 /**
  * Add a reaction to an article.
@@ -219,9 +268,11 @@ function addReaction(request, response) {
 
 module.exports = {
   getArticle,
+  listArticles,
   searchArticles,
   createArticle,
   updateArticle,
   deleteArticle,
+  purgeArticles,
   addReaction,
 }

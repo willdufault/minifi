@@ -22,6 +22,22 @@ export async function getArticle(
 }
 
 /**
+ * List all articles.
+ * @returns The list of articles.
+ */
+export async function listArticles(): Promise<ArticleType[] | null> {
+  try {
+    const response: AxiosResponse<ApiResponses.ListArticlesResponse> =
+      await axios.get('/api/listArticles')
+    const data: ApiResponses.ListArticlesResponse = response.data
+    return data.body.articles
+  } catch (error) {
+    console.log(error)
+    return null
+  }
+}
+
+/**
  * Search all articles.
  * @param query The query.
  * @returns The list of articles.
@@ -48,6 +64,21 @@ export async function searchArticles(
 export async function deleteArticle(articleId: string): Promise<boolean> {
   try {
     await axios.post('/api/deleteArticle', { articleId })
+    return true
+  } catch (error) {
+    console.log(error)
+    return false
+  }
+}
+
+/**
+ * Delete all article.
+ * @param articleId The article ID.
+ * @returns Whether the article was deleted.
+ */
+export async function purgeArticles(): Promise<boolean> {
+  try {
+    await axios.post('/api/purgeArticles')
     return true
   } catch (error) {
     console.log(error)

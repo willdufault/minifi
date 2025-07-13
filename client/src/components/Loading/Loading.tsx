@@ -9,7 +9,7 @@ function Loading() {
       <NavigationBar />
       <Container>
         <div className="h-8 max-w-36 mb-2 bg-gray-100 rounded-full"></div>
-        {Array.from({ length: 5 }).map((_: unknown, index: number) => (
+        {Array.from({ length: 10 }).map((_: unknown, index: number) => (
           <div key={index}>
             <Divider />
             <div className="h-6 max-w-96 mb-2 bg-gray-100 rounded-full"></div>
