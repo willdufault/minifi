@@ -2,9 +2,6 @@ const Article = require('../models/Article.js')
 const CONSTANTS = require('../constants.js')
 const Realm = require('realm')
 
-const Comment = require('../models/Comment.js')
-const Reply = require('../models/Reply.js')
-
 /**
  * Get an article.
  * @param {Express.Request} request The request.
@@ -13,7 +10,7 @@ const Reply = require('../models/Reply.js')
 function getArticle(request, response) {
   try {
     const realm = request.realm
-    const { articleId } = request.query
+    const articleId = request.params.id
     const article = realm.objectForPrimaryKey(
       Article,
       new Realm.BSON.ObjectId(articleId)
@@ -127,7 +124,8 @@ function createArticle(request, response) {
 function updateArticle(request, response) {
   try {
     const realm = request.realm
-    const { articleId, title, body, topic } = request.body
+    const articleId = request.params.id
+    const { title, body, topic } = request.body
 
     if (title.length === 0 || title.length > CONSTANTS.TITLE_MAX_LENGTH) {
       response.status(400).send({
@@ -178,7 +176,7 @@ function updateArticle(request, response) {
 function deleteArticle(request, response) {
   try {
     const realm = request.realm
-    const { articleId } = request.body
+    const articleId = request.params.id
     const article = realm.objectForPrimaryKey(
       Article,
       new Realm.BSON.ObjectId(articleId)
@@ -241,7 +239,8 @@ function purgeArticles(request, response) {
 function addReaction(request, response) {
   try {
     const realm = request.realm
-    const { articleId, reaction } = request.body
+    const articleId = request.params.id
+    const { reaction } = request.body
 
     if (!CONSTANTS.REACTIONS.includes(reaction)) {
       response.status(400).send({

@@ -20,9 +20,9 @@ async function main() {
     next()
   })
 
-  app.use('/api', articleRoutes)
-  app.use('/api', commentRoutes)
-  app.use('/api', replyRoutes)
+  app.use('/api/articles', articleRoutes)
+  app.use('/api/comments', commentRoutes)
+  app.use('/api/replies', replyRoutes)
 
   // TODO: if possible, block browser from accessing api, might be fixed by jwt
   app.get('*', (request, response, next) => {

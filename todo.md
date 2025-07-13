@@ -1,6 +1,5 @@
 ### Current
 
-- create admin page
 - redo api routes to be more "restful" (ask chatgpt)
 
 ---

@@ -4,13 +4,13 @@ const ArticleController = require('../controllers/ArticleController')
 
 // TODO: you can see api paths from the browser, need to fix this
 // ? cors? jwt auth token?
-router.get('/getArticle', ArticleController.getArticle)
-router.get('/listArticles', ArticleController.listArticles)
-router.get('/searchArticles', ArticleController.searchArticles)
-router.post('/createArticle', ArticleController.createArticle)
-router.post('/updateArticle', ArticleController.updateArticle)
-router.post('/deleteArticle', ArticleController.deleteArticle)
-router.post('/purgeArticles', ArticleController.purgeArticles)
-router.post('/addReaction', ArticleController.addReaction)
+router.get('/', ArticleController.listArticles)
+router.get('/search', ArticleController.searchArticles)
+router.get('/:id', ArticleController.getArticle)
+router.post('/', ArticleController.createArticle)
+router.put('/:id', ArticleController.updateArticle)
+router.patch('/:id/reactions', ArticleController.addReaction)
+router.delete('/', ArticleController.purgeArticles)
+router.delete('/:id', ArticleController.deleteArticle)
 
 module.exports = router

@@ -23,3 +23,9 @@ export type CreateArticleResponse = {
     article: Article
   }
 }
+
+export type UpdateArticleResponse = {
+  body: {
+    article: Article
+  }
+}

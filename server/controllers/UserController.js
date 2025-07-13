@@ -21,6 +21,11 @@ function checkUserExists(request, response) {
   }
 }
 
+/**
+ * TODO
+ * @param {*} request 
+ * @param {*} response 
+ */
 function createUser(request, response) {
   try {
     const realm = request.realm

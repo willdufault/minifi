@@ -12,7 +12,7 @@ export async function getArticle(
 ): Promise<ArticleType | null> {
   try {
     const response: AxiosResponse<ApiResponses.GetArticleResponse> =
-      await axios.get('/api/getArticle', { params: { articleId } })
+      await axios.get(`/api/articles/${articleId}`)
     const data: ApiResponses.GetArticleResponse = response.data
     return data.body.article
   } catch (error) {
@@ -28,7 +28,7 @@ export async function getArticle(
 export async function listArticles(): Promise<ArticleType[] | null> {
   try {
     const response: AxiosResponse<ApiResponses.ListArticlesResponse> =
-      await axios.get('/api/listArticles')
+      await axios.get('/api/articles')
     const data: ApiResponses.ListArticlesResponse = response.data
     return data.body.articles
   } catch (error) {
@@ -47,7 +47,7 @@ export async function searchArticles(
 ): Promise<ArticleType[] | null> {
   try {
     const response: AxiosResponse<ApiResponses.SearchArticlesResponse> =
-      await axios.get('/api/searchArticles', { params: { query } })
+      await axios.get('/api/articles/search', { params: { query } })
     const data: ApiResponses.SearchArticlesResponse = response.data
     return data.body.articles
   } catch (error) {
@@ -63,7 +63,7 @@ export async function searchArticles(
  */
 export async function deleteArticle(articleId: string): Promise<boolean> {
   try {
-    await axios.post('/api/deleteArticle', { articleId })
+    await axios.delete(`/api/articles/${articleId}`)
     return true
   } catch (error) {
     console.log(error)
@@ -78,7 +78,7 @@ export async function deleteArticle(articleId: string): Promise<boolean> {
  */
 export async function purgeArticles(): Promise<boolean> {
   try {
-    await axios.post('/api/purgeArticles')
+    await axios.delete('/api/articles/')
     return true
   } catch (error) {
     console.log(error)
@@ -100,7 +100,7 @@ export async function createArticle(
 ): Promise<ArticleType | null> {
   try {
     const response: AxiosResponse<ApiResponses.CreateArticleResponse> =
-      await axios.post('/api/createArticle', { title, body, topic })
+      await axios.post('/api/articles', { title, body, topic })
     const data: ApiResponses.CreateArticleResponse = response.data
     return data.body.article
   } catch (error) {
@@ -124,9 +124,9 @@ export async function updateArticle(
   topic: string
 ): Promise<ArticleType | null> {
   try {
-    const response: AxiosResponse<ApiResponses.CreateArticleResponse> =
-      await axios.post('/api/updateArticle', { articleId, title, body, topic })
-    const data: ApiResponses.CreateArticleResponse = response.data
+    const response: AxiosResponse<ApiResponses.UpdateArticleResponse> =
+      await axios.put(`/api/articles/${articleId}`, { title, body, topic })
+    const data: ApiResponses.UpdateArticleResponse = response.data
     return data.body.article
   } catch (error) {
     console.log(error)
@@ -145,7 +145,7 @@ export async function addReaction(
   reaction: string
 ): Promise<boolean> {
   try {
-    await axios.post('/api/addReaction', { articleId, reaction })
+    await axios.patch(`/api/articles/${articleId}/reactions`, { reaction })
     return true
   } catch (error) {
     console.log(error)
