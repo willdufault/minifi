@@ -53,7 +53,7 @@ function Comment({ data }: Props) {
     }
 
     const responseComment: CommentType | null = await updateComment(
-      comment!._id,
+      comment._id,
       editText
     )
     if (responseComment !== null) {
@@ -80,7 +80,7 @@ function Comment({ data }: Props) {
     }
 
     const responseReply: ReplyType | null = await addReply(
-      comment!._id,
+      comment._id,
       replyText
     )
     if (responseReply !== null) {
@@ -96,7 +96,7 @@ function Comment({ data }: Props) {
    * Delete the comment.
    */
   async function deleteCommentHandler(): Promise<void> {
-    const deleted: boolean = await deleteComment(comment!._id)
+    const deleted: boolean = await deleteComment(comment._id)
     setHidden(deleted)
   }
 

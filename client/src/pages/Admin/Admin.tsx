@@ -1,5 +1,5 @@
 import { faListUl, faTrash } from '@fortawesome/free-solid-svg-icons'
-import { useState } from 'react'
+import { ReactNode, useState } from 'react'
 import Article from '../../components/Article/Article'
 import Container from '../../components/Container/Container'
 import Divider from '../../components/Divider/Divider'
@@ -10,7 +10,7 @@ import { listArticles, purgeArticles } from '../../services/ArticleService'
 import { Article as ArticleType } from '../../types/Article'
 
 function Admin() {
-  const [articles, setArticles] = useState<ArticleType[]>([])
+  const [articles, setArticles] = useState<ArticleType[] | null>(null)
 
   /**
    * List all articles on the page.
@@ -29,6 +29,31 @@ function Admin() {
     if (deleted) {
       setArticles([])
     }
+  }
+
+  /**
+   * Render the articles.
+   * @returns The articles.
+   */
+  function renderArticles(): ReactNode {
+    if (articles === null) {
+      return
+    }
+
+    if (articles.length === 0) {
+      return (
+        <>
+          <Divider />
+          <p>No articles.</p>
+        </>
+      )
+    }
+    return articles.map((article: ArticleType) => (
+      <>
+        <Divider />
+        <Article key={article._id} data={article} />
+      </>
+    ))
   }
 
   return (
@@ -51,12 +76,7 @@ function Admin() {
             callback={purgeArticlesHandler}
           />
         </div>
-        {articles.map((article) => (
-          <>
-            <Divider />
-            <Article key={article._id} data={article} />
-          </>
-        ))}
+        {renderArticles()}
       </Container>
       <Footer />
     </>

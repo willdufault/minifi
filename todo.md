@@ -2,34 +2,25 @@
 
 - admin page
 - add dates to articles
-- share button
-- better update article logic
+- copy link button
+- remove body desc from article preview + updated loading boxes
+- logic improvements (update article, ...)
+- ux improvements (text when no featured articles)
+- make sure no extra ! or ? ops null checks
+
+---
 
 ### Current
 
-- share article button
 - add check for all update APIs to fail if it is the same
-- comment/reply edit: add check if no changes, disable save button
 
 ---
 
 ### Next
 
+- comment/reply edit: add check if no changes, disable save button
 - move featured to DB side, search for articles with featured=True, set from admin page
 - search pagination, multiple sizes (10, 25, 50)
-
----
-
-### Core
-
-- find new node hosting option (vercel?)
-- optimize lighthouse
-- set up domain (willdufault.dev/...)
-
----
-
-### Extra
-
 - migrate to mongodb atlas?
 - make comments/replies less cluttered, things should come from clicking menu option
 - redo edit/delete, make it 3 dots dropdown i think
@@ -49,3 +40,11 @@
 - markdown body (TBD)
 - fix api path access from browser
 - better ui (mobile-first, tailwind?)
+
+---
+
+### Core
+
+- find new node hosting option (vercel?)
+- optimize lighthouse
+- set up domain (willdufault.dev/...)

@@ -10,17 +10,6 @@ function Article({ data }: Props) {
   const article: ArticleType = data
 
   /**
-   * Get the first 100 characters of the body followed by an ellipsis.
-   * @returns The truncated body.
-   */
-  function getTruncatedBody(): string {
-    if (article.body.length < 100) {
-      return article.body
-    }
-    return `${article.body.substring(0, 100)}...`
-  }
-
-  /**
    * Get the sum of all reaction counts.
    * @returns The total number of reactions.
    */
@@ -63,12 +52,11 @@ function Article({ data }: Props) {
     <>
       <div className="wrap-break-word">
         <Link
-          className="font-bold text-xl w-fit mb-1 block hover:underline"
+          className="font-bold text-xl w-fit mb-2 block hover:underline"
           to={`/read?id=${article._id}`}
         >
           {article.title}
         </Link>
-        <p className="text-sm text-gray-500 mb-4">{getTruncatedBody()}</p>
         <p>
           {getFormattedDate(new Date(article.date))}&nbsp;&nbsp;•&nbsp;&nbsp;
           {CONSTANTS.TOPIC_TO_EMOJI[article.topic]} {article.topic}

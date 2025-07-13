@@ -1,4 +1,9 @@
-import { faCheck, faPen, faTrash } from '@fortawesome/free-solid-svg-icons'
+import {
+  faCheck,
+  faLink,
+  faPen,
+  faTrash,
+} from '@fortawesome/free-solid-svg-icons'
 import { ChangeEvent, ReactNode, useEffect, useState } from 'react'
 import {
   Location,
@@ -184,6 +189,14 @@ function ArticleRead() {
   }
 
   /**
+   * Copy the URL for the article to the user's clipboard.
+   */
+  function copyLinkToClipboard(): void {
+    navigator.clipboard.writeText(window.location.href)
+    alert('Copied link to clipboard.') // TODO: remove alert
+  }
+
+  /**
    * Load the article on the screen.
    */
   async function loadArticle(): Promise<void> {
@@ -221,6 +234,12 @@ function ArticleRead() {
       <NavigationBar />
       <Container>
         <div className="flex gap-4 justify-end mb-3">
+          <IconButton
+            icon={faLink}
+            text="Copy"
+            color="blue"
+            callback={copyLinkToClipboard}
+          />
           <IconButton
             icon={faPen}
             text="Edit"

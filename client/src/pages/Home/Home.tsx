@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { ReactNode, useEffect, useState } from 'react'
 import Article from '../../components/Article/Article.tsx'
 import Container from '../../components/Container/Container.tsx'
 import Divider from '../../components/Divider/Divider.tsx'
@@ -29,6 +29,27 @@ function Home() {
   }
 
   /**
+   * Render the featured articles.
+   * @returns The featured articles.
+   */
+  function renderFeaturedArticles(): ReactNode {
+    if (articles.length === 0) {
+      return (
+        <>
+          <Divider />
+          <p>No featured articles.</p>
+        </>
+      )
+    }
+    return articles.map((article: ArticleType) => (
+      <>
+        <Divider />
+        <Article key={article._id} data={article} />
+      </>
+    ))
+  }
+
+  /**
    * Load the featured articles on screen.
    */
   async function loadFeaturedArticles(): Promise<void> {
@@ -50,12 +71,7 @@ function Home() {
       <NavigationBar />
       <Container>
         <h1 className="text-2xl font-bold">Featured</h1>
-        {articles.map((article) => (
-          <>
-            <Divider />
-            <Article key={article._id} data={article} />
-          </>
-        ))}
+        {renderFeaturedArticles()}
       </Container>
       <Footer />
     </>

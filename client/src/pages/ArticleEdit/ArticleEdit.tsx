@@ -147,9 +147,9 @@ function ArticleEdit() {
     }
 
     setArticle(responseArticle)
-    setTitle(responseArticle!.title)
-    setBody(responseArticle!.body)
-    setTopic(responseArticle!.topic)
+    setTitle(responseArticle.title)
+    setBody(responseArticle.body)
+    setTopic(responseArticle.topic)
     setLoading(false)
   }
 

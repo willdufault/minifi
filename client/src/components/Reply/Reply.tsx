@@ -46,7 +46,7 @@ function Reply({ data }: Props) {
     }
 
     const responseReply: ReplyType | null = await updateReply(
-      reply!._id,
+      reply._id,
       editText
     )
     if (responseReply !== null) {
@@ -61,7 +61,7 @@ function Reply({ data }: Props) {
    * Delete the reply.
    */
   async function deleteReplyHandler(): Promise<void> {
-    const deleted: boolean = await deleteReply(reply!._id)
+    const deleted: boolean = await deleteReply(reply._id)
     setHidden(deleted)
   }
 
