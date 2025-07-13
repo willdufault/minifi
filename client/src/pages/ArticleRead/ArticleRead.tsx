@@ -157,6 +157,33 @@ function ArticleRead() {
   }
 
   /**
+   * Get the date as a formatted string.
+   * @param date The upload date.
+   * @returns The formatted date.
+   */
+  function getFormattedDate(date: Date): string {
+    const months: string[] = [
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December',
+    ]
+
+    const year: number = date.getFullYear()
+    const month: string = months[date.getMonth()]
+    const day: number = date.getDate()
+    return `${month.substring(0, 3)} ${day}, ${year}`
+  }
+
+  /**
    * Load the article on the screen.
    */
   async function loadArticle(): Promise<void> {
@@ -209,6 +236,7 @@ function ArticleRead() {
         </div>
         <h1 className="font-bold text-2xl mb-2">{article!.title}</h1>
         <p className="mb-4">
+          {getFormattedDate(new Date(article!.date))}&nbsp;&nbsp;•&nbsp;&nbsp;
           {CONSTANTS.TOPIC_TO_EMOJI[article!.topic]} {article!.topic}
         </p>
         <div className="flex gap-2">
@@ -226,9 +254,6 @@ function ArticleRead() {
         <Divider />
         {renderCommentsTitle(article!.comments.length)}
         <Divider />
-        {/* //todo: pick up here, working on formatting add reply + styling comments & replies to look good 
-
-        // TODO why do i use commentinputelement here but there is no replyinputelement anywhere?? */}
         <input
           className="w-full outline-none border-b border-gray-400 focus:border-gray-600"
           placeholder="Add a comment..."

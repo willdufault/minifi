@@ -1,39 +1,43 @@
+### New
+
+- admin page
+- add dates to articles
+- share button
+- better update article logic
+
 ### Current
 
-- redo api routes to be more "restful" (ask chatgpt)
+- share article button
+- add check for all update APIs to fail if it is the same
+- comment/reply edit: add check if no changes, disable save button
 
 ---
 
 ### Next
 
-- lighthouse testing
-- full e2e testing
+- move featured to DB side, search for articles with featured=True, set from admin page
+- search pagination, multiple sizes (10, 25, 50)
 
 ---
 
 ### Core
 
 - find new node hosting option (vercel?)
-- migrate to mongodb atlas?
+- optimize lighthouse
 - set up domain (willdufault.dev/...)
-- make sure all (event) have type
 
 ---
 
 ### Extra
 
+- migrate to mongodb atlas?
 - make comments/replies less cluttered, things should come from clicking menu option
 - redo edit/delete, make it 3 dots dropdown i think
-- add date to article
-- move featured to DB side, search for articles with featured=True, set and remove from admin page
-- share article button
 - light +dark mode slider
-- search pagination, multiple sizes (10, 25, 50)
 - add filter by topic
 - click to expand articles/comments/replies if too many lines (TBD)
 - article sort order
 - comment sort order
-- add icons to topic buttons?
 - add custom images (has to be url) OR preset images by topic
 - add users (will prob need to edit mobile navbar + update search page)
 - tie reactions to user

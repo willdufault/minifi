@@ -69,6 +69,14 @@ function ArticleEdit() {
       alert(`Topic must be one of [${CONSTANTS.TOPICS}].`)
       return
     }
+    if (
+      title === article!.title &&
+      body === article!.body &&
+      topic === article!.topic
+    ) {
+      alert(`No changes made to article.`)
+      return
+    }
 
     const responseArticle: ArticleType | null = await updateArticle(
       articleId!,
@@ -106,7 +114,10 @@ function ArticleEdit() {
       title.length === 0 ||
       title.length > CONSTANTS.TITLE_MAX_LENGTH ||
       body.length === 0 ||
-      body.length > CONSTANTS.BODY_MAX_LENGTH
+      body.length > CONSTANTS.BODY_MAX_LENGTH ||
+      (title === article!.title &&
+        body === article!.body &&
+        topic === article!.topic)
     return (
       <IconButton
         icon={faCheck}

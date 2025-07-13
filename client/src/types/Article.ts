@@ -7,6 +7,8 @@ export type Article = {
   title: string
   body: string
   topic: string & (typeof CONSTANTS)['TOPICS'][number]
+  date: string
+  featured: boolean
   reactions: Reactions
   comments: Comment[]
 }

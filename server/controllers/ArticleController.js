@@ -104,6 +104,8 @@ function createArticle(request, response) {
         title,
         body,
         topic,
+        date: new Date(),
+        featured: false,
         reactions: Object.fromEntries(
           CONSTANTS.REACTIONS.map((reaction) => [reaction, 0])
         ),
@@ -156,10 +158,25 @@ function updateArticle(request, response) {
       Article,
       new Realm.BSON.ObjectId(articleId)
     )
+
+    if (
+      title === article.title &&
+      body === article.body &&
+      topic === article.topic
+    ) {
+      response.status(400).send({
+        body: {
+          message: `No changes made to article.`,
+        },
+      })
+      return
+    }
+
     realm.write(() => {
       article.title = title
       article.body = body
       article.topic = topic
+      article.date = new Date()
     })
     response.status(200).send({ body: { article } })
   } catch (error) {

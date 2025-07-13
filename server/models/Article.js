@@ -8,6 +8,8 @@ class Article extends Realm.Object {
       title: 'string',
       body: 'string',
       topic: 'string',
+      date: 'date',
+      featured: 'bool',
       reactions: { type: 'dictionary', objectType: 'int' },
       comments: 'Comment[]',
     },
