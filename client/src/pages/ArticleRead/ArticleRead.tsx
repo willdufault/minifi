@@ -4,7 +4,13 @@ import {
   faPen,
   faTrash,
 } from '@fortawesome/free-solid-svg-icons'
-import { ChangeEvent, ReactNode, useEffect, useState } from 'react'
+import {
+  ChangeEvent,
+  KeyboardEvent,
+  ReactNode,
+  useEffect,
+  useState,
+} from 'react'
 import {
   Location,
   NavigateFunction,
@@ -197,6 +203,16 @@ function ArticleRead() {
   }
 
   /**
+   * Add a comment if the enter key is pressed.
+   * @param event The keyboard event.
+   */
+  function commentKeyDownHandler(event: KeyboardEvent<HTMLInputElement>): void {
+    if (event.key === 'Enter') {
+      addCommentHandler()
+    }
+  }
+
+  /**
    * Load the article on the screen.
    */
   async function loadArticle(): Promise<void> {
@@ -254,7 +270,7 @@ function ArticleRead() {
           />
         </div>
         <h1 className="font-bold text-2xl mb-2">{article!.title}</h1>
-        <p className="mb-4">
+        <p className="text-gray-600 mb-4">
           {getFormattedDate(new Date(article!.date))}&nbsp;&nbsp;•&nbsp;&nbsp;
           {CONSTANTS.TOPIC_TO_EMOJI[article!.topic]} {article!.topic}
         </p>
@@ -277,6 +293,7 @@ function ArticleRead() {
           className="w-full outline-none border-b border-gray-400 focus:border-gray-600"
           placeholder="Add a comment..."
           value={commentText}
+          onKeyDown={commentKeyDownHandler}
           onChange={(event: ChangeEvent<HTMLInputElement>) =>
             setCommentText(event.target.value)
           }

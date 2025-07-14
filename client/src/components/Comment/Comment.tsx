@@ -1,5 +1,5 @@
 import { faCheck } from '@fortawesome/free-solid-svg-icons'
-import { ChangeEvent, ReactNode, useState } from 'react'
+import { ChangeEvent, KeyboardEvent, ReactNode, useState } from 'react'
 import CONSTANTS from '../../constants.ts'
 import {
   addCommentLike,
@@ -134,6 +134,16 @@ function Comment({ data }: Props) {
     )
   }
 
+  /**
+   * Add a reply if the enter key is pressed.
+   * @param event The keyboard event.
+   */
+  function replyKeyDownHandler(event: KeyboardEvent<HTMLInputElement>): void {
+    if (event.key === 'Enter') {
+      addReplyHandler()
+    }
+  }
+
   if (hidden) {
     return null
   }
@@ -173,6 +183,7 @@ function Comment({ data }: Props) {
             className="w-full outline-none border-b border-gray-400 focus:border-gray-600"
             placeholder="Add a reply..."
             value={replyText}
+            onKeyDown={replyKeyDownHandler}
             onChange={(event: ChangeEvent<HTMLInputElement>) =>
               setReplyText(event.target.value)
             }

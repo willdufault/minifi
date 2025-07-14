@@ -5,7 +5,6 @@ import Divider from '../../components/Divider/Divider.tsx'
 import Footer from '../../components/Footer/Footer.tsx'
 import Loading from '../../components/Loading/Loading.tsx'
 import NavigationBar from '../../components/NavigationBar/NavigationBar.tsx'
-import CONSTANTS from '../../constants.ts'
 import { getArticle } from '../../services/ArticleService.ts'
 import { Article as ArticleType } from '../../types/Article.ts'
 
@@ -19,7 +18,8 @@ function Home() {
    */
   async function getFeaturedArticles(): Promise<ArticleType[]> {
     let featuredArticles: ArticleType[] = []
-    for (let articleId of CONSTANTS.FEATURED_ARTICLE_IDS) {
+    // TODO REWORK TO BE ON DB-END
+    for (let articleId of []) {
       const responseArticle: ArticleType | null = await getArticle(articleId)
       if (responseArticle !== null) {
         featuredArticles.push(responseArticle)

@@ -5,26 +5,28 @@
 - copy link button
 - remove body desc from article preview + updated loading boxes
 - logic improvements (update article, ...)
-- ux improvements (text when no featured articles)
+- ui improvements
+  - fixed overflow-wrap=anywhere on container
+- ux improvements
+  - text when no featured articles
+  - enter press triggers comment+reply create
 - make sure no extra ! or ? ops null checks
 
 ---
 
 ### Current
 
-- add check for all update APIs to fail if it is the same
-
 ---
 
 ### Next
 
-- comment/reply edit: add check if no changes, disable save button
 - move featured to DB side, search for articles with featured=True, set from admin page
+- add check for all update APIs to fail if it is the same
+- comment/reply edit: add check if no changes, disable save button
 - search pagination, multiple sizes (10, 25, 50)
-- migrate to mongodb atlas?
 - make comments/replies less cluttered, things should come from clicking menu option
 - redo edit/delete, make it 3 dots dropdown i think
-- light +dark mode slider
+- light + dark mode
 - add filter by topic
 - click to expand articles/comments/replies if too many lines (TBD)
 - article sort order
@@ -45,6 +47,9 @@
 
 ### Core
 
+- client test cases
+- server test cases
+- migrate to mongodb atlas (required for vercel)
 - find new node hosting option (vercel?)
 - optimize lighthouse
 - set up domain (willdufault.dev/...)

@@ -50,20 +50,18 @@ function Article({ data }: Props) {
 
   return (
     <>
-      <div className="wrap-break-word">
-        <Link
-          className="font-bold text-xl w-fit mb-2 block hover:underline"
-          to={`/read?id=${article._id}`}
-        >
-          {article.title}
-        </Link>
-        <p>
-          {getFormattedDate(new Date(article.date))}&nbsp;&nbsp;•&nbsp;&nbsp;
-          {CONSTANTS.TOPIC_TO_EMOJI[article.topic]} {article.topic}
-          &nbsp;&nbsp;•&nbsp;&nbsp;👏 {getReactionTotal()}
-          &nbsp;&nbsp;•&nbsp;&nbsp;💬 {article.comments.length}
-        </p>
-      </div>
+      <Link
+        className="font-bold text-xl w-fit mb-2 block hover:underline"
+        to={`/read?id=${article._id}`}
+      >
+        {article.title}
+      </Link>
+      <p className="text-gray-600">
+        {getFormattedDate(new Date(article.date))}&nbsp;&nbsp;•&nbsp;&nbsp;
+        {CONSTANTS.TOPIC_TO_EMOJI[article.topic]} {article.topic}
+        &nbsp;&nbsp;•&nbsp;&nbsp;👏 {getReactionTotal()}
+        &nbsp;&nbsp;•&nbsp;&nbsp;💬 {article.comments.length}
+      </p>
     </>
   )
 }
