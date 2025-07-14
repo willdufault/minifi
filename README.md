@@ -10,11 +10,11 @@
 ### 1.1 (7/13/2025)
 * Added admin page (/admin)
 * Added article dates
-* Added copy link button
 * UI improvements:
   * Fixed text wrapping on mobile
   * Standardized button colors
 * UX improvements:
+  * Added copy link button
   * Added text when home page featured articles or admin list results are empty
   * Pressing enter on comments & replies now posts it
 ### 1.0 (7/11/2025)
